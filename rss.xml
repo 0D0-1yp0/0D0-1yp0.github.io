@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <rss version="2.0">
     <channel>
-        <title>ShokaX Can</title>
-        <subtitle></subtitle>
-        <icon>http://example.com/assets/favicon.ico</icon>
-        <link>http://example.com</link>
+        <title>d_1yp_odyssey</title>
+        <subtitle>&#34; 一切选择，都有其意义 &#34; —— 《无畏契约》 壹决</subtitle>
+        <icon>https://0d0-1yp0.github.io/assets/favicon.ico</icon>
+        <link>https://0d0-1yp0.github.io</link>
         <author>
-          <name>John Doe</name>
+          <name>d1yp</name>
         </author>
-        <description></description>
+        <description>又想再学习好点，又想再脾气好点咯，（ps:qwq本人单身ing)</description>
         <language>zh-cn</language>
         <pubDate>Thu, 19 Dec 2024 15:25:31 +0800</pubDate>
         <lastBuildDate>Thu, 19 Dec 2024 15:25:31 +0800</lastBuildDate>
         <item>
-            <guid isPermalink="true">http://example.com/2024/12/19/hello-world/</guid>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/19/hello-world/</guid>
             <title>Hello World</title>
-            <link>http://example.com/2024/12/19/hello-world/</link>
+            <link>https://0d0-1yp0.github.io/2024/12/19/hello-world/</link>
             <pubDate>Thu, 19 Dec 2024 15:25:31 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;Welcome to &lt;a href=&#34;https://hexo.io/&#34;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&#34;https://hexo.io/docs/&#34;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&#34;https://hexo.io/docs/troubleshooting.html&#34;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&#34;https://github.com/hexojs/hexo/issues&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;

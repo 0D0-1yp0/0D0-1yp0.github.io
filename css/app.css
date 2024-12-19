@@ -4292,6 +4292,7 @@ use.stop-animation {
 }
 #loading {
   background-color: var(--grey-1);
+  display: none;
 }
 .cat {
   position: relative;

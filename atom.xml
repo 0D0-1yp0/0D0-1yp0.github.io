@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://example.com</id>
-    <title>ShokaX Can</title>
-    <subtitle></subtitle>
-    <icon>http://example.com/assets/favicon.ico</icon>
-    <link href="http://example.com" />
+    <id>https://0d0-1yp0.github.io</id>
+    <title>d_1yp_odyssey</title>
+    <subtitle>&#34; 一切选择，都有其意义 &#34; —— 《无畏契约》 壹决</subtitle>
+    <icon>https://0d0-1yp0.github.io/assets/favicon.ico</icon>
+    <link href="https://0d0-1yp0.github.io" />
     <author>
-      <name>John Doe</name>
+      <name>d1yp</name>
     </author>
     <updated>2024-12-19T07:25:31.529Z</updated>
     <entry>
-        <id>http://example.com/2024/12/19/hello-world/</id>
+        <id>https://0d0-1yp0.github.io/2024/12/19/hello-world/</id>
         <title>Hello World</title>
-        <link rel="alternate" href="http://example.com/2024/12/19/hello-world/"/>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/19/hello-world/"/>
         <content type="html">&lt;p&gt;Welcome to &lt;a href=&#34;https://hexo.io/&#34;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&#34;https://hexo.io/docs/&#34;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&#34;https://hexo.io/docs/troubleshooting.html&#34;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&#34;https://github.com/hexojs/hexo/issues&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;
 &lt;h3 id=&#34;create-a-new-post&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#create-a-new-post&#34;&gt;#&lt;/a&gt; Create a new post&lt;/h3&gt;
