@@ -2038,7 +2038,7 @@ main >.inner {
   background: linear-gradient(to top, var(--grey-0) 0, var(--grey-1) 20%) no-repeat top;
   box-shadow: 0 1.25rem 1rem 0.3125rem var(--body-bg-shadow);
   width: calc(100% - 15.75rem);
-  min-height: 37.5rem;
+  min-height: 50rem;
 }
 #main .cat {
   margin-top: 10rem;
