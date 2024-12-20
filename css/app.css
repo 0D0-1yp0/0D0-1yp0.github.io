@@ -4292,7 +4292,6 @@ use.stop-animation {
 }
 #loading {
   background-color: var(--grey-1);
-  display: none;
 }
 .cat {
   position: relative;
@@ -6234,4 +6233,8 @@ span.label {
 }
 .audio.playing .cover .disc {
   animation-play-state: running;
+}
+#busuanzi-wrap {
+  width: 100%;
+  text-align: center;
 }
