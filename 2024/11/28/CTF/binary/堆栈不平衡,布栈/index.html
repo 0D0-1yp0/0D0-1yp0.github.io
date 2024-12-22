@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/><meta name="theme-color" content="#222"/><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/><meta name="renderer" content="webkit"/><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"/><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/><link rel="alternate" href="/rss.xml" title="we1c0me_t0 my odyssey domain" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="we1c0me_t0 my odyssey domain" type="application/atom+xml"><link rel="alternate" type="application/json" title="we1c0me_t0 my odyssey domain" href="https://0d0-1yp0.github.io/feed.json"/><link rel="preconnect" href="https://s4.zstatic.net"/><link rel="preconnect" href="https://at.alicdn.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" media="none" onload="this.media&#x3D;&#39;all&#39;"><link rel="stylesheet" href="/css/app.css?v=0.4.14"><link rel="modulepreload" href="/js/chunk-3QGRG5LW.js"></link><link rel="modulepreload" href="/js/chunk-IT5OOEFI.js"></link><link rel="modulepreload" href="/js/chunk-ZSRBWA5C.js"></link><link rel="modulepreload" href="/js/copy-tex-CGSFSRPZ.js"></link><link rel="modulepreload" href="/js/index.esm-KLSBBYBW.js"></link><link rel="modulepreload" href="/js/post-HBQSSN4N.js"></link><link rel="modulepreload" href="/js/quicklink-RJWHAJYO.js"></link><link rel="modulepreload" href="/js/siteInit.js"></link><link rel="preload" href="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/jeettt.jpg" as="image" fetchpriority="high"><meta name="keywords" content="基础,CTF"/><meta name="description" content="ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog"/><link rel="canonical" href="https://0d0-1yp0.github.io/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/"><title>堆栈不平衡，布栈</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">堆栈不平衡，布栈</h1><div class="meta"><span class="item" title="创建时间：2024-11-28 00:00:00"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2024-11-28T00:00:00+08:00">2024-11-28</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>4.9k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>4 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">D_1yp</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><img src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/jeettt.jpg" loading="eager" decoding="async" fetchpriority="high" alt="we1c0me_t0 my odyssey domain"></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemListElement itemscope itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/CTF/" itemprop="item" rel="index" title="分类于CTF"><span itemprop="name">CTF<meta itemprop="position" content="0"/></span></a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/CTF/binary/" itemprop="item" rel="index" title="分类于二进制安全"><span itemprop="name">二进制安全<meta itemprop="position" content="1"/></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://0d0-1yp0.github.io/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/"/><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/aiwatching.jpg"/><meta itemprop="name" content="0d0_1yp0"/><meta itemprop="description" content="&quot; 一切选择，都有其意义 &quot; —— 《VALORANT》 ISO, ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog"/></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="we1c0me_t0 my odyssey domain"/></span><div class="body md" itemprop="articleBody"><h1 id="堆栈不平衡"><a class="anchor" href="#堆栈不平衡">#</a> 堆栈不平衡</h1>
+<p>通常是由于函数调用和返回过程中堆栈操作的不匹配。每当调用一个函数时，程序会将当前的栈指针（SP）和返回地址压入堆栈，这会影响到后续的堆栈操作。</p>
+<p>例如，假设一个函数调用  <code>func</code> ，在进入  <code>func</code>  时，栈指针会增加（即压入返回地址）。如果在  <code>func</code>  中未正确地平衡堆栈（比如未能弹出相应的值），那么在返回时，栈指针可能会指向一个不正确的位置，导致堆栈不平衡。</p>
+<p>至于栈指针的修改，可以通过调整指令来确保调用的函数有正确的返回地址。例如，修改  <code>call</code>  指令的目标地址为  <code>0</code> ，可以防止调用某个函数，这在某些逆向工程中是用于跳过不必要的函数调用或陷阱，达到对程序行为的控制。</p>
+<p>简单来说，理解堆栈的操作顺序和调用约定是非常重要的。通过反汇编工具分析这些操作，可以更好地理解程序的执行流程和潜在的漏洞。你可以从调试程序，观察栈的变化入手，加深对这些概念的理解。</p>
+<p>要深入理解堆栈不平衡的问题，我们可以从堆栈的工作原理和汇编代码角度进行分析。</p>
+<h3 id="1-堆栈的基本概念"><a class="anchor" href="#1-堆栈的基本概念">#</a> 1. 堆栈的基本概念</h3>
+<p>堆栈是一种后进先出（LIFO）的数据结构，用于存储函数调用的信息，包括返回地址、局部变量和参数。堆栈的顶端通常由栈指针（SP）指向。</p>
+<h3 id="2-函数调用的过程"><a class="anchor" href="#2-函数调用的过程">#</a> 2. 函数调用的过程</h3>
+<p>当一个函数被调用时，会执行以下步骤：</p>
+<ol>
+<li><strong>保存返回地址</strong>：调用指令（如  <code>call func</code> ）会将当前指令的下一条地址压入堆栈。</li>
+<li><strong>调整栈指针</strong>：栈指针会减少（在 x86 架构中，栈向下增长）。</li>
+<li><strong>进入函数体</strong>：函数内部可以通过栈来存储局部变量。</li>
+</ol>
+<h4 id="示例代码"><a class="anchor" href="#示例代码">#</a> 示例代码</h4>
+<pre><code class="language-assembly">push ebp           ; 保存旧的基指针
+mov ebp, esp      ; 设置新的基指针
+sub esp, 16       ; 为局部变量分配空间
+
+; 函数体
+
+mov esp, ebp      ; 恢复栈指针
+pop ebp           ; 恢复旧的基指针
+ret                ; 返回
+</code></pre>
+<h3 id="3-堆栈不平衡的原因"><a class="anchor" href="#3-堆栈不平衡的原因">#</a> 3. 堆栈不平衡的原因</h3>
+<p>如果在函数中未正确弹出压入的值，或者在返回之前没有恢复堆栈状态，就会导致堆栈不平衡。比如，如果你在函数内部多次压入值而没有相应的弹出，堆栈将继续增长，最终导致溢出。</p>
+<h3 id="4-栈指针的修改"><a class="anchor" href="#4-栈指针的修改">#</a> 4. 栈指针的修改</h3>
+<p>栈指针的修改通常涉及  <code>push</code>  和  <code>pop</code>  指令。例如，如果需要跳过某个函数的执行，可以将  <code>call</code>  指令的目标地址更改为  <code>0</code> ，这样不会实际调用任何函数，从而避免栈指针的进一步修改。</p>
+<h4 id="伪代码示例"><a class="anchor" href="#伪代码示例">#</a> 伪代码示例</h4>
+<pre><code class="language-assembly">call 0x0         ; 不会改变堆栈状态
+</code></pre>
+<h3 id="5-可视化结构图"><a class="anchor" href="#5-可视化结构图">#</a> 5. 可视化结构图</h3>
+<pre><code>[ ESP ]   --&gt;  | Return Address | &lt;-- call func
+               | Local Var 1    |
+               | Local Var 2    |
+               | ...            |
+               | Old EBP        |
+[ EBP ]   --&gt;  | Base Pointer   |
+</code></pre>
+<h3 id="6-逆向工程的实用技巧"><a class="anchor" href="#6-逆向工程的实用技巧">#</a> 6. 逆向工程的实用技巧</h3>
+<ul>
+<li><strong>使用调试工具</strong>：例如 GDB 或 x64dbg，逐步执行代码，观察堆栈的变化。</li>
+<li><strong>分析调用约定</strong>：了解不同平台（如 x86 和 x64）的调用约定，这对逆向非常重要。</li>
+<li><strong>编写脚本</strong>：可以使用 Python 等语言结合工具（如 IDA Pro 或 Ghidra）自动化分析任务。</li>
+</ul>
+<p>掌握这些基础知识后，继续深入学习汇编语言和计算机体系结构将有助于你成为真正的逆向工程大师！</p>
+<h1 id="布栈"><a class="anchor" href="#布栈">#</a> 布栈</h1>
+<blockquote>
+<p>教我做一道 CTF 中的 pwn 题: #!/usr/bin/env python from pwn import *  sh = process ('./ret2libc1')  binsh_addr = 0x8048720 system_plt = 0x08048460 payload = flat ([b'a' * 112, system_plt, b'b' * 4, binsh_addr]) sh.sendline (payload)  sh.interactive () 这里我们需要注意函数调用栈的结构，如果是正常调用 system 函数，我们调用的时候会有一个对应的返回地址，这里以 'bbbb' 作为虚假的地址，其后参数对应的参数内容。  你看他布栈的时候，为什么要 system_plt 后面要布一个虚假的地址，然后才是参数呢，这里没太懂</p>
+</blockquote>
+<p>这道题目是典型的 <strong>ret2libc</strong> 攻击 (Return-to-libc)，目标是通过覆盖栈上的返回地址，绕过程序的正常流程，转而调用  <code>system()</code>  函数来执行命令（在这个例子中是  <code>/bin/sh</code> ）。为了理解为什么  <code>system_plt</code>  后面需要填充一个虚假的地址（ <code>b'b' * 4</code> ），我们需要详细分析下栈结构和函数调用的过程。</p>
+<h3 id="背景知识"><a class="anchor" href="#背景知识">#</a> 背景知识</h3>
+<p>在  <code>x86</code>  架构的程序中，函数调用的基本过程如下：</p>
+<ol>
+<li><strong>压栈</strong>：当一个函数被调用时，程序会将当前的 <strong>返回地址</strong> 压入栈中，这个返回地址是程序调用该函数后，程序应该跳转回来的地址。</li>
+<li><strong>参数传递</strong>：在栈上，函数的参数会紧随返回地址之后依次被压入栈中。</li>
+<li><strong>栈帧结构</strong>：每次函数调用时，都会为该函数分配一个栈帧，栈帧中包含：
+<ul>
+<li><strong>返回地址</strong>：指向调用函数之后的代码位置。</li>
+<li><strong>参数</strong>：该函数的参数。</li>
+</ul>
+</li>
+</ol>
+<h3 id="攻击思路"><a class="anchor" href="#攻击思路">#</a> 攻击思路</h3>
+<p>在这道题中，我们要利用程序中的漏洞，覆盖栈上的返回地址，使得程序在执行  <code>ret</code> （返回指令）时跳到我们指定的地址，也就是  <code>system()</code>  函数的地址。</p>
+<h3 id="分析代码"><a class="anchor" href="#分析代码">#</a> 分析代码</h3>
+<figure class="highlight python"><figcaption data-lang="python"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token comment">#!/usr/bin/env python</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token keyword">from</span> pwn <span class="token keyword">import</span> <span class="token operator">*</span></pre></td></tr><tr><td data-num="3"></td><td><pre></pre></td></tr><tr><td data-num="4"></td><td><pre>sh <span class="token operator">=</span> process<span class="token punctuation">(</span><span class="token string">'./ret2libc1'</span><span class="token punctuation">)</span></pre></td></tr><tr><td data-num="5"></td><td><pre></pre></td></tr><tr><td data-num="6"></td><td><pre>binsh_addr <span class="token operator">=</span> <span class="token number">0x8048720</span></pre></td></tr><tr><td data-num="7"></td><td><pre>system_plt <span class="token operator">=</span> <span class="token number">0x08048460</span></pre></td></tr><tr><td data-num="8"></td><td><pre>payload <span class="token operator">=</span> flat<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">b'a'</span> <span class="token operator">*</span> <span class="token number">112</span><span class="token punctuation">,</span> system_plt<span class="token punctuation">,</span> <span class="token string">b'b'</span> <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">,</span> binsh_addr<span class="token punctuation">]</span><span class="token punctuation">)</span></pre></td></tr><tr><td data-num="9"></td><td><pre>sh<span class="token punctuation">.</span>sendline<span class="token punctuation">(</span>payload<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="10"></td><td><pre></pre></td></tr><tr><td data-num="11"></td><td><pre>sh<span class="token punctuation">.</span>interactive<span class="token punctuation">(</span><span class="token punctuation">)</span></pre></td></tr></table></figure><ol>
+<li>
+<p><strong> <code>binsh_addr = 0x8048720</code> </strong>：这是我们要传给  <code>system()</code>  函数的参数地址，也就是  <code>/bin/sh</code>  字符串的地址。 <code>system()</code>  函数需要一个字符串参数，在这里我们传递的是  <code>/bin/sh</code>  的地址， <code>system()</code>  会执行该命令，启动一个 shell。</p>
+</li>
+<li>
+<p><strong> <code>system_plt = 0x08048460</code> </strong>：这是  <code>system</code>  函数的地址，在程序中的 <strong>PLT（Procedure Linkage Table）</strong> 区域。PLT 是程序用来调用动态库函数的一个表，每当程序要调用动态库中的函数时，都会先跳转到 PLT 处，由 PLT 去调用函数的实际地址。</p>
+</li>
+<li>
+<p><strong> <code>payload = flat([b'a' * 112, system_plt, b'b' * 4, binsh_addr])</code> </strong>：</p>
+<ul>
+<li><strong> <code>b'a' * 112</code> </strong>：这里填充的是  <code>112</code>  个字节  <code>a</code> ，这是覆盖栈帧到返回地址的部分。程序会首先执行一些前期的操作（例如栈的初始化、局部变量等），然后遇到返回地址。因为栈的布局是从高地址到低地址的，所以我们填充  <code>a</code>  字符来覆盖返回地址的空间，确保在覆盖掉返回地址后，后面的内容是我们想要填充的内容。</li>
+<li><strong> <code>system_plt</code> </strong>：这是我们覆盖的返回地址。当栈上的返回地址被覆盖为  <code>system_plt</code>  后，程序将跳转到  <code>system()</code>  函数。这个  <code>system_plt</code>  的地址是硬编码的，它会让程序跳转到  <code>system()</code>  的实际地址。注意，这个地址是 PLT 表中的地址，在动态链接的程序中，PLT 是一个跳转表，用于跳转到  <code>system</code>  函数的实际实现地址。</li>
+<li><strong> <code>b'b' * 4</code> </strong>：这是一个 <strong>虚假的返回地址</strong>，也就是说这是我们填充在  <code>system_plt</code>  后的一个占位符。这个部分的大小是  <code>4</code>  字节（通常是  <code>x86</code>  架构的指针大小）。为什么要填充这个虚假的返回地址呢？因为  <code>system()</code>  函数的调用约定是需要一个参数（即  <code>/bin/sh</code>  的地址）。这个虚假的返回地址用于模拟栈上  <code>system()</code>  函数执行完之后返回的地址。我们这样做是为了让栈结构保持正确，在调用  <code>system()</code>  时，栈帧结构要完整，所以我们需要一个假的返回地址来确保  <code>system()</code>  执行完成后能正确返回。实际上，在这道题中，虚假的地址  <code>b'b' * 4</code>  会被  <code>system()</code>  执行后丢弃。</li>
+<li><strong> <code>binsh_addr</code> </strong>：这是我们传递给  <code>system()</code>  函数的参数  <code>/bin/sh</code>  字符串的地址。 <code>system()</code>  函数需要一个字符串作为参数，这个参数是  <code>system()</code>  在执行时使用的命令，告诉它启动一个 shell。</li>
+</ul>
+</li>
+<li>
+<p><strong> <code>sh.sendline(payload)</code> </strong>：这一行是将构造好的 payload 发送到程序中，触发栈的溢出和返回地址的修改。</p>
+</li>
+<li>
+<p><strong> <code>sh.interactive()</code> </strong>：执行完 payload 后，程序将进入交互模式，让我们与程序进行交互，通常在这种 CTF 题目中，这意味着我们已经成功地获得了一个 shell，可以执行命令。</p>
+</li>
+</ol>
+<h3 id="为什么要填充虚假的地址"><a class="anchor" href="#为什么要填充虚假的地址">#</a> 为什么要填充虚假的地址？</h3>
+<p>在调用  <code>system()</code>  函数时，通常在栈上需要有一个返回地址，指示函数执行完之后应该跳转到哪里。由于  <code>system()</code>  是一个库函数，它执行完成后并不会返回到一个特定的地址，而是会根据调用栈返回到调用它的地方。但是，由于我们要用  <code>ret2libc</code>  攻击来绕过正常的程序流程，我们通过修改返回地址，使得程序跳转到  <code>system()</code>  函数。但是  <code>system()</code>  函数的调用约定仍然需要栈上有一个正确的返回地址（即调用  <code>system()</code>  后程序会跳回的地址）。</p>
+<ul>
+<li>由于  <code>system()</code>  在执行后会返回，我们需要一个虚假的返回地址来填补栈上的空隙，确保栈帧结构完整。</li>
+<li>我们用  <code>b'b' * 4</code>  来填充这个虚假的返回地址。这里的  <code>4</code>  字节是因为在 x86 架构中，返回地址是一个指针，占用 4 字节。</li>
+</ul>
+<h3 id="总结"><a class="anchor" href="#总结">#</a> 总结</h3>
+<ul>
+<li><strong> <code>system_plt</code> </strong> 是我们想跳转到的地址，即  <code>system()</code>  函数的入口。</li>
+<li><strong>虚假的返回地址 ( <code>b'b' * 4</code> )</strong> 用于保证栈帧的完整性，它只是一个占位符。 <code>system()</code>  执行后会跳过这个虚假的地址，并且返回到  <code>system()</code>  函数的调用者。</li>
+<li><strong> <code>binsh_addr</code> </strong> 是传递给  <code>system()</code>  函数的参数，即  <code>/bin/sh</code>  的地址， <code>system()</code>  会执行它，启动一个 shell。</li>
+</ul>
+<p>这个过程通过巧妙地控制栈上的返回地址，利用系统中已经存在的库函数来执行恶意代码，从而达到绕过程序控制并获取 shell 的目的。</p>
+<div class="tags"><a href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag"><i class="ic i-tag"></i>基础</a><a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag"><i class="ic i-tag"></i>二进制</a><a href="/tags/CTF/" rel="tag"><i class="ic i-tag"></i>CTF</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于</span><time title="修改时间：2024-12-23 00:12:00" itemprop="dateModified" datetime="2024-12-23T00:12:00+08:00">2024-12-23</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>充电</button><p>感谢支持，用爱发电~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" data-src="/assets/wechatpay.png" alt="0d0_1yp0 微信支付"/><p>微信支付</p></div><div><img loading="lazy" data-src="/assets/alipay.png" alt="0d0_1yp0 支付宝"/><p>支付宝</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>0d0_1yp0<i class="ic i-at"><em>@</em></i>we1c0me_t0 my odyssey domain</li><li class="link"><strong>本文链接：</strong><a href="https://0d0-1yp0.github.io/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/" title="堆栈不平衡，布栈">https://0d0-1yp0.github.io/2024/11/28/CTF/binary/堆栈不平衡,布栈/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2024/11/12/Forensics/meiyacup2024%E5%86%85%E5%AD%98%E5%A4%8D%E7%9B%98/" rel="prev" itemprop="url" data-background-image="https:&#x2F;&#x2F;blog-store-1325083740.cos.ap-beijing.myqcloud.com&#x2F;0D00.jpg" title="Meiyacup2024菜鸟个人总结（一）"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>取证</span><h3>Meiyacup2024菜鸟个人总结（一）</h3></a></div><div class="item right"><a href="/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/" rel="next" itemprop="url" data-background-image="https:&#x2F;&#x2F;blog-store-1325083740.cos.ap-beijing.myqcloud.com&#x2F;2024-12-20%20110625.png" title="2020网鼎RE"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>逆向工程reverse</span><h3>2020网鼎RE</h3></a></div></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.</span> <span class="toc-text"> 堆栈不平衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A0%86%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 1. 堆栈的基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">1.0.2.</span> <span class="toc-text"> 2. 函数调用的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="toc-number">1.0.2.1.</span> <span class="toc-text"> 示例代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.0.3.</span> <span class="toc-text"> 3. 堆栈不平衡的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%A0%88%E6%8C%87%E9%92%88%E7%9A%84%E4%BF%AE%E6%94%B9"><span class="toc-number">1.0.4.</span> <span class="toc-text"> 4. 栈指针的修改</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.0.4.1.</span> <span class="toc-text"> 伪代码示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="toc-number">1.0.5.</span> <span class="toc-text"> 5. 可视化结构图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">1.0.6.</span> <span class="toc-text"> 6. 逆向工程的实用技巧</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%83%E6%A0%88"><span class="toc-number">2.</span> <span class="toc-text"> 布栈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">2.0.1.</span> <span class="toc-text"> 背景知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF"><span class="toc-number">2.0.2.</span> <span class="toc-text"> 攻击思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E4%BB%A3%E7%A0%81"><span class="toc-number">2.0.3.</span> <span class="toc-text"> 分析代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%A1%AB%E5%85%85%E8%99%9A%E5%81%87%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-number">2.0.4.</span> <span class="toc-text"> 为什么要填充虚假的地址？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.0.5.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li  class="active"><a href="/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/" rel="bookmark" title="堆栈不平衡，布栈">堆栈不平衡，布栈</a></li><li ><a href="/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/" rel="bookmark" title="2020网鼎RE">2020网鼎RE</a></li><li ><a href="/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="bookmark" title="pwndbg操作方式个人总结（一）">pwndbg操作方式个人总结（一）</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="0d0_1yp0" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/aiwatching.jpg"/><p class="name" itemprop="name">0d0_1yp0</p><div class="description" itemprop="description">ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">7</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">8</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">12</span><span class="name">标签</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/0D0-1yp0" class="item github" title="https:&#x2F;&#x2F;github.com&#x2F;0D0-1yp0"><i class="ic i-github"></i></a><a href="mailto:2541520193@qq.com" class="item email" title="mailto:2541520193@qq.com"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2024/11/12/Forensics/meiyacup2024%E5%86%85%E5%AD%98%E5%A4%8D%E7%9B%98/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div></main><footer id="footer"><div class="inner"><div class="widgets"></div><div class="status"><div class="copyright">&copy; 2024 -<span itemprop="copyrightYear">2024</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">0d0_1yp0 @ D_1yp</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="站点总字数">30k 字</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="站点阅读时长">27 分钟</span></div><div class="powered-by">基于 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><div style="width: 100%;text-align:center;"><span id="time"></span></div><script>function createtime() {
+    const n = new Date("2024/12/20 21:42:18");
+    now.setTime(now.getTime() + 250), days = (now - n) / 1e3 / 60 / 60 / 24, dnum = Math.floor(days), hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum, hnum = Math.floor(hours), 1 == String(hnum).length && (hnum = "0" + hnum), minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum, mnum = Math.floor(minutes), 1 == String(mnum).length && (mnum = "0" + mnum), seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum, snum = Math.round(seconds), 1 == String(snum).length && (snum = "0" + snum), document.getElementById("time").innerHTML = "此站已存活" + dnum + " 天 " + hnum + " 小时 " + mnum + " 分 " + snum + " 秒"
+}
+
+const now = new Date;
+setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script><div id="busuanzi-wrap"><span class="ic i-eye"></span><span id="busuanzi_container_site_pv">小破站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span> | <span class="ic i-user"></span><span id="busuanzi_container_site_uv">小破站总访客量 <span id="busuanzi_value_site_uv"></span> 人/虫      承蒙各位(或者你们用来爬我文的虫)的厚爱，欢迎收藏</span></div></div></footer></div><script data-config type="text/javascript">var LOCAL = {
+    ispost: true,
+        path: `2024/11/28/CTF/binary/堆栈不平衡,布栈/`,
+        favicon: {
+        show: `欢迎你的到来(●´3｀●)`,
+        hide: `记得回来oh(´Д｀)`
+    },
+    search: {
+        placeholder: "文章搜索",
+        empty: "关于 「 ${query} 」，什么也没搜到",
+        stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: {},
+    fancybox: true,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>`,
+    quiz: {
+        choice: `单选题`,
+        multiple: `多选题`,
+        true_false: `判断题`,
+        essay: `问答题`,
+        gap_fill: `填空题`,
+        mistake: `错题备注`
+    },
+    ignores: [
+        (uri) => uri.includes('#'),
+        (uri) => new RegExp(LOCAL.path + '$').test(uri),
+            []
+    ]
+};
+</script><script src="https://s4.zstatic.net/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous" fetchpriority="high"></script><script src="https://s4.zstatic.net/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO&#x2F;+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn&#x2F;6Z&#x2F;hRTt8+pR6L4N2" crossorigin="anonymous" fetchpriority="high"></script><script src="/js/siteInit.js?v=0.4.14" type="module" fetchpriority="high" defer></script></body></html>

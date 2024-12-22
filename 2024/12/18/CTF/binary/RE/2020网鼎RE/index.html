@@ -1,0 +1,462 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/><meta name="theme-color" content="#222"/><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/><meta name="renderer" content="webkit"/><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"/><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/><link rel="alternate" href="/rss.xml" title="we1c0me_t0 my odyssey domain" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="we1c0me_t0 my odyssey domain" type="application/atom+xml"><link rel="alternate" type="application/json" title="we1c0me_t0 my odyssey domain" href="https://0d0-1yp0.github.io/feed.json"/><link rel="preconnect" href="https://s4.zstatic.net"/><link rel="preconnect" href="https://at.alicdn.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" media="none" onload="this.media&#x3D;&#39;all&#39;"><link rel="stylesheet" href="/css/app.css?v=0.4.14"><link rel="modulepreload" href="/js/chunk-3QGRG5LW.js"></link><link rel="modulepreload" href="/js/chunk-IT5OOEFI.js"></link><link rel="modulepreload" href="/js/chunk-ZSRBWA5C.js"></link><link rel="modulepreload" href="/js/copy-tex-CGSFSRPZ.js"></link><link rel="modulepreload" href="/js/index.esm-KLSBBYBW.js"></link><link rel="modulepreload" href="/js/post-HBQSSN4N.js"></link><link rel="modulepreload" href="/js/quicklink-RJWHAJYO.js"></link><link rel="modulepreload" href="/js/siteInit.js"></link><link rel="preload" href="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/jeettt.jpg" as="image" fetchpriority="high"><meta name="keywords" content="二进制,逆向,"/><meta name="description" content="ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog"/><link rel="canonical" href="https://0d0-1yp0.github.io/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/"><title>2020网鼎RE</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">2020网鼎RE</h1><div class="meta"><span class="item" title="创建时间：2024-12-18 00:00:00"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2024-12-18T00:00:00+08:00">2024-12-18</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>8.4k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>8 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">D_1yp</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><img src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/jeettt.jpg" loading="eager" decoding="async" fetchpriority="high" alt="we1c0me_t0 my odyssey domain"></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemListElement itemscope itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/CTF/" itemprop="item" rel="index" title="分类于CTF"><span itemprop="name">CTF<meta itemprop="position" content="0"/></span></a></span><i class="ic i-angle-right"></i><span itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/CTF/binary/" itemprop="item" rel="index" title="分类于二进制安全"><span itemprop="name">二进制安全<meta itemprop="position" content="1"/></span></a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/CTF/binary/RE/" itemprop="item" rel="index" title="分类于逆向工程reverse"><span itemprop="name">逆向工程reverse<meta itemprop="position" content="2"/></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://0d0-1yp0.github.io/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/"/><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/aiwatching.jpg"/><meta itemprop="name" content="0d0_1yp0"/><meta itemprop="description" content="&quot; 一切选择，都有其意义 &quot; —— 《VALORANT》 ISO, ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog"/></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="we1c0me_t0 my odyssey domain"/></span><div class="body md" itemprop="articleBody"><h1 id="还木写完先开个坑"><a class="anchor" href="#还木写完先开个坑">#</a> 还木写完 ^^ 先开个坑</h1>
+<h3 id="代码分析"><a class="anchor" href="#代码分析">#</a> <strong>代码分析：</strong></h3>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> __cdecl <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>envp<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="3"></td><td><pre>  <span class="token keyword">int</span> v4<span class="token punctuation">[</span><span class="token number">117</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// [esp+18h] [ebp-1D4h] BYREF</span></pre></td></tr><tr><td data-num="4"></td><td><pre></pre></td></tr><tr><td data-num="5"></td><td><pre>  <span class="token function">__main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="6"></td><td><pre>  <span class="token function">qmemcpy</span><span class="token punctuation">(</span>v4<span class="token punctuation">,</span> <span class="token operator">&amp;</span>unk_403040<span class="token punctuation">,</span> <span class="token number">0x1C8u</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="7"></td><td><pre>  <span class="token function">vm_operad</span><span class="token punctuation">(</span>v4<span class="token punctuation">,</span> <span class="token number">114</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="8"></td><td><pre>  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"good,The answer format is:flag &#123;&#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="9"></td><td><pre>  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="10"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure><h4 id="逐行解释"><a class="anchor" href="#逐行解释">#</a> <strong>逐行解释：</strong></h4>
+<ol>
+<li>
+<p><strong>函数签名：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> __cdecl <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>envp<span class="token punctuation">)</span></pre></td></tr></table></figure><ul>
+<li>标准的  <code>main</code>  函数入口。</li>
+<li><code>__cdecl</code>  是调用约定，表示参数从右到左入栈，由调用者清理栈。</li>
+</ul>
+</li>
+<li>
+<p><strong>变量声明：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> v4<span class="token punctuation">[</span><span class="token number">117</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// [esp+18h] [ebp-1D4h] BYREF</span></pre></td></tr></table></figure><ul>
+<li>声明了一个包含 117 个整数的数组  <code>v4</code> 。</li>
+<li>注释指出了栈偏移量，表示  <code>v4</code>  位于栈帧的  <code>[ebp - 0x1D4]</code>  位置。</li>
+<li><code>BYREF</code>  表示该变量以引用方式传递给函数。</li>
+</ul>
+</li>
+<li>
+<p><strong>调用  <code>__main()</code> ：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">__main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>这是编译器（如 GCC）在初始化时调用的函数，用于设置全局构造函数等。</li>
+<li>在逆向工程中，它通常可以忽略，对主要逻辑影响不大。</li>
+</ul>
+</li>
+<li>
+<p><strong>调用  <code>qmemcpy()</code> ：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">qmemcpy</span><span class="token punctuation">(</span>v4<span class="token punctuation">,</span> <span class="token operator">&amp;</span>unk_403040<span class="token punctuation">,</span> <span class="token number">0x1C8u</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将内存从  <code>&amp;unk_403040</code>  复制到  <code>v4</code> ，长度为  <code>0x1C8</code>  字节（456 字节）。</li>
+<li><code>qmemcpy</code>  类似于标准的  <code>memcpy</code> ，但可能是 IDA Pro 的内部函数。</li>
+</ul>
+</li>
+<li>
+<p><strong>调用  <code>vm_operad()</code> ：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">vm_operad</span><span class="token punctuation">(</span>v4<span class="token punctuation">,</span> <span class="token number">114</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>调用函数  <code>vm_operad</code> ，传入参数  <code>v4</code>  和  <code>114</code> 。</li>
+<li>这里的  <code>114</code>  可能表示操作码的数量、数据长度或某个关键值。</li>
+</ul>
+</li>
+<li>
+<p><strong>输出信息：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"good,The answer format is:flag &#123;&#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>输出提示信息，告诉我们答案的格式是  <code>flag &#123;&#125;</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>返回语句：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>标准的  <code>main</code>  函数返回，表示程序正常结束。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="深入分析"><a class="anchor" href="#深入分析">#</a> <strong>深入分析：</strong></h3>
+<h4 id="1-理解数据复制操作"><a class="anchor" href="#1-理解数据复制操作">#</a> <strong>1. 理解数据复制操作：</strong></h4>
+<ul>
+<li>
+<p><strong>数据源  <code>unk_403040</code> ：</strong></p>
+<ul>
+<li><code>unk_403040</code>  是未知的全局数据，位于地址  <code>0x403040</code> 。</li>
+<li>我们需要查看该地址处的数据内容，可能是加密的数据、字节码、操作码等。</li>
+</ul>
+</li>
+<li>
+<p><strong>复制操作：</strong></p>
+<ul>
+<li>将  <code>456</code>  字节的数据复制到  <code>v4</code> 。</li>
+<li><code>v4</code>  的大小为  <code>117 * 4 = 468</code>  字节（因为每个  <code>int</code>  是 4 字节），所以复制操作是安全的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-分析-vm_operad-函数"><a class="anchor" href="#2-分析-vm_operad-函数">#</a> <strong>2. 分析  <code>vm_operad()</code>  函数：</strong></h4>
+<ul>
+<li>
+<p><strong>函数作用猜测：</strong></p>
+<ul>
+<li>从函数名来看， <code>vm_operad</code>  可能表示 “虚拟机操作”。</li>
+<li>这暗示该函数可能是一个虚拟机解释器，执行传入的字节码或操作码。</li>
+</ul>
+</li>
+<li>
+<p><strong>参数  <code>114</code>  的含义：</strong></p>
+<ul>
+<li><code>114</code>  可能表示操作码的数量或某个关键参数。</li>
+<li>可能与复制的数据长度或某种校验有关。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-反汇编-vm_operad"><a class="anchor" href="#3-反汇编-vm_operad">#</a> <strong>3. 反汇编  <code>vm_operad()</code> ：</strong></h4>
+<ul>
+<li>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>在 IDA 中，定位并反汇编  <code>vm_operad</code> 。</li>
+<li>分析函数的控制流程，查看是否有循环、跳转表或条件判断。</li>
+</ul>
+</li>
+<li>
+<p><strong>寻找模式：</strong></p>
+<ul>
+<li><strong>操作码解析：</strong> 检查是否有读取  <code>v4</code>  中数据作为操作码的逻辑。</li>
+<li><strong>栈操作：</strong> 查看是否有自定义的栈，用于模拟指令执行。</li>
+<li><strong>关键函数调用：</strong> 寻找与字符串比较、加密解密、输出相关的函数调用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-堆栈不平衡问题的原因"><a class="anchor" href="#4-堆栈不平衡问题的原因">#</a> <strong>4. 堆栈不平衡问题的原因：</strong></h4>
+<ul>
+<li>
+<p><strong>异常的栈操作：</strong></p>
+<ul>
+<li>如果  <code>vm_operad</code>  在执行过程中直接修改了栈指针（如  <code>ESP</code>  寄存器），会导致 IDA 无法正确跟踪栈帧，出现堆栈不平衡的提示。</li>
+</ul>
+</li>
+<li>
+<p><strong>解决方法：</strong></p>
+<ul>
+<li><strong>手动调整：</strong> 在 IDA 中，可以手动修改栈平衡，在函数属性中调整栈偏移。</li>
+<li><strong>分析调用约定：</strong> 确保函数的入口和出口栈平衡，即进入和离开函数时，栈指针应恢复到相同的值。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-修改-call-指令的值为-0-的意义"><a class="anchor" href="#5-修改-call-指令的值为-0-的意义">#</a> <strong>5. 修改  <code>call</code>  指令的值为  <code>0</code>  的意义：</strong></h4>
+<ul>
+<li>
+<p><strong>跳过函数调用：</strong></p>
+<ul>
+<li>将  <code>call</code>  指令的目标地址修改为  <code>0</code> ，相当于调用了一个空函数，可能会导致程序崩溃或无操作返回。</li>
+<li>在逆向过程中，这种修改用于跳过某些干扰性的函数，如反调试、反虚拟化或延时函数。</li>
+</ul>
+</li>
+<li>
+<p><strong>保持栈平衡：</strong></p>
+<ul>
+<li>即使修改了  <code>call</code> ，也需要确保栈的平衡。</li>
+<li>可以用  <code>NOP</code>  指令替换  <code>call</code> ，或者调整栈指针，使得程序继续正常执行。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="可视化结构图"><a class="anchor" href="#可视化结构图">#</a> <strong>可视化结构图：</strong></h3>
+<h4 id="函数调用栈"><a class="anchor" href="#函数调用栈">#</a> <strong>函数调用栈：</strong></h4>
+<pre><code>[ 高地址 ]
++-----------------------+
+| 命令行参数 envp       |
++-----------------------+
+| 命令行参数 argv       |
++-----------------------+
+| 参数个数 argc         |
++-----------------------+
+| 返回地址              | &lt;-- 调用 __main() 压入的返回地址
++-----------------------+
+| 返回地址              | &lt;-- 调用 main() 压入的返回地址
++-----------------------+
+| 旧的 EBP              | &lt;-- 基指针 EBP
++-----------------------+
+| 局部变量 v4[117]      | &lt;-- 栈帧中的变量
++-----------------------+
+[ 低地址 ]
+</code></pre>
+<h4 id="程序执行流程"><a class="anchor" href="#程序执行流程">#</a> <strong>程序执行流程：</strong></h4>
+<ol>
+<li><strong>开始执行  <code>main()</code> </strong>。</li>
+<li><strong>调用  <code>__main()</code> </strong>：初始化操作。</li>
+<li><strong>数据复制</strong>：将数据从  <code>unk_403040</code>  复制到  <code>v4</code> 。</li>
+<li><strong>执行  <code>vm_operad(v4, 114)</code> </strong>：
+<ul>
+<li>可能解释执行  <code>v4</code>  中的数据。</li>
+<li>关键的逻辑可能在此函数中。</li>
+</ul>
+</li>
+<li><strong>输出提示信息</strong>：告诉我们答案的格式。</li>
+<li><strong>程序结束</strong>：返回  <code>0</code> 。</li>
+</ol>
+<hr />
+<h3 id="成为逆向大师的指导"><a class="anchor" href="#成为逆向大师的指导">#</a> <strong>成为逆向大师的指导：</strong></h3>
+<h4 id="1-深入分析-unk_403040"><a class="anchor" href="#1-深入分析-unk_403040">#</a> <strong>1. 深入分析  <code>unk_403040</code> ：</strong></h4>
+<ul>
+<li>
+<p><strong>查看数据内容：</strong></p>
+<ul>
+<li>在 IDA 中，跳转到地址  <code>0x403040</code> ，查看数据是否为可读字符串、操作码或其他格式。</li>
+<li>如果是字节码，尝试手动解析。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据模式识别：</strong></p>
+<ul>
+<li>检查是否有明显的加密或混淆迹象。</li>
+<li>如果数据不可读，可能需要解密或解码。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-解析-vm_operad-的逻辑"><a class="anchor" href="#2-解析-vm_operad-的逻辑">#</a> <strong>2. 解析  <code>vm_operad()</code>  的逻辑：</strong></h4>
+<ul>
+<li>
+<p><strong>反汇编并注释：</strong></p>
+<ul>
+<li>逐行反汇编  <code>vm_operad</code> ，添加注释，理解每个指令的作用。</li>
+<li>关注寄存器的使用、条件跳转和函数调用。</li>
+</ul>
+</li>
+<li>
+<p><strong>构建操作码表：</strong></p>
+<ul>
+<li>如果  <code>vm_operad</code>  是解释器，可能有一个操作码对应的指令集。</li>
+<li>建立操作码与指令的映射，模拟执行过程。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-解决堆栈不平衡"><a class="anchor" href="#3-解决堆栈不平衡">#</a> <strong>3. 解决堆栈不平衡：</strong></h4>
+<ul>
+<li>
+<p><strong>理解栈帧结构：</strong></p>
+<ul>
+<li>熟悉函数调用约定，如  <code>cdecl</code> 、 <code>stdcall</code>  等。</li>
+<li>理解栈指针（ESP）和基指针（EBP）的变化。</li>
+</ul>
+</li>
+<li>
+<p><strong>修正 IDA 中的堆栈信息：</strong></p>
+<ul>
+<li>使用 IDA 的功能，手动设置函数的栈调整值。</li>
+<li>在函数属性中，设置正确的输入输出栈大小。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-实践调试技巧"><a class="anchor" href="#4-实践调试技巧">#</a> <strong>4. 实践调试技巧：</strong></h4>
+<ul>
+<li>
+<p><strong>使用调试器：</strong></p>
+<ul>
+<li>在动态调试器（如 OllyDbg、x64dbg）中运行程序，观察运行时的行为。</li>
+<li>设置断点，查看寄存器和内存的变化。</li>
+</ul>
+</li>
+<li>
+<p><strong>脚本和自动化：</strong></p>
+<ul>
+<li>利用 IDA Python 编写脚本，自动提取和分析数据。</li>
+<li>学习使用其他逆向工具，如 Ghidra、Radare2。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-解决逆向挑战"><a class="anchor" href="#5-解决逆向挑战">#</a> <strong>5. 解决逆向挑战：</strong></h4>
+<ul>
+<li>
+<p><strong>寻找密钥或 Flag：</strong></p>
+<ul>
+<li>关注  <code>vm_operad</code>  中的比较、循环和条件跳转。</li>
+<li>可能需要输入特定的数据，或者从  <code>v4</code>  中提取信息。</li>
+</ul>
+</li>
+<li>
+<p><strong>学习常见的加密和编码方式：</strong></p>
+<ul>
+<li>熟悉 Base64、异或加密、移位加密等常用技巧。</li>
+<li>了解字符串加密和解密的过程。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="总结"><a class="anchor" href="#总结">#</a> <strong>总结：</strong></h3>
+<p>通过逐步分析代码，我们了解到：</p>
+<ul>
+<li>程序从全局未知数据  <code>unk_403040</code>  中复制了一段数据到本地变量  <code>v4</code> 。</li>
+<li>通过调用  <code>vm_operad</code> ，可能对这段数据进行了解析或执行。</li>
+<li>输出的信息提示我们，答案的格式是  <code>flag &#123;&#125;</code> 。</li>
+</ul>
+<p>要进一步解开这个逆向题，需要：</p>
+<ul>
+<li>深入分析  <code>vm_operad</code>  的逻辑，理解其功能。</li>
+<li>可能需要模拟或重现  <code>vm_operad</code>  的执行过程。</li>
+<li>从  <code>v4</code>  或其他数据中提取出隐藏的  <code>flag</code> 。</li>
+</ul>
+<hr />
+<p><strong>建议：</strong></p>
+<ul>
+<li><strong>耐心研究</strong>：逆向工程需要耐心和细致的分析，逐行理解代码。</li>
+<li><strong>多练习</strong>：通过解决更多的逆向题目，积累经验。</li>
+<li><strong>学习基础</strong>：巩固计算机体系结构、汇编语言和操作系统的知识。</li>
+<li><strong>交流讨论</strong>：与他人分享和讨论你的发现，可以获得新的思路。</li>
+</ul>
+<p>希望以上分析对你有所帮助，继续努力，你一定能成为一名出色的逆向工程师！\</p>
+<p>好的，让我们进一步分析  <code>vm_operad</code>  函数的具体实现，逐步理解它的逻辑和可能的用途。</p>
+<h3 id="代码分析-2"><a class="anchor" href="#代码分析-2">#</a> <strong>代码分析：</strong></h3>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> __cdecl <span class="token function">vm_operad</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>a1<span class="token punctuation">,</span> <span class="token keyword">int</span> a2<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="3"></td><td><pre>  <span class="token keyword">int</span> result<span class="token punctuation">;</span> <span class="token comment">// eax</span></pre></td></tr><tr><td data-num="4"></td><td><pre>  <span class="token keyword">char</span> Str<span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// [esp+13h] [ebp-E5h] BYREF</span></pre></td></tr><tr><td data-num="5"></td><td><pre>  <span class="token keyword">char</span> v4<span class="token punctuation">;</span> <span class="token comment">// [esp+DBh] [ebp-1Dh]</span></pre></td></tr><tr><td data-num="6"></td><td><pre>  <span class="token keyword">int</span> v5<span class="token punctuation">;</span> <span class="token comment">// [esp+DCh] [ebp-1Ch]</span></pre></td></tr><tr><td data-num="7"></td><td><pre>  <span class="token keyword">int</span> v6<span class="token punctuation">;</span> <span class="token comment">// [esp+E0h] [ebp-18h]</span></pre></td></tr><tr><td data-num="8"></td><td><pre>  <span class="token keyword">int</span> v7<span class="token punctuation">;</span> <span class="token comment">// [esp+E4h] [ebp-14h]</span></pre></td></tr><tr><td data-num="9"></td><td><pre>  <span class="token keyword">int</span> v8<span class="token punctuation">;</span> <span class="token comment">// [esp+E8h] [ebp-10h]</span></pre></td></tr><tr><td data-num="10"></td><td><pre>  <span class="token keyword">int</span> v9<span class="token punctuation">;</span> <span class="token comment">// [esp+ECh] [ebp-Ch]</span></pre></td></tr><tr><td data-num="11"></td><td><pre></pre></td></tr><tr><td data-num="12"></td><td><pre>  v9 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="13"></td><td><pre>  v8 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="14"></td><td><pre>  v7 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="15"></td><td><pre>  v6 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="16"></td><td><pre>  v5 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="17"></td><td><pre>  <span class="token keyword">while</span> <span class="token punctuation">(</span> <span class="token number">1</span> <span class="token punctuation">)</span></pre></td></tr><tr><td data-num="18"></td><td><pre>  <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="19"></td><td><pre>    result <span class="token operator">=</span> v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="20"></td><td><pre>    <span class="token keyword">if</span> <span class="token punctuation">(</span> v9 <span class="token operator">>=</span> a2 <span class="token punctuation">)</span></pre></td></tr><tr><td data-num="21"></td><td><pre>      <span class="token keyword">return</span> result<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="22"></td><td><pre>    <span class="token keyword">switch</span> <span class="token punctuation">(</span> a1<span class="token punctuation">[</span>v9<span class="token punctuation">]</span> <span class="token punctuation">)</span></pre></td></tr><tr><td data-num="23"></td><td><pre>    <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="24"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">1</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="25"></td><td><pre>        Str<span class="token punctuation">[</span>v6 <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">=</span> v4<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="26"></td><td><pre>        <span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="27"></td><td><pre>        <span class="token operator">++</span>v6<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="28"></td><td><pre>        <span class="token operator">++</span>v8<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="29"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="30"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">2</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="31"></td><td><pre>        v4 <span class="token operator">=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="32"></td><td><pre>        v9 <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="33"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="34"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">3</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="35"></td><td><pre>        v4 <span class="token operator">=</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token function">LOBYTE</span><span class="token punctuation">(</span>a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="36"></td><td><pre>        v9 <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="37"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="38"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">4</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="39"></td><td><pre>        v4 <span class="token operator">=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">^</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="40"></td><td><pre>        v9 <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="41"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="42"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">5</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="43"></td><td><pre>        v4 <span class="token operator">=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="44"></td><td><pre>        v9 <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="45"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="46"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">6</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="47"></td><td><pre>        <span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="48"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="49"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">7</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="50"></td><td><pre>        <span class="token keyword">if</span> <span class="token punctuation">(</span> Str<span class="token punctuation">[</span>v7 <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">!=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">)</span></pre></td></tr><tr><td data-num="51"></td><td><pre>        <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="52"></td><td><pre>          <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"what a shame..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="53"></td><td><pre>          <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="54"></td><td><pre>        <span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="55"></td><td><pre>        <span class="token operator">++</span>v7<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="56"></td><td><pre>        v9 <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="57"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="58"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">8</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="59"></td><td><pre>        Str<span class="token punctuation">[</span>v5<span class="token punctuation">]</span> <span class="token operator">=</span> v4<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="60"></td><td><pre>        <span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="61"></td><td><pre>        <span class="token operator">++</span>v5<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="62"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="63"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">10</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="64"></td><td><pre>        <span class="token function">read</span><span class="token punctuation">(</span>Str<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="65"></td><td><pre>        <span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="66"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="67"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">11</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="68"></td><td><pre>        v4 <span class="token operator">=</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="69"></td><td><pre>        <span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="70"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="71"></td><td><pre>      <span class="token keyword">case</span> <span class="token number">12</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="72"></td><td><pre>        v4 <span class="token operator">=</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="73"></td><td><pre>        <span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="74"></td><td><pre>        <span class="token keyword">break</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="75"></td><td><pre>      <span class="token keyword">default</span><span class="token operator">:</span></pre></td></tr><tr><td data-num="76"></td><td><pre>        <span class="token keyword">continue</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="77"></td><td><pre>    <span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="78"></td><td><pre>  <span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="79"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure><hr />
+<h3 id="逐行解释-2"><a class="anchor" href="#逐行解释-2">#</a> <strong>逐行解释：</strong></h3>
+<ol>
+<li>
+<p><strong>变量声明：</strong></p>
+<ul>
+<li><code>int result;</code> ：用于存储函数返回值。</li>
+<li><code>char Str[200];</code> ：字符数组，用于存储字符串或数据。</li>
+<li><code>char v4;</code> ：临时变量，用于存储中间计算的结果。</li>
+<li><code>int v5, v6, v7, v8, v9;</code> ：多个整数变量，用于索引和计数。</li>
+</ul>
+</li>
+<li>
+<p><strong>初始化：</strong></p>
+<ul>
+<li><code>v9</code>  初始化为  <code>0</code> ，作为主循环的索引。</li>
+<li><code>v5</code> ,  <code>v6</code> ,  <code>v7</code> ,  <code>v8</code>  也初始化为  <code>0</code> ，它们分别用于处理字符串和跟踪状态。</li>
+</ul>
+</li>
+<li>
+<p><strong>主循环：</strong></p>
+<ul>
+<li><code>while (1)</code> ：无限循环，直到  <code>return</code>  语句。</li>
+<li><code>result = v9;</code> ：在每次循环开始时更新  <code>result</code>  为当前索引。</li>
+<li><code>if (v9 &gt;= a2) return result;</code> ：如果索引  <code>v9</code>  超过输入参数  <code>a2</code> ，则返回当前结果，结束循环。</li>
+</ul>
+</li>
+<li>
+<p><strong>switch 语句：</strong></p>
+<ul>
+<li>根据  <code>a1[v9]</code>  的值进行不同操作， <code>a1</code>  是输入的整数数组。</li>
+</ul>
+</li>
+</ol>
+<h4 id="每种情况的分析"><a class="anchor" href="#每种情况的分析">#</a> <strong>每种情况的分析：</strong></h4>
+<ul>
+<li>
+<p><strong>case 1:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>Str<span class="token punctuation">[</span>v6 <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">=</span> v4<span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>v4</code>  存入  <code>Str</code>  数组的偏移量  <code>v6 + 100</code> ，并更新  <code>v6</code>  和  <code>v8</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 2:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v4 <span class="token operator">=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>a1</code>  中下一个元素与  <code>Str[v8]</code>  相加，结果存入  <code>v4</code> ，并将  <code>v9</code>  增加  <code>2</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 3:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v4 <span class="token operator">=</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token function">LOBYTE</span><span class="token punctuation">(</span>a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>Str[v8]</code>  减去  <code>a1[v9 + 1]</code>  的低字节（使用  <code>LOBYTE</code> ），结果存入  <code>v4</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 4:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v4 <span class="token operator">=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">^</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>使用按位异或操作将  <code>a1[v9 + 1]</code>  与  <code>Str[v8]</code>  进行运算。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 5:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v4 <span class="token operator">=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>a1[v9 + 1]</code>  与  <code>Str[v8]</code>  相乘，结果存入  <code>v4</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 6:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token operator">++</span>v9<span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>仅增加  <code>v9</code> ，不进行任何其他操作。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 7:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">if</span> <span class="token punctuation">(</span>Str<span class="token punctuation">[</span>v7 <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">!=</span> a1<span class="token punctuation">[</span>v9 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="2"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"what a shame..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="3"></td><td><pre>    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="4"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure><ul>
+<li>检查  <code>Str[v7 + 100]</code>  是否等于  <code>a1[v9 + 1]</code> ，如果不等，则打印错误信息并退出程序。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 8:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>Str<span class="token punctuation">[</span>v5<span class="token punctuation">]</span> <span class="token operator">=</span> v4<span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>v4</code>  存入  <code>Str</code>  数组的偏移量  <code>v5</code> ，并更新  <code>v5</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 10:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">read</span><span class="token punctuation">(</span>Str<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>从输入读取数据到  <code>Str</code>  中。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 11:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v4 <span class="token operator">=</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>Str[v8]</code>  减去  <code>1</code> ，结果存入  <code>v4</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>case 12:</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v4 <span class="token operator">=</span> Str<span class="token punctuation">[</span>v8<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>将  <code>Str[v8]</code>  加上  <code>1</code> ，结果存入  <code>v4</code> 。</li>
+</ul>
+</li>
+<li>
+<p><strong>default:</strong></p>
+<ul>
+<li>不执行任何操作，继续循环。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="潜在用途分析"><a class="anchor" href="#潜在用途分析">#</a> <strong>潜在用途分析：</strong></h3>
+<h4 id="1-逻辑概述"><a class="anchor" href="#1-逻辑概述">#</a> <strong>1. 逻辑概述：</strong></h4>
+<ul>
+<li><code>vm_operad</code>  函数似乎是一个简单的虚拟机或解释器，它根据传入的指令数组  <code>a1</code>  逐步操作数组  <code>Str</code>  和变量  <code>v4</code> 。</li>
+<li>这个函数可以执行多种操作，如加法、减法、乘法、异或等，处理相应的数据并将结果存储在  <code>Str</code>  中。</li>
+</ul>
+<h4 id="2-关键指令"><a class="anchor" href="#2-关键指令">#</a> <strong>2. 关键指令：</strong></h4>
+<ul>
+<li><strong>读入数据</strong>：通过  <code>read(Str)</code>  可能是让用户输入数据以进一步处理。</li>
+<li><strong>条件检查</strong>：在  <code>case 7</code>  中，如果输入不匹配，会导致程序退出，表明某些输入的有效性检查。</li>
+</ul>
+<h4 id="3-输出逻辑"><a class="anchor" href="#3-输出逻辑">#</a> <strong>3. 输出逻辑：</strong></h4>
+<ul>
+<li><code>puts(&quot;what a shame...&quot;)</code>  提示可能与程序的输入或逻辑错误有关，提示用户输入的值不符合预期。</li>
+</ul>
+<hr />
+<h3 id="建议的进一步步骤"><a class="anchor" href="#建议的进一步步骤">#</a> <strong>建议的进一步步骤：</strong></h3>
+<ol>
+<li><strong>观察输入数据结构</strong>：分析传入的  <code>a1</code>  数组内容，特别是其在  <code>main</code>  函数中是如何被填充的。</li>
+<li><strong>跟踪执行</strong>：使用调试工具逐步跟踪  <code>vm_operad</code>  的执行，观察  <code>Str</code>  和  <code>v4</code>  的变化。</li>
+<li><strong>构造测试用例</strong>：通过手动构造适当的  <code>a1</code>  数组来观察函数的行为，以找到可能的输出或  <code>flag</code> 。</li>
+</ol>
+<hr />
+<p>希望这个分析对你进一步理解  <code>vm_operad</code>  的逻辑有帮助！如果你还有其他问题或者需要更深入的讨论，请告诉我！</p>
+<div class="tags"><a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag"><i class="ic i-tag"></i>二进制</a><a href="/tags/CTF/" rel="tag"><i class="ic i-tag"></i>CTF</a><a href="/tags/%E9%80%86%E5%90%91/" rel="tag"><i class="ic i-tag"></i>逆向</a><a href="/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF/" rel="tag"><i class="ic i-tag"></i>网鼎杯</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于</span><time title="修改时间：2024-12-22 23:32:01" itemprop="dateModified" datetime="2024-12-22T23:32:01+08:00">2024-12-22</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>充电</button><p>感谢支持，用爱发电~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" data-src="/assets/wechatpay.png" alt="0d0_1yp0 微信支付"/><p>微信支付</p></div><div><img loading="lazy" data-src="/assets/alipay.png" alt="0d0_1yp0 支付宝"/><p>支付宝</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>0d0_1yp0<i class="ic i-at"><em>@</em></i>we1c0me_t0 my odyssey domain</li><li class="link"><strong>本文链接：</strong><a href="https://0d0-1yp0.github.io/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/" title="2020网鼎RE">https://0d0-1yp0.github.io/2024/12/18/CTF/binary/RE/2020网鼎RE/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/" rel="prev" itemprop="url" data-background-image="https:&#x2F;&#x2F;blog-store-1325083740.cos.ap-beijing.myqcloud.com&#x2F;c7af83d7433ee99a969164f3a1fe1457-1734883316176-2.jpeg" title="堆栈不平衡，布栈"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>二进制安全</span><h3>堆栈不平衡，布栈</h3></a></div><div class="item right"><a href="/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="next" itemprop="url" data-background-image="https:&#x2F;&#x2F;blog-store-1325083740.cos.ap-beijing.myqcloud.com&#x2F;2024-12-20%20110625(1).png" title="pwndbg操作方式个人总结（一）"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>二进制漏洞PWN</span><h3>pwndbg操作方式个人总结（一）</h3></a></div></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%98%E6%9C%A8%E5%86%99%E5%AE%8C%E5%85%88%E5%BC%80%E4%B8%AA%E5%9D%91"><span class="toc-number">1.</span> <span class="toc-text"> 还木写完 ^^ 先开个坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 代码分析：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%90%E8%A1%8C%E8%A7%A3%E9%87%8A"><span class="toc-number">1.0.1.1.</span> <span class="toc-text"> 逐行解释：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90"><span class="toc-number">1.0.2.</span> <span class="toc-text"> 深入分析：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%90%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">1.0.2.1.</span> <span class="toc-text"> 1. 理解数据复制操作：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%86%E6%9E%90-vm_operad-%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.2.2.</span> <span class="toc-text"> 2. 分析  vm_operad()  函数：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%8F%8D%E6%B1%87%E7%BC%96-vm_operad"><span class="toc-number">1.0.2.3.</span> <span class="toc-text"> 3. 反汇编  vm_operad() ：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.0.2.4.</span> <span class="toc-text"> 4. 堆栈不平衡问题的原因：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BF%AE%E6%94%B9-call-%E6%8C%87%E4%BB%A4%E7%9A%84%E5%80%BC%E4%B8%BA-0-%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">1.0.2.5.</span> <span class="toc-text"> 5. 修改  call  指令的值为  0  的意义：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="toc-number">1.0.3.</span> <span class="toc-text"> 可视化结构图：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88"><span class="toc-number">1.0.3.1.</span> <span class="toc-text"> 函数调用栈：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.0.3.2.</span> <span class="toc-text"> 程序执行流程：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E4%B8%BA%E9%80%86%E5%90%91%E5%A4%A7%E5%B8%88%E7%9A%84%E6%8C%87%E5%AF%BC"><span class="toc-number">1.0.4.</span> <span class="toc-text"> 成为逆向大师的指导：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90-unk_403040"><span class="toc-number">1.0.4.1.</span> <span class="toc-text"> 1. 深入分析  unk_403040 ：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%A7%A3%E6%9E%90-vm_operad-%E7%9A%84%E9%80%BB%E8%BE%91"><span class="toc-number">1.0.4.2.</span> <span class="toc-text"> 2. 解析  vm_operad()  的逻辑：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%A7%A3%E5%86%B3%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.0.4.3.</span> <span class="toc-text"> 3. 解决堆栈不平衡：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%AE%9E%E8%B7%B5%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="toc-number">1.0.4.4.</span> <span class="toc-text"> 4. 实践调试技巧：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E8%A7%A3%E5%86%B3%E9%80%86%E5%90%91%E6%8C%91%E6%88%98"><span class="toc-number">1.0.4.5.</span> <span class="toc-text"> 5. 解决逆向挑战：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.0.5.</span> <span class="toc-text"> 总结：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-2"><span class="toc-number">1.0.6.</span> <span class="toc-text"> 代码分析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%90%E8%A1%8C%E8%A7%A3%E9%87%8A-2"><span class="toc-number">1.0.7.</span> <span class="toc-text"> 逐行解释：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%8F%E7%A7%8D%E6%83%85%E5%86%B5%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-number">1.0.7.1.</span> <span class="toc-text"> 每种情况的分析：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BD%9C%E5%9C%A8%E7%94%A8%E9%80%94%E5%88%86%E6%9E%90"><span class="toc-number">1.0.8.</span> <span class="toc-text"> 潜在用途分析：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E9%80%BB%E8%BE%91%E6%A6%82%E8%BF%B0"><span class="toc-number">1.0.8.1.</span> <span class="toc-text"> 1. 逻辑概述：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%85%B3%E9%94%AE%E6%8C%87%E4%BB%A4"><span class="toc-number">1.0.8.2.</span> <span class="toc-text"> 2. 关键指令：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%BE%93%E5%87%BA%E9%80%BB%E8%BE%91"><span class="toc-number">1.0.8.3.</span> <span class="toc-text"> 3. 输出逻辑：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE%E7%9A%84%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.0.9.</span> <span class="toc-text"> 建议的进一步步骤：</span></a></li></ol></li></ol></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li  class="active"><a href="/2024/12/18/CTF/binary/RE/2020%E7%BD%91%E9%BC%8ERE/" rel="bookmark" title="2020网鼎RE">2020网鼎RE</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="0d0_1yp0" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/aiwatching.jpg"/><p class="name" itemprop="name">0d0_1yp0</p><div class="description" itemprop="description">ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">7</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">8</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">12</span><span class="name">标签</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/0D0-1yp0" class="item github" title="https:&#x2F;&#x2F;github.com&#x2F;0D0-1yp0"><i class="ic i-github"></i></a><a href="mailto:2541520193@qq.com" class="item email" title="mailto:2541520193@qq.com"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2024/11/28/CTF/binary/%E5%A0%86%E6%A0%88%E4%B8%8D%E5%B9%B3%E8%A1%A1,%E5%B8%83%E6%A0%88/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div></main><footer id="footer"><div class="inner"><div class="widgets"></div><div class="status"><div class="copyright">&copy; 2024 -<span itemprop="copyrightYear">2024</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">0d0_1yp0 @ D_1yp</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="站点总字数">30k 字</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="站点阅读时长">27 分钟</span></div><div class="powered-by">基于 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><div style="width: 100%;text-align:center;"><span id="time"></span></div><script>function createtime() {
+    const n = new Date("2024/12/20 21:42:18");
+    now.setTime(now.getTime() + 250), days = (now - n) / 1e3 / 60 / 60 / 24, dnum = Math.floor(days), hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum, hnum = Math.floor(hours), 1 == String(hnum).length && (hnum = "0" + hnum), minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum, mnum = Math.floor(minutes), 1 == String(mnum).length && (mnum = "0" + mnum), seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum, snum = Math.round(seconds), 1 == String(snum).length && (snum = "0" + snum), document.getElementById("time").innerHTML = "此站已存活" + dnum + " 天 " + hnum + " 小时 " + mnum + " 分 " + snum + " 秒"
+}
+
+const now = new Date;
+setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script><div id="busuanzi-wrap"><span class="ic i-eye"></span><span id="busuanzi_container_site_pv">小破站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span> | <span class="ic i-user"></span><span id="busuanzi_container_site_uv">小破站总访客量 <span id="busuanzi_value_site_uv"></span> 人/虫      承蒙各位(或者你们用来爬我文的虫)的厚爱，欢迎收藏</span></div></div></footer></div><script data-config type="text/javascript">var LOCAL = {
+    ispost: true,
+        path: `2024/12/18/CTF/binary/RE/2020网鼎RE/`,
+        favicon: {
+        show: `欢迎你的到来(●´3｀●)`,
+        hide: `记得回来oh(´Д｀)`
+    },
+    search: {
+        placeholder: "文章搜索",
+        empty: "关于 「 ${query} 」，什么也没搜到",
+        stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: {},
+    fancybox: true,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>`,
+    quiz: {
+        choice: `单选题`,
+        multiple: `多选题`,
+        true_false: `判断题`,
+        essay: `问答题`,
+        gap_fill: `填空题`,
+        mistake: `错题备注`
+    },
+    ignores: [
+        (uri) => uri.includes('#'),
+        (uri) => new RegExp(LOCAL.path + '$').test(uri),
+            []
+    ]
+};
+</script><script src="https://s4.zstatic.net/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous" fetchpriority="high"></script><script src="https://s4.zstatic.net/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO&#x2F;+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn&#x2F;6Z&#x2F;hRTt8+pR6L4N2" crossorigin="anonymous" fetchpriority="high"></script><script src="/js/siteInit.js?v=0.4.14" type="module" fetchpriority="high" defer></script></body></html>
