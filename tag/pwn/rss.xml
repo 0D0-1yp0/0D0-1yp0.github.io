@@ -20,8 +20,8 @@
             <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
             <category term="二进制漏洞PWN" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/PWN/" />
             <category term="工具使用" scheme="https://0d0-1yp0.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" />
-            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
             <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
             <category term="pwn" scheme="https://0d0-1yp0.github.io/tags/pwn/" />
             <pubDate>Fri, 20 Dec 2024 00:00:00 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;将-pwndbg-输出重定向到另一个终端tty&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#将-pwndbg-输出重定向到另一个终端tty&#34;&gt;#&lt;/a&gt; 将 pwndbg 输出重定向到另一个终端（TTY）：&lt;/h1&gt;

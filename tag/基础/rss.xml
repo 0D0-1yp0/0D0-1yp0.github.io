@@ -10,20 +10,191 @@
         </author>
         <description>ps:当前站版本v1.11。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</description>
         <language>zh-cn</language>
-        <pubDate>Fri, 20 Dec 2024 00:00:00 +0800</pubDate>
-        <lastBuildDate>Fri, 20 Dec 2024 00:00:00 +0800</lastBuildDate>
+        <pubDate>Mon, 23 Dec 2024 00:00:00 +0800</pubDate>
+        <lastBuildDate>Mon, 23 Dec 2024 00:00:00 +0800</lastBuildDate>
+        <item>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/23/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%BA%8C)/</guid>
+            <title>C语言入门知识点&amp;基础思路（二）</title>
+            <link>https://0d0-1yp0.github.io/2024/12/23/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%BA%8C)/</link>
+            <category term="C语言基础" scheme="https://0d0-1yp0.github.io/categories/basic-C/" />
+            <category term="C语言" scheme="https://0d0-1yp0.github.io/tags/C%E8%AF%AD%E8%A8%80/" />
+            <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
+            <category term="算法" scheme="https://0d0-1yp0.github.io/tags/%E7%AE%97%E6%B3%95/" />
+            <pubDate>Mon, 23 Dec 2024 00:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;tips：本期有挑战题&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;你我不曾感受过&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;c语言笑传又来了说是&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#c语言笑传又来了说是&#34;&gt;#&lt;/a&gt; C 语言笑传又来了说是&lt;/h1&gt;
+&lt;p&gt;最近用了 copilot，真不是一般的小机灵鬼，感觉被狠狠监视了&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241223090938881.png&#34; alt=&#34;image-20241223090938881&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;你坝还啥也没写呢，先给我猜出来了&lt;/p&gt;
+&lt;p&gt;练题还是把它老人家闭了吧，否则手写代码的时候直接变小丑&lt;/p&gt;
+&lt;p&gt;上题！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意，以下答案仅供参考，指针这部分我也还在学习中，答案对了也可能不代表规范性适合严格的考试！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;67字符串&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#67字符串&#34;&gt;#&lt;/a&gt; 6.7 字符串&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我说我本来想学指针，结果突然发现字符串忘没了于是滚回去复习有人信吗哈哈哈哈哈哈哈&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;C:%5CUsers%5C86130%5CPictures%5C%E5%9B%BE%E5%BA%8A%5Cimage-20241223091738394.png&#34; alt=&#34;image-20241223091738394&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;此题注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;博主脑子有点不灵活，先不上链表动态内存之类的高级操作，先用大数组苟分，后面再试高级操作（挖坑）&lt;/li&gt;
+&lt;li&gt;打 pwn 后遗症犯了总想来点阴的&lt;/li&gt;
+&lt;li&gt;同学，你的思路是什么？我的思路不一定就适合你哦&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;思路知识点&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#思路知识点&#34;&gt;#&lt;/a&gt; 思路知识点：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;scanf (&amp;quot;% s&amp;quot;) 遇到空格就会停止读取，不会读入空格，在读取字符串时会自动在末尾添加 &#39;\0&#39; 结束符（可以想象 scanf 格式化字符串的本质）&lt;/li&gt;
+&lt;li&gt;gets (): 会自动添加 &#39;\0&#39;, 但不安全，已废弃（但也许考试的话是可以用的）&lt;/li&gt;
+&lt;li&gt;如果要处理带空格的字符串输入，更推荐用 fgets ()（但也许考试的话是没必要的）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;fgets&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;word&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;sizeof&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;word&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token constant&#34;&gt;stdin&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;strlen () 不会把 &#39;\0&#39; 计算在内，它只计算到 &#39;\0&#39; 之前的字符个数，比如 &amp;quot;hello&amp;quot; 的 strlen () 结果是 5，但是 &#39;\0&#39; 确实会占用数组的一个位置 (word [5])。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;scanf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%s&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; word&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39;h&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39;e&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39;l&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39;l&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39;o&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39;\0&#39;&lt;/span&gt;   &lt;span class=&#34;token comment&#34;&gt;//scanf 自动添加的结束符&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/blockquote&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;回车键 (\n) 不会被 scanf (&amp;quot;% s&amp;quot;) 存储，如果用 fgets ()，回车符会被存储，并且 &#39;\0&#39; 会在回车符之后&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;是的我刚才拿 scanf 搓半天才发现自己是人机，阴 4 你 8 了&lt;/p&gt;
+&lt;p&gt;上 wp！！&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;stdio.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;string.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; num&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;fgets&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;word&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;token constant&#34;&gt;stdin&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;token comment&#34;&gt;// 别忘了，假设用 scanf 的话，字符串变量名本身就是个指针，不要加取地址符&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;strlen&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;word&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;word&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;token char&#34;&gt;&#39; &#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; num&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  num&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;token comment&#34;&gt;// 最后一个词算上&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%d&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;num&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;&lt;s&gt;&amp;lt;u&amp;gt; 好了我们可以去干一把指针了 &amp;lt;/u&amp;gt;&lt;/s&gt;&lt;/p&gt;
+&lt;h2 id=&#34;挑战87字符变换&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#挑战87字符变换&#34;&gt;#&lt;/a&gt; 挑战：8.7 字符变换&lt;/h2&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241223101047226.png&#34; alt=&#34;image-20241223101047226&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;真成笑传了，西八&lt;/p&gt;
+&lt;h3 id=&#34;思路知识点-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#思路知识点-2&#34;&gt;#&lt;/a&gt; 思路知识点：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;ASCII 中，32 是空格也就是上文的‘ ’，0-9 是 48-57，A-Z 是 65-90，a-z 是 97-122，也就是大写加 32 就是小写&lt;/li&gt;
+&lt;li&gt;这个挑战只是题干长，我们用心想想是可以秒的。可以回看上面字符串在内存里的存储，可能可以更直观一点&lt;/li&gt;
+&lt;li&gt;首尾相连考虑 strcat，注意它会干掉第一个 \0&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;char *strcat(char *dest, const char *src);&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;指针的基本知识要牢牢掌握，另外要理解字符和数字的变换&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;思路上没有太复杂的东西，一定要注意 * 和 &amp;amp; 的运用，以及字符串变量名指针的本质&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;此题注意事项：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;此题主要是指针部分比较难，可以对着源码回忆，想想如果是你你会怎么做&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;好好读题，不要看见长题干就不想做，啊对我说的就是我自己&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;由于函数传虚参实参规则，拿指针打会更稳&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我们先一步一步来，以下是我个人解题过程中进行的尝试&lt;/p&gt;
+&lt;p&gt;对，都来看我没了 copilot 后的铸币操作吧哈哈哈哈哈哈哈我真得不想活辣！！&lt;/p&gt;
+&lt;h3 id=&#34;解题过程最终答案在最后面&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解题过程最终答案在最后面&#34;&gt;#&lt;/a&gt; 解题过程（最终答案在最后面）:&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-C&#34;&gt;#include&amp;lt;stdio.h&amp;gt;
+#include&amp;lt;string.h&amp;gt;
+#include&amp;lt;stdlib.h&amp;gt;
+int lens=0;
+void StringCode(char *a,char *b)
+&amp;#123;
+    char c[200];
+    c[0]=&#39;\0&#39;;
+    strcat(c,a);
+    strcat(c,a);//首尾相连完成了,暂时存在c里,其实就是为了方便第slen/2以后的字符
+    for(int i=0;i&amp;lt;lens;i++)//开始遍历了
+      &amp;#123;
+        if(*(c+i)-*(c+i+(lens/2)) &amp;lt;&#39;a&#39;)
+        &amp;#123;
+            while (*(c+i)&amp;lt;&#39;a&#39;)  *(c+i)=*(c+i)+26;
+        &amp;#125;
+        else if (*(c+i)-*(c+i+(lens/2)) &amp;gt;&#39;z&#39;)
+        &amp;#123;
+            while (*(c+i)&amp;gt;&#39;z&#39;)  *(c+i)=*(c+i)-26;
+        &amp;#125;
+        
+      &amp;#125;
+    *(c+lens)=&#39;\0&#39;;
+    printf(&amp;quot;source=%s&amp;quot;,c);//手动截断
+&amp;#125;
+
+int main()
+&amp;#123; 
+  char a[100],b[100];
+  scanf(&amp;quot;%s&amp;quot;,a);
+  lens=strlen(a);
+  StringCode(a,b);
+//   printf(&amp;quot;原字符串=%s\n新字符串=%s&amp;quot;,a,b);
+//   printf(&amp;quot;source=%s&amp;quot;,a);
+  return 0;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以下是个人独白，各位低血压可以看看。其实写到这里就差一句话就成功了，可惜后面越改越偏：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;先到这里。输入 Weihua，得到的结果是 source=qeihua&lt;/p&gt;
+&lt;p&gt;也就是 W 正常变了，其他的还没变，迈出了第一步。理论是可行的&lt;/p&gt;
+&lt;p&gt;但是，为什么别的没有变呢？？？&lt;/p&gt;
+&lt;p&gt;在第 10 行后加入 printf (&amp;quot;source=% s\n&amp;quot;,c);，发现结果是&lt;/p&gt;
+&lt;p&gt;source=WeihuaWeihua&lt;br /&gt;
+source=qeihua&lt;/p&gt;
+&lt;p&gt;字符串正常拼接了。再把 i 全都打印发现确实已经循环过五次了，手动加的截断点也是正常的&lt;/p&gt;
+&lt;p&gt;岂有此理？&lt;/p&gt;
+&lt;p&gt;先把 a 和 b 加上吧，先不调试了，&lt;/p&gt;
+&lt;p&gt;等等。。。。？？？？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;渐渐的写入迷了，导致忘记了题目，接下来半小时越改越偏&lt;/p&gt;
+&lt;p&gt;最后突然发现，WTF 不对啊，我要打的不是差值吗，这给我干哪来了&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;C:%5CUsers%5C86130%5CPictures%5C%E5%9B%BE%E5%BA%8A%5Cimage-20241223143929154.png&#34; alt=&#34;image-20241223143929154&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;有时候就感觉这脑子里面装的是一坨&lt;/p&gt;
+&lt;p&gt;好了，没啥想说的了已经，上最终 wp&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-C&#34;&gt;#include&amp;lt;stdio.h&amp;gt;
+#include&amp;lt;string.h&amp;gt;
+#include&amp;lt;stdlib.h&amp;gt;
+int lens=0;
+void StringCode(char *a,char *b)
+&amp;#123;
+    char c[200];
+    c[0]=&#39;\0&#39;;
+    strcat(c,a);
+    strcat(c,a);//首尾相连完成了,暂时存在c里,其实就是为了方便第slen/2以后的字符
+    for (int i = 0; i &amp;lt; lens; i++) *(c+i)=*(c+i)-*(c+i+(lens/2));
+    for(int i=0;i&amp;lt;lens;i++)//开始遍历了
+      &amp;#123;
+        if(*(c+i) &amp;lt;&#39;a&#39;)  while (*(c+i)&amp;lt;&#39;a&#39;)  *(c+i)=*(c+i)+26;     
+        if (*(c+i) &amp;gt;&#39;z&#39;) while (*(c+i)&amp;gt;&#39;z&#39;)  *(c+i)=*(c+i)-26;
+        *(b+i)=*(c+i);
+      &amp;#125;
+    *(b+lens)=&#39;\0&#39;;
+&amp;#125;
+
+int main()
+&amp;#123; 
+  char a[100],b[100];
+  scanf(&amp;quot;%s&amp;quot;,a);
+  lens=strlen(a);
+  StringCode(a,b);
+  printf(&amp;quot;old=%s\nnew=%s&amp;quot;,a,b);
+  return 0;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241223144241980.png&#34; alt=&#34;image-20241223144241980&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;AI 依赖有时候真的会导致搓代码搓一半开始自嗨了，唉&lt;/p&gt;
+&lt;p&gt;今天就先做到这吧，已经铸币了&lt;/p&gt;
+&lt;p&gt;不懂的可以到 csdn dd 我，我看到后一定第一时间尽力解答&lt;/p&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/20/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92%EF%BC%88%E4%B8%80%EF%BC%89/</guid>
-            <title>C语言入门回归（一）</title>
+            <title>C语言入门知识点&amp;基础思路（一）</title>
             <link>https://0d0-1yp0.github.io/2024/12/20/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92%EF%BC%88%E4%B8%80%EF%BC%89/</link>
             <category term="C语言基础" scheme="https://0d0-1yp0.github.io/categories/basic-C/" />
             <category term="C语言" scheme="https://0d0-1yp0.github.io/tags/C%E8%AF%AD%E8%A8%80/" />
             <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
             <category term="算法" scheme="https://0d0-1yp0.github.io/tags/%E7%AE%97%E6%B3%95/" />
             <pubDate>Fri, 20 Dec 2024 00:00:00 +0800</pubDate>
-            <description><![CDATA[ &lt;h1 id=&#34;还木写完先开个坑&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#还木写完先开个坑&#34;&gt;#&lt;/a&gt; 还木写完 ^^ 先开个坑&lt;/h1&gt;
-&lt;hr /&gt;
-&lt;h1 id=&#34;c语言入门回归一&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#c语言入门回归一&#34;&gt;#&lt;/a&gt; C 语言入门回归（一）&lt;/h1&gt;
+            <description><![CDATA[ &lt;blockquote&gt;
+&lt;p&gt;giants&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;c语言笑传之猜猜背一&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#c语言笑传之猜猜背一&#34;&gt;#&lt;/a&gt; C 语言笑传之猜猜背（一）&lt;/h1&gt;
 &lt;p&gt;半年没碰 c 语言入门题，已成咸鱼矣&lt;/p&gt;
 &lt;p&gt;遂，have a try&lt;/p&gt;
 &lt;p&gt;古语有云，c 语言入门必刷青览，古语有云，难度不如 OI 一根&lt;/p&gt;
@@ -31,7 +202,15 @@
 &lt;h2 id=&#34;取位&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#取位&#34;&gt;#&lt;/a&gt; 取位&lt;/h2&gt;
 &lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/a61073f9479408aca71660bb68c40c0.png&#34; alt=&#34;a61073f9479408aca71660bb68c40c0&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;说实话半年没摸真忘了是取位，还以为 a&lt;em&gt;100+b&lt;/em&gt;10+c 这种操作来着&lt;/p&gt;
-&lt;p&gt;难度不大，就是师弟不知为何就是不懂，差点没把我气死矣&lt;/p&gt;
+&lt;p&gt;难度不大，就是旁边的师弟差点没把我气死矣&lt;/p&gt;
+&lt;h3 id=&#34;思路知识点&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#思路知识点&#34;&gt;#&lt;/a&gt; 思路知识点：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;取位的操作也就是利用好取余和整数除 10 即可&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;此题注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;取的位自己验一下就行&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;上 wp&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-C&#34;&gt;#include&amp;lt;stdio.h&amp;gt;
 int main()
@@ -46,11 +225,16 @@ int main()
 &lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/7b499f6356e89f60fcb83ae96dda62f.png&#34; alt=&#34;7b499f6356e89f60fcb83ae96dda62f&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;善，我入个门，不输出就行，删除什么链表什么 free 什么的，有缘再叙！&lt;/p&gt;
 &lt;p&gt;掐指一算，我就多开一个数组负责标记好了&lt;/p&gt;
-&lt;p&gt;然后？代码别写错&lt;/p&gt;
+&lt;h3 id=&#34;思路知识点-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#思路知识点-2&#34;&gt;#&lt;/a&gt; 思路知识点：&lt;/h3&gt;
+&lt;p&gt;​	这里就没啥知识点了，硬说的话，用另一个数组做标记算思路吧&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;此题注意事项&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;博主之前第 10 行不小心写的 i++。第 12 行不小心写的 j [i] == 1&lt;/li&gt;
+&lt;li&gt;少看多做，看和做是两回事&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;代码别写错&lt;/p&gt;
 &lt;p&gt;废话少说，show me the code！！！&lt;/p&gt;
-&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;stdio.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; i&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i &lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;scanf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%d&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;&amp;amp;&lt;/span&gt;a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; k &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; k &lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt; i&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; k&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt; a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;k&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i &lt;span class=&#34;token operator&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%d &#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;第 10 行不小心写的 i++。第 12 行不小心写的 j [i] == 1&lt;/p&gt;
-&lt;p&gt;少看多做，看和做是两回事&lt;/p&gt;
-&lt;p&gt;下播！&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;stdio.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; i&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i &lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;scanf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%d&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;&amp;amp;&lt;/span&gt;a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; k &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; k &lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt; i&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; k&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt; a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;k&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i &lt;span class=&#34;token operator&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt; i&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%d &#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;a&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;下播！&lt;/p&gt;
 &lt;p&gt;D&#39;s domain&lt;/p&gt;
 &lt;p&gt;24/12/20&lt;/p&gt;
  ]]></description>
@@ -62,8 +246,8 @@ int main()
             <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
             <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
             <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
-            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
             <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+            <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
             <pubDate>Thu, 28 Nov 2024 00:00:00 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;堆栈不平衡&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#堆栈不平衡&#34;&gt;#&lt;/a&gt; 堆栈不平衡&lt;/h1&gt;
 &lt;p&gt;通常是由于函数调用和返回过程中堆栈操作的不匹配。每当调用一个函数时，程序会将当前的栈指针（SP）和返回地址压入堆栈，这会影响到后续的堆栈操作。&lt;/p&gt;
