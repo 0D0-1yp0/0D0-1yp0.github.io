@@ -8,55 +8,85 @@
         <author>
           <name>0d0_1yp0</name>
         </author>
-        <description>ps:当前站版本v1.10。右上角可以切换日夜主题。遇到长时间加载是bug，可以刷新或者重进。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</description>
+        <description>ps:当前站版本v1.11。右上角可以切换日夜主题。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</description>
         <language>zh-cn</language>
-        <pubDate>Sun, 22 Dec 2024 00:00:00 +0800</pubDate>
-        <lastBuildDate>Sun, 22 Dec 2024 00:00:00 +0800</lastBuildDate>
+        <pubDate>Mon, 23 Dec 2024 00:00:00 +0800</pubDate>
+        <lastBuildDate>Mon, 23 Dec 2024 00:00:00 +0800</lastBuildDate>
         <item>
-            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/22/some/%E5%85%AC%E5%91%8A/</guid>
+            <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/</guid>
             <title>公告栏</title>
-            <link>https://0d0-1yp0.github.io/2024/12/22/some/%E5%85%AC%E5%91%8A/</link>
+            <link>https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/</link>
             <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
             <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
-            <pubDate>Sun, 22 Dec 2024 00:00:00 +0800</pubDate>
+            <pubDate>Mon, 23 Dec 2024 00:00:00 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;welcome-to-my-cyber-world&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-cyber-world&#34;&gt;#&lt;/a&gt; welcome to my cyber world！&lt;/h1&gt;
 &lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;h1 id=&#34;公告栏&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#公告栏&#34;&gt;#&lt;/a&gt; 公告栏&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;站版本：v1.10&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;当前版本：v1.11&lt;/strong&gt;    &lt;em&gt;2024-12-23&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2024-12-23 v1.11 热补丁修改&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;ol&gt;
-&lt;li&gt;现在文章封面除了我的随机图库，还可以自定义了&lt;/li&gt;
-&lt;li&gt;新增打赏充电功能&lt;/li&gt;
-&lt;li&gt;标签，分类功能上限，便于各位审计自己需要的东西&lt;/li&gt;
+&lt;li&gt;修复了公告里的一处错别字（？）&lt;/li&gt;
+&lt;li&gt;由于支付宝实名显示规则暂不开放支付宝充电，感谢您的一片热心，心意领了～顺便相当于修复了支付宝赞赏码过丑的问题和手机端赞赏偶现 bug 的问题（？）&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;往期版本及问题修复见公告最下方，有需要建站的可以参考可能出现的问题然后修一修&lt;/p&gt;
+&lt;p&gt;已知问题:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新，正在解决中&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;版本预告：&lt;/p&gt;
-&lt;p&gt;即将加入音乐播放器。暂时不会开放评论区，某师傅说要给我打 xss 我害怕&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;即将加入音乐播放器。&lt;/li&gt;
+&lt;li&gt;暂时不会开放评论区，某师傅说要给我打 xss 我害怕&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;往期版本，问题修复见公告最下方，有需要建站的可以参考可能出现的问题然后修一修&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;欢迎各位，以及实验班来逛街的师弟师妹们。开源精神万岁！&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;本 blog 仅用于技术分享，暂不开放评论区。转载请遵守相关法律法规 ==&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;！！！任何文章涉及侵权请联系本人，本人将在 24 小时内立刻删除！！！&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;本人联系方式： &lt;a href=&#34;mailto:2541520193@qq.com&#34;&gt;2541520193@qq.com&lt;/a&gt;  可以反馈体验 bug 或聊聊天，本人单身（？&lt;/p&gt;
 &lt;p&gt;转载请标出处，目前只在 CSDN 搬自己的文章&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/2201_75506722?type=blog&#34;&gt;https://blog.csdn.net/2201_75506722?type=blog&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;其他地方见到均为盗版，帮点一波举报感谢&lt;/p&gt;
+&lt;p&gt;其他地方见到均为盗版，帮点举报，感谢您的帮助&lt;/p&gt;
+&lt;p&gt;欢迎分享与收藏&lt;/p&gt;
 &lt;p&gt;另，冬至日快乐，两年没在今天吃饺子啦，希望明年大任务完成能更好点吧&lt;/p&gt;
 &lt;p&gt;建这个站很累但是真的很值得&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;​																		&lt;em&gt;&lt;strong&gt;D&#39;s   odyssey			 															   24/12/22&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr /&gt;
-&lt;h2 id=&#34;问题修复&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#问题修复&#34;&gt;#&lt;/a&gt; 问题修复&lt;/h2&gt;
+&lt;h2 id=&#34;往期问题修复版本优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期问题修复版本优化&#34;&gt;#&lt;/a&gt; 往期问题修复 &amp;amp; 版本优化&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;2024-12-22 v1.01 热补丁修复&lt;/p&gt;
+&lt;p&gt;2024-12-22 v1.01 热补丁修改&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;修复了腾讯云 COS 存储桶因为我欠了三分钱当场给我图片毙了 35 小时还没给我发短信的严重 BUG（？）&lt;/p&gt;
-&lt;h2 id=&#34;版本更新&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#版本更新&#34;&gt;#&lt;/a&gt; 版本更新&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;修复了腾讯云 COS 存储桶因为我欠了三分钱当场给我图片毙了 35 小时还没给我发短信的严重 BUG（？）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;往期大版本更新&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期大版本更新&#34;&gt;#&lt;/a&gt; 往期大版本更新&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;2024-12-20 v1.00 打造了五天五夜的站闪耀登场！&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;大版本更新：v1.10&lt;/strong&gt;    &lt;em&gt;2024-12-22&lt;/em&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;可以拉到最下方查看本站存活时间以及访问量哦～&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;现在文章封面除了我的随机图库，还可以自定义了&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新增打赏充电功能&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;标签，分类功能上线，便于各位审计自己需要的东西&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;大版本更新：v1.00&lt;/strong&gt;    &lt;em&gt;2024-12-20&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;打造了五天五夜的站闪耀登场！&lt;/li&gt;
+&lt;li&gt;可以拉到最下方查看本站存活时间以及访问量哦～&lt;/li&gt;
+&lt;/ol&gt;
  ]]></description>
         </item>
         <item>
