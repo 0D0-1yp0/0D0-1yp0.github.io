@@ -28,6 +28,7 @@
 &lt;p&gt;已知问题:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新，正在解决中&lt;/li&gt;
+&lt;li&gt;网页偶现不显示中文而是英文的问题&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;版本预告：&lt;/p&gt;
 &lt;ol&gt;
