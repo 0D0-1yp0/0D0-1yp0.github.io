@@ -3,7 +3,7 @@
     "title": "we1c0me_t0 my odyssey domain",
     "subtitle": "\" 一切选择，都有其意义 \" —— 《VALORANT》 ISO",
     "icon": "https://0d0-1yp0.github.io/assets/favicon.ico",
-    "description": "ps:当前站版本v1.11。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog",
+    "description": "ps:当前站版本v1.12。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog",
     "home_page_url": "https://0d0-1yp0.github.io",
     "items": [
         {
@@ -16,8 +16,8 @@
                 "CTF",
                 "二进制安全",
                 "逆向工程reverse",
-                "二进制",
                 "CTF",
+                "二进制",
                 "逆向",
                 "网鼎杯"
             ]

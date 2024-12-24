@@ -8,7 +8,7 @@
         <author>
           <name>0d0_1yp0</name>
         </author>
-        <description>ps:当前站版本v1.11。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</description>
+        <description>ps:当前站版本v1.12。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</description>
         <language>zh-cn</language>
         <pubDate>Tue, 24 Dec 2024 00:00:00 +0800</pubDate>
         <lastBuildDate>Tue, 24 Dec 2024 00:00:00 +0800</lastBuildDate>
@@ -117,21 +117,19 @@
             <description><![CDATA[ &lt;h1 id=&#34;welcome-to-my-cyber-world&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-cyber-world&#34;&gt;#&lt;/a&gt; welcome to my cyber world！&lt;/h1&gt;
 &lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;h1 id=&#34;公告栏&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#公告栏&#34;&gt;#&lt;/a&gt; 公告栏&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;当前版本：v1.11&lt;/strong&gt;    &lt;em&gt;2024-12-23&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;当前版本：v1.12&lt;/strong&gt;    &lt;em&gt;2024-12-24&lt;/em&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;2024-12-23 v1.11 热补丁修改&lt;/p&gt;
+&lt;p&gt;2024-12-24 v1.12 热补丁修复&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ol&gt;
-&lt;li&gt;修复了公告里的一处错别字（？）&lt;/li&gt;
-&lt;li&gt;由于支付宝实名显示规则暂仅开放微信充电，感谢您的一片热心，心意领了～顺便相当于修复了支付宝赞赏码过丑的问题和手机端赞赏偶现 bug 的问题（？）&lt;/li&gt;
+&lt;li&gt;现已修复长文章出现图片丢失无法显示的情况（改动了一处 js 文件，可能造成性能略微损失，以后过长的文章会分 P）&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
 &lt;p&gt;已知问题:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新&lt;/li&gt;
+&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新，同时，正常来讲文章封面是随机可刷新的，但由于网页缓存一般在体验上是固定的，正在想办法&lt;/li&gt;
 &lt;li&gt;网页偶现不显示中文而是英文&lt;/li&gt;
 &lt;li&gt;支付宝的魂灵经常飘荡在微信赞赏上方，我服了马跌&lt;/li&gt;
-&lt;li&gt;部分文章出现图片丢失无法显示的情况，对此类文章可暂时移步至 CSDN 来查看，抢修中&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;版本预告：&lt;/p&gt;
 &lt;ol&gt;
@@ -157,6 +155,13 @@
 &lt;/blockquote&gt;
 &lt;hr /&gt;
 &lt;h2 id=&#34;往期问题修复版本优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期问题修复版本优化&#34;&gt;#&lt;/a&gt; 往期问题修复 &amp;amp; 版本优化&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2024-12-23 v1.11 热补丁修改&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;修复了公告里的一处错别字（？）&lt;/li&gt;
+&lt;li&gt;由于支付宝实名显示规则暂仅开放微信充电，感谢您的一片热心，心意领了～顺便相当于修复了支付宝赞赏码过丑的问题和手机端赞赏偶现 bug 的问题（？）&lt;/li&gt;
+&lt;/ol&gt;
 &lt;blockquote&gt;
 &lt;p&gt;2024-12-22 v1.01 热补丁修改&lt;/p&gt;
 &lt;/blockquote&gt;
