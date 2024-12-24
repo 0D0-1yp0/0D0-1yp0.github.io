@@ -12,6 +12,9 @@
         <language>zh-cn</language>
         <pubDate>Fri, 20 Dec 2024 00:00:00 +0800</pubDate>
         <lastBuildDate>Fri, 20 Dec 2024 00:00:00 +0800</lastBuildDate>
+        <category term="D1yp" />
+        <category term="D_1yp" />
+        <category term="0d0-1yp0" />
         <item>
             <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/</guid>
             <title>pwndbg操作方式个人总结（一）</title>

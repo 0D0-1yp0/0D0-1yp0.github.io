@@ -12,6 +12,9 @@
         <language>zh-cn</language>
         <pubDate>Tue, 24 Dec 2024 00:00:00 +0800</pubDate>
         <lastBuildDate>Tue, 24 Dec 2024 00:00:00 +0800</lastBuildDate>
+        <category term="D1yp" />
+        <category term="D_1yp" />
+        <category term="0d0-1yp0" />
         <item>
             <guid isPermalink="true">https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/</guid>
             <title>安装一个‘小’工具有点想跟powershell爆了</title>
@@ -112,7 +115,7 @@
             <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
             <pubDate>Mon, 23 Dec 2024 00:00:00 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;welcome-to-my-cyber-world&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-cyber-world&#34;&gt;#&lt;/a&gt; welcome to my cyber world！&lt;/h1&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;h1 id=&#34;公告栏&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#公告栏&#34;&gt;#&lt;/a&gt; 公告栏&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;当前版本：v1.11&lt;/strong&gt;    &lt;em&gt;2024-12-23&lt;/em&gt;&lt;/p&gt;
 &lt;blockquote&gt;
@@ -125,9 +128,10 @@
 &lt;blockquote&gt;
 &lt;p&gt;已知问题:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新，正在解决中&lt;/li&gt;
-&lt;li&gt;网页偶现不显示中文而是英文的问题&lt;/li&gt;
+&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新&lt;/li&gt;
+&lt;li&gt;网页偶现不显示中文而是英文&lt;/li&gt;
 &lt;li&gt;支付宝的魂灵经常飘荡在微信赞赏上方，我服了马跌&lt;/li&gt;
+&lt;li&gt;部分文章出现图片丢失无法显示的情况，对此类文章可暂时移步至 CSDN 来查看，抢修中&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;版本预告：&lt;/p&gt;
 &lt;ol&gt;

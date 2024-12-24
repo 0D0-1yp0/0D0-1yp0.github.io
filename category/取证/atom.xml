@@ -9,6 +9,9 @@
       <name>0d0_1yp0</name>
     </author>
     <updated>2024-11-11T16:00:00.000Z</updated>
+    <category term="D1yp" />
+    <category term="D_1yp" />
+    <category term="0d0-1yp0" />
     <entry>
         <id>https://0d0-1yp0.github.io/2024/11/12/Forensics/meiyacup2024%E5%86%85%E5%AD%98%E5%A4%8D%E7%9B%98/</id>
         <title>Meiyacup2024菜鸟个人总结（一）</title>
@@ -22,7 +25,7 @@
 &lt;p&gt;比赛的时候，网断了才发现犯了非常离谱的错误，赛前明明注意到了内存取证题，但是没系统练过也没调试 volatility&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;http://xn--python3setup-bc3y.py&#34;&gt;python3 掉 setup.py&lt;/a&gt;, 然后发现网上教程有敲 python3 vol.py 的，然后我发现可以直接敲 vol&lt;/p&gt;
 &lt;p&gt;不太懂于是复盘之后 chat 了一下&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220201123451.png&#34; alt=&#34;image-20241220201123451&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220201123451.png&#34; alt=&#34;image-20241220201123451&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;事实上还发现了依赖项问题。因为我的 kali 中又有 python2 又有 python3, 总是产生一些奇奇怪怪的问题&lt;/p&gt;
 &lt;p&gt;总之以后还是多用虚拟环境吧，正好 2024 的 kali 更新规则了&lt;/p&gt;
 &lt;h2 id=&#34;至于赛题&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#至于赛题&#34;&gt;#&lt;/a&gt; 至于赛题:&lt;/h2&gt;
@@ -33,19 +36,19 @@
 &lt;p&gt;这里的 20 分拿回来就是第二了，仅次于通天戴，可惜没有如果 == 难受了一整天&lt;/p&gt;
 &lt;p&gt;美亚的内存取证工具什么都出不来，火眼的连镜像都打不开，除非 vol 否则一个都跑不出来&lt;/p&gt;
 &lt;p&gt;以后一定好好复习&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220200723671.png&#34; alt=&#34;image-20241220200723671&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220200723671.png&#34; alt=&#34;image-20241220200723671&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;纪念一下自己人机级别蠢到家的指令&lt;/p&gt;
 &lt;p&gt;正确做法：&lt;/p&gt;
 &lt;p&gt;vol -f xxx.raw [plugin] -- 额外参数&lt;/p&gt;
 &lt;p&gt;for example：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;vol &lt;span class=&#34;token parameter variable&#34;&gt;-f&lt;/span&gt; RAM_Capture_David_Laptop.raw windows.info&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;结果：&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220201219814.png&#34; alt=&#34;image-20241220201219814&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220201219814.png&#34; alt=&#34;image-20241220201219814&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;出来了，windows 信息&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;strong&gt;那么这道题的话&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;vol -f RAM_Capture_David_Laptop.raw windows.pslist &lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;或者更好的&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;vol -f RAM_Capture_David_Laptop.raw windows.pslist | grep &amp;quot;firefox.exe&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; data-src=&#34;C:%5CUsers%5C86130%5CPictures%5C%E5%9B%BE%E5%BA%8A%5Cimage-20241220201247050.png&#34; alt=&#34;image-20241220201247050&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;C:%5CUsers%5C86130%5CPictures%5C%E5%9B%BE%E5%BA%8A%5Cimage-20241220201247050.png&#34; alt=&#34;image-20241220201247050&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;o1-pre 会给出 vol -f RAM_Capture_David_Laptop.raw pslist 这个指令，但是 vol3.x 就不行了，因为这个比赛直接炸掉了&lt;/p&gt;
 &lt;p&gt;为什么有时候大脑不转呢&lt;/p&gt;
 </content>
