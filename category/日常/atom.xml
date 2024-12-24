@@ -8,7 +8,99 @@
     <author>
       <name>0d0_1yp0</name>
     </author>
-    <updated>2024-12-22T16:00:00.000Z</updated>
+    <updated>2024-12-23T16:00:00.000Z</updated>
+    <entry>
+        <id>https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/</id>
+        <title>安装一个‘小’工具有点想跟powershell爆了</title>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/"/>
+        <content type="html">&lt;p&gt;昨天戴✌分享了一个非常好玩的终端命令修补工具&lt;/p&gt;
+&lt;p&gt;安装的时候我真的是 fuck 了有点麻烦，尤其是最后用在 powershell 的时候&lt;/p&gt;
+&lt;p&gt;由此引入一下修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件和 PowerShell 中的配置吧&lt;/p&gt;
+&lt;h1 id=&#34;修改-profile-文件&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#修改-profile-文件&#34;&gt;#&lt;/a&gt; 修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件&lt;/h1&gt;
+&lt;p&gt;是 PowerShell 中的一种配置方法，用于在启动 PowerShell 会话时自动执行某些命令或定义函数。这个文件相当于一个 PowerShell 会话的启动脚本，可以用来设置环境变量、定义函数、别名、导入模块等。&lt;/p&gt;
+&lt;h3 id=&#34;profile-文件的原理&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#profile-文件的原理&#34;&gt;#&lt;/a&gt;  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的原理&lt;/h3&gt;
+&lt;p&gt;在 PowerShell 中， &lt;code&gt;$PROFILE&lt;/code&gt;  是一个特殊的自动变量，指向 PowerShell 配置文件的路径。该文件在每次启动 PowerShell 会话时被自动执行，通常用于配置用户偏好和初始化一些常用的设置。&lt;/p&gt;
+&lt;h3 id=&#34;具体解释&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#具体解释&#34;&gt;#&lt;/a&gt; 具体解释&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;路径&lt;/strong&gt;： &lt;code&gt;$PROFILE&lt;/code&gt;  变量指向的是当前用户的 PowerShell 配置文件路径。你可以通过以下命令查看  &lt;code&gt;$PROFILE&lt;/code&gt;  的内容：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;对于大多数用户，默认路径通常是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Users\&amp;lt;YourUsername&amp;gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;~/.config/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;功能&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中，PowerShell 会加载其中定义的命令和配置。例如，你可以在文件中加入以下内容：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;定义函数&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中，你可以定义你常用的 PowerShell 函数，这些函数会在每次启动 PowerShell 会话时自动可用。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; greet &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;Hello, &lt;span class=&#34;token variable&#34;&gt;$args&lt;/span&gt;&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;每次启动 PowerShell 后， &lt;code&gt;greet&lt;/code&gt;  函数就可以立即使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;设置别名&lt;/strong&gt;：你还可以在  &lt;code&gt;$PROFILE&lt;/code&gt;  中定义别名，使得长命令可以简化。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;Set-Alias&lt;/span&gt; ll &lt;span class=&#34;token function&#34;&gt;Get-ChildItem&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;这样，在 PowerShell 中使用  &lt;code&gt;ll&lt;/code&gt;  就等同于使用  &lt;code&gt;Get-ChildItem&lt;/code&gt;  命令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;自动加载模块&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  中定义常用模块的导入命令。比如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;Import-Module&lt;/span&gt; posh-git&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;配置环境变量&lt;/strong&gt;：可以在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中配置特定的环境变量或调整系统设置。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$env&lt;/span&gt;:PATH &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;;C:\Program Files\MyTools&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;如何被加载&lt;/strong&gt;：每次启动一个新的 PowerShell 会话时，系统会自动加载  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中的所有内容，执行其中的命令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;profile-文件的种类&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#profile-文件的种类&#34;&gt;#&lt;/a&gt;  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的种类&lt;/h3&gt;
+&lt;p&gt;PowerShell 有多种类型的  &lt;code&gt;$PROFILE&lt;/code&gt;  文件，取决于你是在全局范围还是仅在当前用户会话中进行配置。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;当前用户的 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;这个文件只影响当前用户的 PowerShell 会话。通常路径是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Users\&amp;lt;YourUsername&amp;gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;~/.config/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你可以通过以下命令查看当前用户配置文件的路径：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;全局 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;如果你希望影响所有用户（管理员级别），可以编辑系统范围内的  &lt;code&gt;$PROFILE&lt;/code&gt;  文件。路径通常是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Program Files\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;/etc/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你可以通过以下命令查看系统范围内配置文件的路径：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;AllUsersCurrentHost&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;特定主机的 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;除了全局和用户配置文件，还有针对特定主机的配置文件。例如，你可以为 &lt;strong&gt;PowerShell ISE&lt;/strong&gt; 定义一个单独的配置文件。不同主机的路径如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows PowerShell&lt;/strong&gt;： &lt;code&gt;$PROFILE.AllUsersCurrentHost&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PowerShell ISE&lt;/strong&gt;： &lt;code&gt;$PROFILE.AllUsersISEHost&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些配置文件允许你根据不同的使用场景配置 PowerShell 环境。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;修改-profile-文件的目的&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#修改-profile-文件的目的&#34;&gt;#&lt;/a&gt; 修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的目的&lt;/h3&gt;
+&lt;p&gt;此情况，修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的目的是让 PowerShell 会话在启动时自动定义  &lt;code&gt;fuck&lt;/code&gt;  函数。&lt;/p&gt;
+&lt;p&gt;因为 fuck 函数是 pip 安装的，得手动配&lt;/p&gt;
+&lt;p&gt;这样，就可以在 PowerShell 中通过输入  &lt;code&gt;fuck&lt;/code&gt;  来调用  &lt;code&gt;thefuck&lt;/code&gt; ，而不需要每次都手动配置。&lt;/p&gt;
+&lt;p&gt;当把  &lt;code&gt;Invoke-Expression (&amp;amp; thefuck --alias)&lt;/code&gt;  这样的命令添加到  &lt;code&gt;$PROFILE&lt;/code&gt;  中时，PowerShell 在启动时会自动执行该命令，创建  &lt;code&gt;fuck&lt;/code&gt;  函数，从而使你可以在会话中使用该命令。&lt;/p&gt;
+&lt;p&gt;但是，由于在我的环境下，直接在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中运行  &lt;code&gt;thefuck --alias&lt;/code&gt;  可能会导致问题（如  &lt;code&gt;Invoke-Expression&lt;/code&gt;  错误），所以我们通常建议手动将输出的函数定义复制到  &lt;code&gt;$PROFILE&lt;/code&gt;  中，而不是直接执行  &lt;code&gt;thefuck --alias&lt;/code&gt;  命令。这种方法更加稳定，避免了潜在的错误。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;$PROFILE 文件&lt;/strong&gt; 是一个 PowerShell 配置文件，用于在启动 PowerShell 会话时自动执行一些命令或配置，通常用于定义函数、别名、模块加载等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件&lt;/strong&gt; 可以使一些常用功能在每次启动 PowerShell 时自动生效，避免每次手动配置。&lt;/li&gt;
+&lt;li&gt;敲一个 fuck 就能让你的 bash 或者 shell 麻溜改命令，好玩捏&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
+        <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
+        <updated>2024-12-23T16:00:00.000Z</updated>
+    </entry>
     <entry>
         <id>https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/</id>
         <title>公告栏</title>
