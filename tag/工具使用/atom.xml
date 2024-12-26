@@ -189,8 +189,8 @@
         <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
         <category term="二进制漏洞PWN" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/PWN/" />
         <category term="工具使用" scheme="https://0d0-1yp0.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" />
-        <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
         <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+        <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
         <category term="pwn" scheme="https://0d0-1yp0.github.io/tags/pwn/" />
         <updated>2024-12-19T16:00:00.000Z</updated>
     </entry>
@@ -230,7 +230,7 @@
 &lt;p&gt;&lt;code&gt;vol -f RAM_Capture_David_Laptop.raw windows.pslist &lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;或者更好的&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;vol -f RAM_Capture_David_Laptop.raw windows.pslist | grep &amp;quot;firefox.exe&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;C:%5CUsers%5C86130%5CPictures%5C%E5%9B%BE%E5%BA%8A%5Cimage-20241220201247050.png&#34; alt=&#34;image-20241220201247050&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241220201247050.png&#34; alt=&#34;image-20241220201247050&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;o1-pre 会给出 vol -f RAM_Capture_David_Laptop.raw pslist 这个指令，但是 vol3.x 就不行了，因为这个比赛直接炸掉了&lt;/p&gt;
 &lt;p&gt;为什么有时候大脑不转呢&lt;/p&gt;
 </content>
