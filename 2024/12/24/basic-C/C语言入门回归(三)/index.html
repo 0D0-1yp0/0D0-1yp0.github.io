@@ -1,0 +1,564 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/><meta name="theme-color" content="#222"/><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/><meta name="renderer" content="webkit"/><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"/><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/><link rel="alternate" href="/rss.xml" title="we1c0me_t0 my odyssey domain" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="we1c0me_t0 my odyssey domain" type="application/atom+xml"><link rel="alternate" type="application/json" title="we1c0me_t0 my odyssey domain" href="https://0d0-1yp0.github.io/feed.json"/><link rel="preconnect" href="https://s4.zstatic.net"/><link rel="preconnect" href="https://at.alicdn.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" media="none" onload="this.media&#x3D;&#39;all&#39;"><link rel="stylesheet" href="/css/app.css?v=0.4.14"><link rel="modulepreload" href="/js/chunk-3QGRG5LW.js"></link><link rel="modulepreload" href="/js/chunk-IT5OOEFI.js"></link><link rel="modulepreload" href="/js/chunk-ZSRBWA5C.js"></link><link rel="modulepreload" href="/js/copy-tex-CGSFSRPZ.js"></link><link rel="modulepreload" href="/js/index.esm-KLSBBYBW.js"></link><link rel="modulepreload" href="/js/post-HBQSSN4N.js"></link><link rel="modulepreload" href="/js/quicklink-RJWHAJYO.js"></link><link rel="modulepreload" href="/js/siteInit.js"></link><link rel="preload" href="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/jeettt.jpg" as="image" fetchpriority="high"><meta name="keywords" content="C语言,算法"/><meta name="description" content="ps:当前站版本v1.12。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog"/><link rel="canonical" href="https://0d0-1yp0.github.io/2024/12/24/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%B8%89)/"><title>C语言入门知识点&基础思路（三）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">C语言入门知识点&基础思路（三）</h1><div class="meta"><span class="item" title="創建時間：2024-12-24 00:00:00"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">發表於</span><time itemprop="dateCreated datePublished" datetime="2024-12-24T00:00:00+08:00">2024-12-24</time></span><span class="item" title="本文字數"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字數</span><span>12k</span><span class="text">字</span></span><span class="item" title="閱讀時長"><span class="icon"><i class="ic i-clock"></i></span><span class="text">閱讀時長</span><span>11 分鐘</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切換導航欄"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">D_1yp</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><img src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/jeettt.jpg" loading="eager" decoding="async" fetchpriority="high" alt="we1c0me_t0 my odyssey domain"></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemListElement itemscope itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首頁</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/basic-C/" itemprop="item" rel="index" title="分類於C语言基础"><span itemprop="name">C语言基础<meta itemprop="position" content="0"/></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://0d0-1yp0.github.io/2024/12/24/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%B8%89)/"/><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/aiwatching.jpg"/><meta itemprop="name" content="0d0_1yp0"/><meta itemprop="description" content="&quot; 一切选择，都有其意义 &quot; —— 《VALORANT》 ISO, ps:当前站版本v1.12。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog"/></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="we1c0me_t0 my odyssey domain"/></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>All the moves like Jagger</p>
+</blockquote>
+<h1 id="c语言哭传三"><a class="anchor" href="#c语言哭传三">#</a> C 语言哭传（三）</h1>
+<p>本期开始涉及的知识点，所含知识尽量补多一点，尽量能从一题的角度理解一个点</p>
+<p>本期含递归 (tips: 挑战题)，函数指针，今天来点大家想看的东西奥（otto 音</p>
+<p>本文或者以后也是，涉及到大模型的回答，均使用 o1/o1-mini 模型或者 claude3.5 模型，我也会重审，基本不会误导大家</p>
+<p>来几个填选。题不在多，在精。一道题可能自己做 1 分钟就过了，要求我给别人讲可能就是半小时，但是去研究底层的这半小时远比自己做的一分钟收获的多，收获的深</p>
+<h2 id="815指针"><a class="anchor" href="#815指针">#</a> 8.15 指针</h2>
+<p><img loading="lazy" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241224085232574.png" alt="image-20241224085232574" /></p>
+<p>这个程序就是倒序输出，没什么好说的，主要是拓展的一些东西</p>
+<p>答案:</p>
+<p>Java</p>
+<p>dBase</p>
+<p>CLanguage</p>
+<p>Pascal</p>
+<h3 id="思路知识点"><a class="anchor" href="#思路知识点">#</a> 思路知识点：</h3>
+<p>有同学不太熟悉 &amp; 和 * 这两个指针相关基本操作，大概 talk 一下</p>
+<h4 id="运算符和-运算符"><a class="anchor" href="#运算符和-运算符">#</a>  <code>&amp;</code>  运算符和  <code>*</code>  运算符</h4>
+<ul>
+<li>
+<p><strong> <code>&amp;</code>  运算符（取地址符）</strong>：用于获取变量的内存地址。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token keyword">int</span> <span class="token operator">*</span>ptr <span class="token operator">=</span> <span class="token operator">&amp;</span>x<span class="token punctuation">;</span> <span class="token comment">//ptr 指向变量 x 的地址</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong> <code>*</code>  运算符（解引用符）</strong>：用于访问指针所指向的内存地址上的值。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> y <span class="token operator">=</span> <span class="token operator">*</span>ptr<span class="token punctuation">;</span> <span class="token comment">//y 的值为 x，即 10</span></pre></td></tr></table></figure></li>
+</ul>
+<p><strong> <code>&amp;</code>  运算符</strong>用于获取变量的地址。</p>
+<p><strong> <code>\*</code>  运算符</strong>用于解引用指针，访问其指向的值。</p>
+<h3 id="拓展"><a class="anchor" href="#拓展">#</a> 拓展：</h3>
+<ol>
+<li><strong>数组名本身不是指针</strong>：虽然数组名在某些情况下表现得像指针，但它们在内存中是一个固定的地址，不能像指针变量那样改变指向</li>
+<li><strong>不能进行指针运算</strong>：你不能对数组名进行指针运算，例如  <code>a + 1</code>  在某些情况下是合法的，但不能改变  <code>a</code>  本身的地址</li>
+<li>使用  <code>sizeof(a)</code>  时，得到的是整个数组的大小，而不是指针的大小</li>
+<li><code>sizeof(ptrA)</code>  返回指针的大小（通常是 4 或 8 个字节，取决于系统架构）。</li>
+<li>将数组作为函数参数传递时，实际上传递的是指向数组第一个元素的指针</li>
+<li>在 C 语言中，<strong>数组名</strong>（例如整型数组  <code>a[]</code>  或是字符型数组  <code>b[]</code> ）在大多数表达式中会<strong>退化为指向数组第一个元素的指针</strong>。这意味着在这些上下文中，你可以将数组名当作指针来使用。例如：</li>
+</ol>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token keyword">char</span> b<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="3"></td><td><pre></pre></td></tr><tr><td data-num="4"></td><td><pre><span class="token keyword">int</span> <span class="token operator">*</span>ptrA <span class="token operator">=</span> a<span class="token punctuation">;</span>    <span class="token comment">//a 退化为 int*，指向 a [0]</span></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token keyword">char</span> <span class="token operator">*</span>ptrB <span class="token operator">=</span> b<span class="token punctuation">;</span>   <span class="token comment">//b 退化为 char*，指向 b [0]</span></pre></td></tr></table></figure><p>防止大家把字符数组初始化，字符串数组们的初始化，也提一下：</p>
+<h3 id="char-achar-a与char-a-含大模型o1的回答"><a class="anchor" href="#char-achar-a与char-a-含大模型o1的回答">#</a> char *a []，char a [] 与 char a [][] (含大模型 o1 的回答)：</h3>
+<blockquote>
+<ol>
+<li>
+<p><strong>声明一：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">char</span> <span class="token operator">*</span>a<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token string">"Pascal"</span><span class="token punctuation">,</span> <span class="token string">"C Language"</span><span class="token punctuation">,</span> <span class="token string">"dBase"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>声明二：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">char</span> a<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token string">"Pascal"</span><span class="token punctuation">,</span> <span class="token string">"C Language"</span><span class="token punctuation">,</span> <span class="token string">"dBase"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="分析与解释"><a class="anchor" href="#分析与解释">#</a> 分析与解释</h4>
+<h5 id="1-声明一char-a"><a class="anchor" href="#1-声明一char-a">#</a> 1. <strong>声明一： <code>char *a[]</code> </strong></h5>
+<ul>
+<li>
+<p><strong>类型说明：</strong></p>
+<ul>
+<li>这是一个<strong>指针数组</strong>，即数组中的每个元素都是一个指向 <code>char</code>  类型的指针。</li>
+<li>每个指针指向一个字符串字面量（字符串常量）。</li>
+</ul>
+</li>
+<li>
+<p><strong>内存分配：</strong></p>
+<ul>
+<li>数组 <code>a</code>  本身在内存中分配了一组指针（通常在栈上）。</li>
+<li>每个字符串字面量（如  <code>&quot;Pascal&quot;</code> ）存储在<strong>只读存储区</strong>（例如，常量区）中，多个指针指向这些字符串。</li>
+</ul>
+</li>
+<li>
+<p><strong>可修改性：</strong></p>
+<ul>
+<li><strong>指针本身</strong>可以修改，即可以让指针指向不同的字符串。</li>
+<li><strong>字符串内容</strong>通常是<strong>只读的</strong>，尝试修改会导致未定义行为（通常是程序崩溃）。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例：</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span></pre></td></tr><tr><td data-num="2"></td><td><pre>    </pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>    <span class="token keyword">char</span> <span class="token operator">*</span>a<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token string">"Pascal"</span><span class="token punctuation">,</span> <span class="token string">"C Language"</span><span class="token punctuation">,</span> <span class="token string">"dBase"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="5"></td><td><pre>    <span class="token comment">// 访问第一个字符串</span></pre></td></tr><tr><td data-num="6"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出: Pascal</span></pre></td></tr><tr><td data-num="7"></td><td><pre>    </pre></td></tr><tr><td data-num="8"></td><td><pre>    <span class="token comment">// 修改指针，指向另一个字符串</span></pre></td></tr><tr><td data-num="9"></td><td><pre>    a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"Python"</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="10"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出: Python</span></pre></td></tr><tr><td data-num="11"></td><td><pre>    </pre></td></tr><tr><td data-num="12"></td><td><pre>    <span class="token comment">// 尝试修改字符串内容（不推荐，可能导致崩溃）</span></pre></td></tr><tr><td data-num="13"></td><td><pre>    <span class="token comment">//a [0][0] = 'p'; // 未定义行为</span></pre></td></tr><tr><td data-num="14"></td><td><pre>    </pre></td></tr><tr><td data-num="15"></td><td><pre>    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="16"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-声明二char-a"><a class="anchor" href="#2-声明二char-a">#</a> 2. <strong>声明二： <code>char a[]</code> </strong></h4>
+<ul>
+<li>
+<p><strong>类型说明：</strong></p>
+<ul>
+<li>这是一个<strong>字符数组</strong>，即数组中的每个元素都是一个 <code>char</code>  类型的字符。</li>
+<li>然而，您的声明尝试用多个字符串字面量初始化一个字符数组，这是不合法的。</li>
+</ul>
+</li>
+<li>
+<p><strong>问题说明：</strong></p>
+<ul>
+<li>在 C 语言中， <code>char a[] = &#123; &quot;Pascal&quot;, &quot;C Language&quot;, &quot;dBase&quot;, &quot;Java&quot; &#125;;</code>  是<strong>非法的</strong>，因为 <code>char a[]</code>  只能初始化为单个字符串或单个字符数组。</li>
+<li>如果您想存储多个字符串，应使用<strong>二维字符数组</strong>或<strong>指针数组</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>可能的正确声明：</strong></p>
+<p><strong>方式一：二维字符数组</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">char</span> a<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token string">"Pascal"</span><span class="token punctuation">,</span> <span class="token string">"C Language"</span><span class="token punctuation">,</span> <span class="token string">"dBase"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>这里， <code>a</code>  是一个二维字符数组，每个子数组最多可以存储 19 个字符（第 20 个字符留给字符串结束符 <code>\0</code> ）。</li>
+</ul>
+<p><strong>方式二：指针数组（与声明一相同）</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">char</span> <span class="token operator">*</span>a<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token string">"Pascal"</span><span class="token punctuation">,</span> <span class="token string">"C Language"</span><span class="token punctuation">,</span> <span class="token string">"dBase"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>内存分配：</strong></p>
+<ul>
+<li><strong>二维字符数组</strong>在内存中分配了一个连续的字符块，用于存储所有字符串的字符。</li>
+<li>每个字符串的长度需要在声明时指定（如上例中的 <code>20</code> ），以确保有足够的空间存储字符串和结束符。</li>
+</ul>
+</li>
+<li>
+<p><strong>可修改性：</strong></p>
+<ul>
+<li><strong>字符数组中的字符</strong>是<strong>可修改的</strong>，可以直接更改数组中的字符。</li>
+<li><strong>字符串字面量</strong>（如果使用指针数组）通常是只读的，无法修改。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例：二维字符数组</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span></pre></td></tr><tr><td data-num="2"></td><td><pre>    </pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>    <span class="token keyword">char</span> a<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token string">"Pascal"</span><span class="token punctuation">,</span> <span class="token string">"C Language"</span><span class="token punctuation">,</span> <span class="token string">"dBase"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="5"></td><td><pre>        </pre></td></tr><tr><td data-num="6"></td><td><pre>    <span class="token comment">// 访问第一个字符串</span></pre></td></tr><tr><td data-num="7"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出: Pascal</span></pre></td></tr><tr><td data-num="8"></td><td><pre>    </pre></td></tr><tr><td data-num="9"></td><td><pre>    <span class="token comment">// 修改字符内容</span></pre></td></tr><tr><td data-num="10"></td><td><pre>    a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token char">'p'</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="11"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出: pascal</span></pre></td></tr><tr><td data-num="12"></td><td><pre>    </pre></td></tr><tr><td data-num="13"></td><td><pre>    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="14"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="主要异同点总结"><a class="anchor" href="#主要异同点总结">#</a> <strong>主要异同点总结</strong></h3>
+<table>
+<thead>
+<tr>
+<th><strong>方面</strong></th>
+<th><strong> <code>char *a[]</code> （指针数组）</strong></th>
+<th><strong> <code>char a[][]</code> （二维字符数组）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>类型</strong></td>
+<td>数组中的每个元素是 <code>char</code>  指针（指向字符串）</td>
+<td>数组中的每个元素是 <code>char</code> ，整体形成二维数组</td>
+</tr>
+<tr>
+<td><strong>内存分配</strong></td>
+<td>指针存储在数组中，字符串存储在只读存储区（或堆 / 静态区）</td>
+<td>所有字符串字符存储在连续的数组内存中</td>
+</tr>
+<tr>
+<td><strong>可修改性</strong></td>
+<td>指针可修改指向，但字符串内容通常不可修改</td>
+<td>字符数组中的字符可修改</td>
+</tr>
+<tr>
+<td><strong>内存大小</strong></td>
+<td>仅存储指针，内存占用较少，但字符串分散存储</td>
+<td>分配足够的空间存储所有字符，内存占用较大但连续</td>
+</tr>
+<tr>
+<td><strong>灵活性</strong></td>
+<td>更灵活，可以指向不同长度的字符串</td>
+<td>需要预先定义每个字符串的最大长度</td>
+</tr>
+<tr>
+<td><strong>访问方式</strong></td>
+<td>通过指针访问，每个字符串独立</td>
+<td>通过二维数组下标访问，每个字符串按数组索引排列</td>
+</tr>
+<tr>
+<td><strong>字符串长度</strong></td>
+<td>每个字符串长度可以不同</td>
+<td>每个字符串的最大长度固定（由数组声明时指定，如 <code>20</code> ）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="选择使用哪种方式"><a class="anchor" href="#选择使用哪种方式">#</a> <strong>选择使用哪种方式</strong></h3>
+<ul>
+<li><strong>使用指针数组（ <code>char \*a[]</code> ）的情况：</strong>
+<ul>
+<li>当字符串长度不固定且可能变化时。</li>
+<li>当需要指向不同来源的字符串（如动态分配的字符串）。</li>
+<li>节省内存，因为只存储指针，而不是为每个字符串预留固定空间。</li>
+</ul>
+</li>
+<li><strong>使用二维字符数组（ <code>char a[][]</code> ）的情况：</strong>
+<ul>
+<li>当字符串长度相对固定且已知时。</li>
+<li>当需要修改字符串内容时。</li>
+<li>需要保证所有字符串在内存中连续存储，便于某些操作（如批量处理）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a class="anchor" href="#总结">#</a> <strong>总结</strong></h3>
+<ul>
+<li><strong> <code>char \*a[]</code> </strong> 是一个指针数组，每个元素指向一个字符串字面量，适用于字符串长度不固定且不需要修改内容的场景。</li>
+<li><strong> <code>char a[][]</code> </strong> 是一个二维字符数组，所有字符串的字符存储在连续的内存中，适用于字符串长度相对固定且需要修改内容的场景。</li>
+</ul>
+<p>希望以上解释能帮助您更好地理解这两种声明的异同。如果您有更多问题，欢迎继续提问！</p>
+</blockquote>
+<h2 id="816指针"><a class="anchor" href="#816指针">#</a> 8.16 指针</h2>
+<p><img loading="lazy" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241224094616758.png" alt="image-20241224094616758" /></p>
+<p>就是</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mn>2</mn><mn>3</mn></msup><mo>−</mo><msup><mn>2</mn><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">2^3-2^2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>慢慢来，主函数传参后，f1 指向 fa，f2 指向 fb，也就是 f 调用的 fa 和 fb，fa 就是乘方 fb 就是立方。用的是函数指针而已</p>
+<h3 id="函数指针"><a class="anchor" href="#函数指针">#</a> 函数指针</h3>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token comment">// 定义函数 fa，计算 x 的平方</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token keyword">int</span> <span class="token function">fa</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="4"></td><td><pre><span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="5"></td><td><pre>    <span class="token keyword">return</span> <span class="token punctuation">(</span>x <span class="token operator">*</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="6"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="7"></td><td><pre><span class="token comment">// 定义函数 fb，计算 x 的立方</span></pre></td></tr><tr><td data-num="8"></td><td><pre><span class="token keyword">int</span> <span class="token function">fb</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="9"></td><td><pre><span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="10"></td><td><pre>    <span class="token keyword">return</span> <span class="token punctuation">(</span>x <span class="token operator">*</span> x <span class="token operator">*</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="11"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="12"></td><td><pre><span class="token comment">// 定义函数 f，接受两个函数指针 f1 和 f2，以及一个整数 x</span></pre></td></tr><tr><td data-num="13"></td><td><pre><span class="token comment">// 它调用 f2 (x) 减去 f1 (x) 的结果</span></pre></td></tr><tr><td data-num="14"></td><td><pre><span class="token keyword">int</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>f1<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>f2<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="15"></td><td><pre><span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="16"></td><td><pre>    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token function">f2</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">f1</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="17"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="18"></td><td><pre><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre></td></tr><tr><td data-num="19"></td><td><pre><span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="20"></td><td><pre>    <span class="token keyword">int</span> i<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="21"></td><td><pre>    <span class="token comment">// 调用函数 f，将 fa 和 fb 作为参数传递，并传入 x=2</span></pre></td></tr><tr><td data-num="22"></td><td><pre>    i <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>fa<span class="token punctuation">,</span> fb<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="23"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出结果</span></pre></td></tr><tr><td data-num="24"></td><td><pre>    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="25"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure><h4 id="主要概念"><a class="anchor" href="#主要概念">#</a> 主要概念</h4>
+<ol>
+<li>
+<p><strong>函数指针的声明</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>f1<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span></pre></td></tr></table></figure><ul>
+<li><strong>解释</strong>：
+<ul>
+<li><code>int</code> ：表示函数返回类型为 <code>int</code> 。</li>
+<li><code>(*f1)</code> ： <code>f1</code>  是一个指针，指向一个函数。</li>
+<li><code>(int)</code> ：表示这个函数接受一个 <code>int</code>  类型的参数。</li>
+</ul>
+</li>
+<li><strong>整体含义</strong>： <code>f1</code>  是一个指向接受一个 <code>int</code>  参数并返回 <code>int</code>  的函数的指针。</li>
+</ul>
+</li>
+<li>
+<p><strong>函数指针的使用</strong></p>
+<p>在函数 <code>f</code>  中， <code>f1</code>  和 <code>f2</code>  都是函数指针，分别指向不同的函数（ <code>fa</code>  和 <code>fb</code> ）。通过这些指针， <code>f</code>  函数可以调用传入的函数并执行相应的操作。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token function">f2</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">f1</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>这里， <code>f2(x)</code>  调用了指针 <code>f2</code>  所指向的函数（即 <code>fb(x)</code> ），</li>
+<li><code>f1(x)</code>  调用了指针 <code>f1</code>  所指向的函数（即 <code>fa(x)</code> ）。</li>
+<li>最终返回 <code>fb(x) - fa(x)</code>  的结果。</li>
+</ul>
+</li>
+<li>
+<p><strong>在 <code>main</code>  函数中传递函数指针</strong></p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>i <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>fa<span class="token punctuation">,</span> fb<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ul>
+<li>这里， <code>fa</code>  和 <code>fb</code>  作为参数传递给函数 <code>f</code> 。由于 <code>fa</code>  和 <code>fb</code>  本身就是函数的名称，在这种上下文中，它们会自动转换为指向这些函数的指针。</li>
+</ul>
+</li>
+</ol>
+<h4 id="拓展函数指针的优势含o1模型回答"><a class="anchor" href="#拓展函数指针的优势含o1模型回答">#</a> 拓展：函数指针的优势（含 o1 模型回答）</h4>
+<ol>
+<li>
+<p><strong>回调函数</strong>：</p>
+<p>函数指针允许将函数作为参数传递，从而实现回调机制。这在实现事件驱动编程或需要在不同情况下执行不同操作时非常有用。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>func<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="2"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Result: %d\n"</span><span class="token punctuation">,</span> <span class="token function">func</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="4"></td><td><pre></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="6"></td><td><pre>    <span class="token function">execute</span><span class="token punctuation">(</span>fa<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 对于被调函数来说，传入了 fa 给指针 func，func 指向了 fa，所以就是调用 fa (5)</span></pre></td></tr><tr><td data-num="7"></td><td><pre>    <span class="token function">execute</span><span class="token punctuation">(</span>fb<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 调用 fb (3)</span></pre></td></tr><tr><td data-num="8"></td><td><pre>    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="9"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>动态函数调用</strong>：</p>
+<p>根据程序的运行状态，可以动态选择要调用的函数。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>operation<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 注意，现在是在主函数里，直接定义一个指针，函数指针</span></pre></td></tr><tr><td data-num="2"></td><td><pre></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token keyword">if</span> <span class="token punctuation">(</span>condition<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>    operation <span class="token operator">=</span> fa<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="6"></td><td><pre>    operation <span class="token operator">=</span> fb<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="7"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="8"></td><td><pre></pre></td></tr><tr><td data-num="9"></td><td><pre><span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 已经有了指向的对象，加个参数即可调用</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>构建函数表</strong>：</p>
+<p>可以将多个函数指针存储在数组中，方便管理和调用。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>functions<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>fa<span class="token punctuation">,</span> fb<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Result: %d\n"</span><span class="token punctuation">,</span> functions<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 你看懂了吗？~</span></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="再补两句"><a class="anchor" href="#再补两句">#</a> 再补两句</h4>
+<ol>
+<li>
+<p><strong>函数指针的类型必须匹配</strong>：</p>
+<p>声明函数指针时，返回类型和参数类型必须与所指向的函数完全一致，否则会导致未定义行为。</p>
+</li>
+<li>
+<p>函数指针的声明语法可能有些复杂，尤其是在函数指针作为参数或返回值时。</p>
+<p>可以使用 <code>typedef</code>  简化声明。</p>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">typedef</span> <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>func_ptr<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token keyword">int</span> <span class="token function">f</span><span class="token punctuation">(</span>func_ptr f1<span class="token punctuation">,</span> func_ptr f2<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>    <span class="token keyword">return</span> <span class="token function">f2</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">f1</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token punctuation">&#125;</span></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="817指针"><a class="anchor" href="#817指针">#</a> 8.17 指针</h2>
+<p><img loading="lazy" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241224102739999.png" alt="image-20241224102739999" /></p>
+<p>fun 函数典型的互换操作，同时初具递归雏形（大约的确不算递归）</p>
+<p>整体函数所做的事情非常简单，单纯的逆序对调罢了</p>
+<p>答案是 8162</p>
+<p><strong>做个递归吧</strong></p>
+<h2 id="挑战813递归"><a class="anchor" href="#挑战813递归">#</a> 挑战：8.13 递归</h2>
+<p><img loading="lazy" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241224103409289.png" alt="image-20241224103409289" /></p>
+<p>涉及了第一章讲过的取位操作，可以去复习一下</p>
+<p><strong>此外， <code>+'0'</code> ：将数字转换为对应的字符。例如， <code>3 + '0'</code>  结果是字符  <code>'3'</code> 。</strong></p>
+<p>递归在计算机里算是一个比较经典的玩法了，比较考验人类的思维。</p>
+<h4 id="递归函数解析"><a class="anchor" href="#递归函数解析">#</a> 递归函数解析</h4>
+<p>递归函数通常包括两个主要部分：</p>
+<ol>
+<li><strong>基准情况（Base Case）：</strong> 确定递归何时停止。</li>
+<li><strong>递归情况（Recursive Case）：</strong> 函数调用自身，以逐步逼近基准情况。</li>
+</ol>
+<p>在本题中：</p>
+<ul>
+<li><strong>基准情况：</strong> 当  <code>n / 10</code>  等于  <code>0</code>  时，表示已经处理到最低位的数字，不再需要递归。</li>
+<li><strong>递归情况：</strong> 当  <code>n / 10</code>  不等于  <code>0</code>  时，继续处理更高位的数字。</li>
+</ul>
+<blockquote>
+<p><strong>先说一下答案:a+1 、n%10+'0'</strong> , 也就是还没到最后一位的时候指针向前就是空 1, 再加一个基本的取位操作就是空 2</p>
+</blockquote>
+<p><strong>难点在于理解递归</strong></p>
+<p>其实对我本人来说，递归的难点在于递归完成之后的事情和递归的编写，就比如这道题，递归结束后的回溯花了我一定时间去理解。我也很久没摸递归了</p>
+<p>以下的话可能有点抽象需要去理解</p>
+<h4 id="递归"><a class="anchor" href="#递归">#</a> 递归</h4>
+<p>​	<strong>if 触发之后，调用自身，但是本次主调函数还是没执行完的，又不是循环的 break, 也就是不管被调函数递归了多少轮，主调函数终究会执行最后一句 * a = ___  当出现了第一个执行完毕，不会调用函数的被调函数后，触发了基准情况</strong></p>
+<p>现在，通过 (o1), 让我们一步一步地看这个递归函数是如何工作的。</p>
+<h5 id="初始调用converta-483"><a class="anchor" href="#初始调用converta-483">#</a> 初始调用： <code>convert(a, 483)</code></h5>
+<ul>
+<li><strong>参数：</strong>
+<ul>
+<li><code>a</code>  指向字符数组的起始位置（即  <code>a[0]</code> ）。</li>
+<li><code>n = 483</code></li>
+</ul>
+</li>
+<li><strong>执行步骤：</strong>
+<ol>
+<li>计算  <code>i = 483 / 10 = 48</code> （整除）。</li>
+<li>因为  <code>48 != 0</code> ，所以递归调用  <code>convert(a + 1, 48)</code> 。</li>
+</ol>
+</li>
+</ul>
+<h5 id="第一次递归调用converta-1-48"><a class="anchor" href="#第一次递归调用converta-1-48">#</a> 第一次递归调用： <code>convert(a + 1, 48)</code></h5>
+<ul>
+<li><strong>参数：</strong>
+<ul>
+<li><code>a + 1</code>  指向数组的下一个位置（即  <code>a[1]</code> ）。</li>
+<li><code>n = 48</code></li>
+</ul>
+</li>
+<li><strong>执行步骤：</strong>
+<ol>
+<li>计算  <code>i = 48 / 10 = 4</code> 。</li>
+<li>因为  <code>4 != 0</code> ，所以递归调用  <code>convert(a + 2, 4)</code> 。</li>
+</ol>
+</li>
+</ul>
+<h5 id="第二次递归调用converta-2-4"><a class="anchor" href="#第二次递归调用converta-2-4">#</a> 第二次递归调用： <code>convert(a + 2, 4)</code></h5>
+<ul>
+<li><strong>参数：</strong>
+<ul>
+<li><code>a + 2</code>  指向数组的下一个位置（即  <code>a[2]</code> ）。</li>
+<li><code>n = 4</code></li>
+</ul>
+</li>
+<li><strong>执行步骤：</strong>
+<ol>
+<li>计算  <code>i = 4 / 10 = 0</code> 。</li>
+<li>因为  <code>0 == 0</code> ，不再递归，直接执行  <code>*a = (4 % 10) + '0' = '4'</code> ，即  <code>a[2] = '4'</code> 。</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>注意，<strong> 此处将开始回溯</strong></p>
+</blockquote>
+<h5 id="回到第一次递归调用converta-1-48"><a class="anchor" href="#回到第一次递归调用converta-1-48">#</a> 回到第一次递归调用： <code>convert(a + 1, 48)</code></h5>
+<ul>
+<li>现在继续执行之前的调用
+<ul>
+<li>执行  <code>*a = (48 % 10) + '0' = '8'</code> ，即  <code>a[1] = '8'</code> 。</li>
+</ul>
+</li>
+</ul>
+<p><strong>此处的理解就是，对于第二次那次 convert 的执行，a 相对于最后一次还是 a+1, 被传入的 n 是上一次的 i 也就是最开始的那个 n/10, 即 48, 直接执行取末尾的操作即可</strong></p>
+<h5 id="回到初始调用converta-483"><a class="anchor" href="#回到初始调用converta-483">#</a> 回到初始调用： <code>convert(a, 483)</code></h5>
+<ul>
+<li>继续执行之前的调用
+<ul>
+<li>执行  <code>*a = (483 % 10) + '0' = '3'</code> ，即  <code>a[0] = '3'</code> 。</li>
+</ul>
+</li>
+</ul>
+<p><strong>此处的理解就是，对于本次 convert 的执行，a 就是字符数组的开始，直接执行取末位的操作即可</strong></p>
+<h5 id="总结-2"><a class="anchor" href="#总结-2">#</a> 总结:</h5>
+<table>
+<thead>
+<tr>
+<th>调用层级</th>
+<th>参数  <code>a</code>  指向的位置</th>
+<th>参数  <code>n</code></th>
+<th>执行操作</th>
+<th>赋值结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始调用</td>
+<td><code>a[0]</code></td>
+<td><code>483</code></td>
+<td>递归调用  <code>convert(a+1, 48)</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>第一次递归调用</td>
+<td><code>a[1]</code></td>
+<td><code>48</code></td>
+<td>递归调用  <code>convert(a+2, 4)</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>第二次递归调用</td>
+<td><code>a[2]</code></td>
+<td><code>4</code></td>
+<td>赋值  <code>a[2] = '4'</code></td>
+<td><code>a[2] = '4'</code></td>
+</tr>
+<tr>
+<td>回到第一次递归</td>
+<td><code>a[1]</code></td>
+<td><code>48</code></td>
+<td>赋值  <code>a[1] = '8'</code></td>
+<td><code>a[1] = '8'</code></td>
+</tr>
+<tr>
+<td>回到初始调用</td>
+<td><code>a[0]</code></td>
+<td><code>483</code></td>
+<td>赋值  <code>a[0] = '3'</code></td>
+<td><code>a[0] = '3'</code></td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight scss"><figcaption data-lang="Sass (Scss)"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">convert</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> 483<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="2"></td><td><pre>│</pre></td></tr><tr><td data-num="3"></td><td><pre>└── <span class="token function">convert</span><span class="token punctuation">(</span>a+1<span class="token punctuation">,</span> 48<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="4"></td><td><pre>     │</pre></td></tr><tr><td data-num="5"></td><td><pre>     └── <span class="token function">convert</span><span class="token punctuation">(</span>a+2<span class="token punctuation">,</span> 4<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="6"></td><td><pre>          ├── 赋值 a[2] = <span class="token string">'4'</span></pre></td></tr><tr><td data-num="7"></td><td><pre>          └── 返回到 <span class="token function">convert</span><span class="token punctuation">(</span>a+1<span class="token punctuation">,</span> 48<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="8"></td><td><pre>     ├── 赋值 a[1] = <span class="token string">'8'</span></pre></td></tr><tr><td data-num="9"></td><td><pre>     └── 返回到 <span class="token function">convert</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> 483<span class="token punctuation">)</span></pre></td></tr><tr><td data-num="10"></td><td><pre>├── 赋值 a[0] = <span class="token string">'3'</span></pre></td></tr><tr><td data-num="11"></td><td><pre>└── 返回到 <span class="token function">main</span><span class="token punctuation">(</span>此题没有<span class="token punctuation">)</span></pre></td></tr></table></figure><h4 id="拓展递归调用栈入门者选择性阅读此段"><a class="anchor" href="#拓展递归调用栈入门者选择性阅读此段">#</a> 拓展：递归调用栈 (入门者选择性阅读此段)</h4>
+<blockquote>
+<p>递归函数通过<strong>函数调用栈</strong>（Call Stack）来管理函数调用和返回。每一次递归调用都会在调用栈上创建一个新的<strong>栈帧</strong>，用于保存该调用的局部变量和返回地址。</p>
+<h5 id="示例将-483-转换为-384"><a class="anchor" href="#示例将-483-转换为-384">#</a> 示例：将  <code>483</code>  转换为  <code>&quot;384&quot;</code></h5>
+<ol>
+<li><strong>初始调用</strong>： <code>convert(a, 483)</code></li>
+<li><strong>第一次递归</strong>： <code>convert(a + 1, 48)</code></li>
+<li><strong>第二次递归</strong>： <code>convert(a + 2, 4)</code></li>
+<li><strong>递归终止</strong>：不再递归，赋值  <code>'4'</code>  到  <code>a[2]</code></li>
+<li><strong>返回到第二次调用</strong>：赋值  <code>'8'</code>  到  <code>a[1]</code></li>
+<li><strong>返回到初始调用</strong>：赋值  <code>'3'</code>  到  <code>a[0]</code></li>
+<li><strong>主函数</strong>：添加  <code>'\0'</code> ，完成字符串</li>
+</ol>
+<h3 id=""><a class="anchor" href="#">#</a> </h3>
+<h5 id="1-初始调用converta-483"><a class="anchor" href="#1-初始调用converta-483">#</a> 1. 初始调用： <code>convert(a, 483)</code></h5>
+<ul>
+<li>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>a</code>  指向字符数组的起始位置（ <code>a[0]</code> ）。</li>
+<li><code>n = 483</code></li>
+</ul>
+</li>
+<li>
+<p><strong>执行步骤</strong>：</p>
+<ul>
+<li>计算  <code>i = 483 / 10 = 48</code></li>
+<li>因为  <code>48 != 0</code> ，所以递归调用  <code>convert(a + 1, 48)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>调用栈</strong>：</p>
+<figure class="highlight csharp"><figcaption data-lang="C#"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token number">483</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="2-第一次递归调用converta-1-48"><a class="anchor" href="#2-第一次递归调用converta-1-48">#</a> 2. 第一次递归调用： <code>convert(a + 1, 48)</code></h5>
+<ul>
+<li>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>a + 1</code>  指向数组的第二个位置（ <code>a[1]</code> ）。</li>
+<li><code>n = 48</code></li>
+</ul>
+</li>
+<li>
+<p><strong>执行步骤</strong>：</p>
+<ul>
+<li>计算  <code>i = 48 / 10 = 4</code></li>
+<li>因为  <code>4 != 0</code> ，所以递归调用  <code>convert(a + 2, 4)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>调用栈</strong>：</p>
+<figure class="highlight csharp"><figcaption data-lang="C#"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token number">483</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">48</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="3-第二次递归调用converta-2-4"><a class="anchor" href="#3-第二次递归调用converta-2-4">#</a> 3. 第二次递归调用： <code>convert(a + 2, 4)</code></h5>
+<ul>
+<li>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>a + 2</code>  指向数组的第三个位置（ <code>a[2]</code> ）。</li>
+<li><code>n = 4</code></li>
+</ul>
+</li>
+<li>
+<p><strong>执行步骤</strong>：</p>
+<ul>
+<li>计算  <code>i = 4 / 10 = 0</code></li>
+<li>因为  <code>0 == 0</code> ，不再递归，直接赋值  <code>*a = '4'</code> （ <code>a[2] = '4'</code> ）</li>
+</ul>
+</li>
+<li>
+<p><strong>调用栈</strong>：</p>
+<figure class="highlight csharp"><figcaption data-lang="C#"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token number">483</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">48</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>赋值结果</strong>：</p>
+<ul>
+<li><code>a[2] = '4'</code></li>
+</ul>
+</li>
+</ul>
+<h5 id="4-递归返回返回到第一次递归调用"><a class="anchor" href="#4-递归返回返回到第一次递归调用">#</a> 4. 递归返回：返回到第一次递归调用</h5>
+<ul>
+<li>
+<p><strong>完成  <code>convert(a + 2, 4)</code>  后</strong>：</p>
+<ul>
+<li>执行  <code>*a = (48 % 10) + '0' = '8'</code> （ <code>a[1] = '8'</code> ）</li>
+</ul>
+</li>
+<li>
+<p><strong>调用栈</strong>：</p>
+<figure class="highlight csharp"><figcaption data-lang="C#"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token number">483</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">48</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>赋值结果</strong>：</p>
+<ul>
+<li><code>a[1] = '8'</code></li>
+</ul>
+</li>
+</ul>
+<h5 id="5-递归返回返回到初始调用"><a class="anchor" href="#5-递归返回返回到初始调用">#</a> 5. 递归返回：返回到初始调用</h5>
+<ul>
+<li>
+<p><strong>完成  <code>convert(a + 1, 48)</code>  后</strong>：</p>
+<ul>
+<li>执行  <code>*a = (483 % 10) + '0' = '3'</code> （ <code>a[0] = '3'</code> ）</li>
+</ul>
+</li>
+<li>
+<p><strong>调用栈</strong>：</p>
+<figure class="highlight csharp"><figcaption data-lang="C#"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">convert</span><span class="token attribute-arguments"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token number">483</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span></pre></td></tr></table></figure></li>
+<li>
+<p><strong>赋值结果</strong>：</p>
+<ul>
+<li><code>a[0] = '3'</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="可视化调用栈"><a class="anchor" href="#可视化调用栈">#</a> 可视化调用栈</h3>
+<p>为了更直观地理解，让我们用图示表示递归调用和返回过程。</p>
+<figure class="highlight css"><figcaption data-lang="CSS"></figcaption><table><tr><td data-num="1"></td><td><pre>调用栈顶部</pre></td></tr><tr><td data-num="2"></td><td><pre>┌────────────────────┐</pre></td></tr><tr><td data-num="3"></td><td><pre>│ <span class="token function">convert</span><span class="token punctuation">(</span>a + 2<span class="token punctuation">,</span> 4<span class="token punctuation">)</span>  │</pre></td></tr><tr><td data-num="4"></td><td><pre>│ 执行 *a = <span class="token string">'4'</span>      │</pre></td></tr><tr><td data-num="5"></td><td><pre>└────────────────────┘</pre></td></tr><tr><td data-num="6"></td><td><pre>      返回</pre></td></tr><tr><td data-num="7"></td><td><pre>┌────────────────────┐</pre></td></tr><tr><td data-num="8"></td><td><pre>│ <span class="token function">convert</span><span class="token punctuation">(</span>a + 1<span class="token punctuation">,</span> 48<span class="token punctuation">)</span> │</pre></td></tr><tr><td data-num="9"></td><td><pre>│ 执行 *a = <span class="token string">'8'</span>      │</pre></td></tr><tr><td data-num="10"></td><td><pre>└────────────────────┘</pre></td></tr><tr><td data-num="11"></td><td><pre>      返回</pre></td></tr><tr><td data-num="12"></td><td><pre>┌────────────────────┐</pre></td></tr><tr><td data-num="13"></td><td><pre>│ <span class="token function">convert</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> 483<span class="token punctuation">)</span>     │</pre></td></tr><tr><td data-num="14"></td><td><pre>│ 执行 *a = <span class="token string">'3'</span>      │</pre></td></tr><tr><td data-num="15"></td><td><pre>└────────────────────┘</pre></td></tr><tr><td data-num="16"></td><td><pre>      返回</pre></td></tr></table></figure><p>每一次递归调用都会在栈上新增一个栈帧（函数调用的上下文），当一个调用完成后，控制权自动返回到上一个栈帧的位置，继续执行后续的代码。</p>
+</blockquote>
+<p>有时间细说这个递归</p>
+<p><img loading="lazy" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/image-20241224140100206.png" alt="image-20241224140100206" /></p>
+<p><strong>先到这吧，4 道题花一上午，效率越来越低了，来两道数学去了。递归有点说法的，下个坑考虑开递归</strong></p>
+<div class="tags"><a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"><i class="ic i-tag"></i>C语言</a><a href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag"><i class="ic i-tag"></i>基础</a><a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="ic i-tag"></i>算法</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新於</span><time title="修改時間：2024-12-24 14:53:17" itemprop="dateModified" datetime="2024-12-24T14:53:17+08:00">2024-12-24</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>打賞</button><p>請我喝[茶]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" data-src="/assets/wechatpay.png" alt="0d0_1yp0 微信支付"/><p>微信支付</p></div><div><img loading="lazy" data-src="/assets/alipay.png" alt="0d0_1yp0 支付寶"/><p>支付寶</p></div></div></div><div id="copyright"><ul><li class="author"><strong>博主：</strong>0d0_1yp0<i class="ic i-at"><em>@</em></i>we1c0me_t0 my odyssey domain</li><li class="link"><strong>文章連結：</strong><a href="https://0d0-1yp0.github.io/2024/12/24/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%B8%89)/" title="C语言入门知识点&amp;基础思路（三）">https://0d0-1yp0.github.io/2024/12/24/basic-C/C语言入门回归(三)/</a></li><li class="license"><strong>版權聲明：</strong>本網誌所有文章除特別聲明外，均採用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 許可協議。轉載請註明出處！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2024/12/24/some/%E5%88%86%E4%BA%AB/" rel="prev" itemprop="url" data-background-image="https:&#x2F;&#x2F;blog-store-1325083740.cos.ap-beijing.myqcloud.com&#x2F;2024-12-20%20110922(1).jpg" title="安装一个‘小’工具有点想跟powershell爆了"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>日常</span><h3>安装一个‘小’工具有点想跟powershell爆了</h3></a></div><div class="item right"><a href="/2025/01/07/some/%E6%89%98%E6%9B%B4qwq/" rel="next" itemprop="url" data-background-image="https:&#x2F;&#x2F;blog-store-1325083740.cos.ap-beijing.myqcloud.com&#x2F;0D00.jpg" title="为啥拖更qwq"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>日常</span><h3>为啥拖更qwq</h3></a></div></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目錄"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c%E8%AF%AD%E8%A8%80%E5%93%AD%E4%BC%A0%E4%B8%89"><span class="toc-number">1.</span> <span class="toc-text"> C 语言哭传（三）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#815%E6%8C%87%E9%92%88"><span class="toc-number">1.1.</span> <span class="toc-text"> 8.15 指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 思路知识点：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">  &amp;  运算符和  *  运算符</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 拓展：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#char-achar-a%E4%B8%8Echar-a-%E5%90%AB%E5%A4%A7%E6%A8%A1%E5%9E%8Bo1%E7%9A%84%E5%9B%9E%E7%AD%94"><span class="toc-number">1.1.3.</span> <span class="toc-text"> char *a []，char a [] 与 char a [][] (含大模型 o1 的回答)：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E4%B8%8E%E8%A7%A3%E9%87%8A"><span class="toc-number">1.1.3.1.</span> <span class="toc-text"> 分析与解释</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%A3%B0%E6%98%8E%E4%B8%80char-a"><span class="toc-number">1.1.3.1.1.</span> <span class="toc-text"> 1. 声明一： char *a[] </span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%A3%B0%E6%98%8E%E4%BA%8Cchar-a"><span class="toc-number">1.1.3.2.</span> <span class="toc-text"> 2. 声明二： char a[] </span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%BC%82%E5%90%8C%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 主要异同点总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E4%BD%BF%E7%94%A8%E5%93%AA%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.5.</span> <span class="toc-text"> 选择使用哪种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.6.</span> <span class="toc-text"> 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#816%E6%8C%87%E9%92%88"><span class="toc-number">1.2.</span> <span class="toc-text"> 8.16 指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 函数指针</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.1.1.</span> <span class="toc-text"> 主要概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E4%BC%98%E5%8A%BF%E5%90%ABo1%E6%A8%A1%E5%9E%8B%E5%9B%9E%E7%AD%94"><span class="toc-number">1.2.1.2.</span> <span class="toc-text"> 拓展：函数指针的优势（含 o1 模型回答）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%8D%E8%A1%A5%E4%B8%A4%E5%8F%A5"><span class="toc-number">1.2.1.3.</span> <span class="toc-text"> 再补两句</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#817%E6%8C%87%E9%92%88"><span class="toc-number">1.3.</span> <span class="toc-text"> 8.17 指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%91%E6%88%98813%E9%80%92%E5%BD%92"><span class="toc-number">1.4.</span> <span class="toc-text"> 挑战：8.13 递归</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="toc-number">1.4.0.1.</span> <span class="toc-text"> 递归函数解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-number">1.4.0.2.</span> <span class="toc-text"> 递归</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E8%B0%83%E7%94%A8converta-483"><span class="toc-number">1.4.0.2.1.</span> <span class="toc-text"> 初始调用： convert(a, 483)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8converta-1-48"><span class="toc-number">1.4.0.2.2.</span> <span class="toc-text"> 第一次递归调用： convert(a + 1, 48)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8converta-2-4"><span class="toc-number">1.4.0.2.3.</span> <span class="toc-text"> 第二次递归调用： convert(a + 2, 4)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%9E%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8converta-1-48"><span class="toc-number">1.4.0.2.4.</span> <span class="toc-text"> 回到第一次递归调用： convert(a + 1, 48)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%9E%E5%88%B0%E5%88%9D%E5%A7%8B%E8%B0%83%E7%94%A8converta-483"><span class="toc-number">1.4.0.2.5.</span> <span class="toc-text"> 回到初始调用： convert(a, 483)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-number">1.4.0.2.6.</span> <span class="toc-text"> 总结:</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8%E6%A0%88%E5%85%A5%E9%97%A8%E8%80%85%E9%80%89%E6%8B%A9%E6%80%A7%E9%98%85%E8%AF%BB%E6%AD%A4%E6%AE%B5"><span class="toc-number">1.4.0.3.</span> <span class="toc-text"> 拓展：递归调用栈 (入门者选择性阅读此段)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B0%86-483-%E8%BD%AC%E6%8D%A2%E4%B8%BA-384"><span class="toc-number">1.4.0.3.1.</span> <span class="toc-text"> 示例：将  483  转换为  &quot;384&quot;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.4.1.</span> <span class="toc-text"> </span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%88%9D%E5%A7%8B%E8%B0%83%E7%94%A8converta-483"><span class="toc-number">1.4.1.0.1.</span> <span class="toc-text"> 1. 初始调用： convert(a, 483)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8converta-1-48"><span class="toc-number">1.4.1.0.2.</span> <span class="toc-text"> 2. 第一次递归调用： convert(a + 1, 48)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8converta-2-4"><span class="toc-number">1.4.1.0.3.</span> <span class="toc-text"> 3. 第二次递归调用： convert(a + 2, 4)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E9%80%92%E5%BD%92%E8%BF%94%E5%9B%9E%E8%BF%94%E5%9B%9E%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8"><span class="toc-number">1.4.1.0.4.</span> <span class="toc-text"> 4. 递归返回：返回到第一次递归调用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E9%80%92%E5%BD%92%E8%BF%94%E5%9B%9E%E8%BF%94%E5%9B%9E%E5%88%B0%E5%88%9D%E5%A7%8B%E8%B0%83%E7%94%A8"><span class="toc-number">1.4.1.0.5.</span> <span class="toc-text"> 5. 递归返回：返回到初始调用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E8%B0%83%E7%94%A8%E6%A0%88"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 可视化调用栈</span></a></li></ol></li></ol></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li ><a href="/2024/12/20/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="C语言入门知识点&基础思路（一）">C语言入门知识点&基础思路（一）</a></li><li ><a href="/2024/12/23/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%BA%8C)/" rel="bookmark" title="C语言入门知识点&基础思路（二）">C语言入门知识点&基础思路（二）</a></li><li  class="active"><a href="/2024/12/24/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%B8%89)/" rel="bookmark" title="C语言入门知识点&基础思路（三）">C语言入门知识点&基础思路（三）</a></li></ul></div><div class="overview panel" data-title="本站概覽"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="0d0_1yp0" src="https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/aiwatching.jpg"/><p class="name" itemprop="name">0d0_1yp0</p><div class="description" itemprop="description">ps:当前站版本v1.12。右上角可以切换日夜主题。手机端左上角是功能栏。遇到长时间加载是bug需要刷新。目前文章只往csdn搬https://blog.csdn.net/2201_75506722?type=blog</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">12</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">8</span><span class="name">分類</span></a></div><div class="item tags"><a href="/tags/"><span class="count">12</span><span class="name">標籤</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/0D0-1yp0" class="item github" title="https:&#x2F;&#x2F;github.com&#x2F;0D0-1yp0"><i class="ic i-github"></i></a><a href="mailto:2541520193@qq.com" class="item email" title="mailto:2541520193@qq.com"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首頁</a></li><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>歸檔</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分類</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>標籤</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2025/01/07/some/%E6%89%98%E6%9B%B4qwq/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2024/12/24/some/%E5%88%86%E4%BA%AB/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div></main><footer id="footer"><div class="inner"><div class="widgets"></div><div class="status"><div class="copyright">&copy; 2024 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">0d0_1yp0 @ D_1yp</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="站點總字數">51k 字</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="站點閱讀時長">46 分鐘</span></div><div class="powered-by">基於 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><div style="width: 100%;text-align:center;"><span id="time"></span></div><script>function createtime() {
+    const n = new Date("2024/12/20 21:42:18");
+    now.setTime(now.getTime() + 250), days = (now - n) / 1e3 / 60 / 60 / 24, dnum = Math.floor(days), hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum, hnum = Math.floor(hours), 1 == String(hnum).length && (hnum = "0" + hnum), minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum, mnum = Math.floor(minutes), 1 == String(mnum).length && (mnum = "0" + mnum), seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum, snum = Math.round(seconds), 1 == String(snum).length && (snum = "0" + snum), document.getElementById("time").innerHTML = "此站已存活" + dnum + " 天 " + hnum + " 小时 " + mnum + " 分 " + snum + " 秒"
+}
+
+const now = new Date;
+setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script><div id="busuanzi-wrap"><span class="ic i-eye"></span><span id="busuanzi_container_site_pv">小破站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span> | <span class="ic i-user"></span><span id="busuanzi_container_site_uv">小破站总访客量 <span id="busuanzi_value_site_uv"></span> 人/虫      承蒙各位(或者你们用来爬我文的虫)的厚爱，欢迎收藏</span></div></div></footer></div><script data-config type="text/javascript">var LOCAL = {
+    ispost: true,
+        path: `2024/12/24/basic-C/C语言入门回归(三)/`,
+        favicon: {
+        show: `（●´3｀●）復活成功`,
+        hide: `(´Д｀)瀏覽器崩潰啦`
+    },
+    search: {
+        placeholder: "文章搜索",
+        empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+        stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: {},
+    fancybox: true,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">文章時效性提示</span><br>這是一篇發佈於 {{publish}} 天前，最後一次更新在 {{updated}} 天前的文章，部分信息可能已經發生改變，請注意甄別。</p></div>`,
+    quiz: {
+        choice: `單選題`,
+        multiple: `多選題`,
+        true_false: `判斷題`,
+        essay: `問答題`,
+        gap_fill: `填空題`,
+        mistake: `錯題備註`
+    },
+    ignores: [
+        (uri) => uri.includes('#'),
+        (uri) => new RegExp(LOCAL.path + '$').test(uri),
+            []
+    ]
+};
+</script><script src="https://s4.zstatic.net/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous" fetchpriority="high"></script><script src="https://s4.zstatic.net/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO&#x2F;+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn&#x2F;6Z&#x2F;hRTt8+pR6L4N2" crossorigin="anonymous" fetchpriority="high"></script><script src="/js/siteInit.js?v=0.4.14" type="module" fetchpriority="high" defer></script></body></html>
