@@ -2,16 +2,361 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://0d0-1yp0.github.io</id>
     <title>we1c0me_t0 my odyssey domain</title>
-    <subtitle>&#34; 一切选择，都有其意义 &#34; —— 《VALORANT》 ISO</subtitle>
+    <subtitle>Ordinary persons fill the void with excitement, yet these excellent ones accomplish themselves by solitude</subtitle>
     <icon>https://0d0-1yp0.github.io/assets/favicon.ico</icon>
     <link href="https://0d0-1yp0.github.io" />
     <author>
       <name>0d0_1yp0</name>
     </author>
-    <updated>2025-01-06T16:00:00.000Z</updated>
+    <updated>2025-01-21T16:00:00.000Z</updated>
     <category term="D1yp" />
     <category term="D_1yp" />
     <category term="0d0-1yp0" />
+    <entry>
+        <id>https://0d0-1yp0.github.io/2025/01/22/CTF/binary/%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</id>
+        <title>寄存器部分寻址方式</title>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2025/01/22/CTF/binary/%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
+        <content type="html">&lt;p&gt;到底日更变成拖更变成月更了，水一篇吧，实在太忙了，&lt;s&gt;或者你们想看的话我更新高等数学也行&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;借鉴来源：&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h1 id=&#34;asm源码&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#asm源码&#34;&gt;#&lt;/a&gt; ASM 源码：&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-assembly&#34;&gt;section .data
+    msg db &amp;quot;Welcome_to_CTFshow_PWN&amp;quot;, 0
+
+section .text
+    global _start
+
+_start:
+
+; 立即寻址方式
+    mov eax, 11         ; 将11赋值给eax
+    add eax, 114504     ; eax加上114504
+    sub eax, 1          ; eax减去1
+
+; 寄存器寻址方式
+    mov ebx, 0x36d      ; 将0x36d赋值给ebx
+    mov edx, ebx        ; 将ebx的值赋值给edx
+
+; 直接寻址方式
+    mov ecx, msg      ; 将msg的地址赋值给ecx
+
+; 寄存器间接寻址方式
+    mov esi, msg        ; 将msg的地址赋值给esi
+    mov eax, [esi]      ; 将esi所指向的地址的值赋值给eax
+
+; 寄存器相对寻址方式
+    mov ecx, msg        ; 将msg的地址赋值给ecx
+    add ecx, 4          ; 将ecx加上4
+    mov eax, [ecx]      ; 将ecx所指向的地址的值赋值给eax
+
+; 基址变址寻址方式
+    mov ecx, msg        ; 将msg的地址赋值给ecx
+    mov edx, 2          ; 将2赋值给edx
+    mov eax, [ecx + edx*2]  ; 将ecx+edx*2所指向的地址的值赋值给eax
+
+; 相对基址变址寻址方式
+    mov ecx, msg        ; 将msg的地址赋值给ecx
+    mov edx, 1          ; 将1赋值给edx
+    add ecx, 8          ; 将ecx加上8
+    mov eax, [ecx + edx*2 - 6]  ; 将ecx+edx*2-6所指向的地址的值赋值给eax
+
+; 输出字符串
+    mov eax, 4          ; 系统调用号4代表输出字符串
+    mov ebx, 1          ; 文件描述符1代表标准输出
+    mov ecx, msg        ; 要输出的字符串的地址
+    mov edx, 22         ; 要输出的字符串的长度
+    int 0x80            ; 调用系统调用
+
+; 退出程序
+    mov eax, 1          ; 系统调用号1代表退出程序
+    xor ebx, ebx        ; 返回值为0
+    int 0x80            ; 调用系统调用
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;详解&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#详解&#34;&gt;#&lt;/a&gt; 详解：&lt;/h1&gt;
+&lt;h3 id=&#34;1-data-段&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-data-段&#34;&gt;#&lt;/a&gt; 1. &lt;strong&gt;.data 段&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;section .data
+    msg db &amp;quot;Welcome_to_CTFshow_PWN&amp;quot;, 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;.data&lt;/code&gt;  段&lt;/strong&gt;：用来存放程序中的&lt;strong&gt;已初始化数据&lt;/strong&gt;，这些数据在程序运行时会被加载到内存中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;msg db&lt;/code&gt; &lt;/strong&gt;：声明一个字符串  &lt;code&gt;&amp;quot;Welcome_to_CTFshow_PWN&amp;quot;&lt;/code&gt; ，以字节（ &lt;code&gt;db&lt;/code&gt;  = Define Byte）存储，并以  &lt;code&gt;0&lt;/code&gt;  结尾，表示字符串结束符（类似 C 语言的 &lt;code&gt;\0&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;地址&lt;/strong&gt;： &lt;code&gt;msg&lt;/code&gt;  是一个&lt;strong&gt;标签&lt;/strong&gt;，代表该字符串的内存地址，供后续使用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;2-text-段&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-text-段&#34;&gt;#&lt;/a&gt; 2. &lt;strong&gt;.text 段&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;section .text
+global _start
+
+_start:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;.text&lt;/code&gt;  段&lt;/strong&gt;：存放程序的代码（指令）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;_start&lt;/code&gt; &lt;/strong&gt;：程序的入口，系统从这里开始执行程序（对应 Linux 的 ELF 文件格式的起点）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;3-立即寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-立即寻址方式&#34;&gt;#&lt;/a&gt; 3. &lt;strong&gt;立即寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov eax, 11         ; 将11赋值给eax
+add eax, 114504     ; eax加上114504
+sub eax, 1          ; eax减去1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;立即寻址方式&lt;/strong&gt;：操作数是一个&lt;strong&gt;立即数&lt;/strong&gt;，直接嵌入在指令中。例如  &lt;code&gt;11&lt;/code&gt;  和  &lt;code&gt;114504&lt;/code&gt; 。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov eax, 11&lt;/code&gt; ：将立即数  &lt;code&gt;11&lt;/code&gt;  加载到寄存器  &lt;code&gt;eax&lt;/code&gt;  中。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;add eax, 114504&lt;/code&gt; ：将立即数  &lt;code&gt;114504&lt;/code&gt;  加到  &lt;code&gt;eax&lt;/code&gt;  的当前值上。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sub eax, 1&lt;/code&gt; ：将  &lt;code&gt;eax&lt;/code&gt;  的值减去立即数  &lt;code&gt;1&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;硬件实现&lt;/strong&gt;：立即数直接写入指令的操作数字段，CPU 解码指令后直接将值加载到指定寄存器中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;4-寄存器寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4-寄存器寻址方式&#34;&gt;#&lt;/a&gt; 4. &lt;strong&gt;寄存器寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ebx, 0x36d      ; 将0x36d赋值给ebx
+mov edx, ebx        ; 将ebx的值赋值给edx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器寻址方式&lt;/strong&gt;：操作数在寄存器中，CPU 直接对寄存器进行操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ebx, 0x36d&lt;/code&gt; ：将立即数  &lt;code&gt;0x36d&lt;/code&gt;  加载到寄存器  &lt;code&gt;ebx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, ebx&lt;/code&gt; ：将寄存器  &lt;code&gt;ebx&lt;/code&gt;  的值复制到寄存器  &lt;code&gt;edx&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;硬件实现&lt;/strong&gt;：寄存器之间的数据传递不需要访问内存，速度非常快。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;5-直接寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#5-直接寻址方式&#34;&gt;#&lt;/a&gt; 5. &lt;strong&gt;直接寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg      ; 将msg的地址赋值给ecx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;直接寻址方式&lt;/strong&gt;：操作数的地址直接给出，即指令中明确指出操作数所在的内存地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：将标签  &lt;code&gt;msg&lt;/code&gt;  所指向的内存地址加载到寄存器  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;硬件实现&lt;/strong&gt;：CPU 将指令中的地址字段直接解析为内存地址，然后取出对应地址的内容。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;6-寄存器间接寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#6-寄存器间接寻址方式&#34;&gt;#&lt;/a&gt; 6. &lt;strong&gt;寄存器间接寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov esi, msg        ; 将msg的地址赋值给esi
+mov eax, [esi]      ; 将esi所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器间接寻址方式&lt;/strong&gt;：寄存器中存储的是操作数的内存地址，操作数存储在该地址中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov esi, msg&lt;/code&gt; ：将  &lt;code&gt;msg&lt;/code&gt;  的地址加载到寄存器  &lt;code&gt;esi&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [esi]&lt;/code&gt; ：从  &lt;code&gt;esi&lt;/code&gt;  指向的内存地址中读取数据，并存储到寄存器  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU 读取寄存器  &lt;code&gt;esi&lt;/code&gt;  的值（作为内存地址）。&lt;/li&gt;
+&lt;li&gt;然后去内存中访问该地址，取出存储的值加载到寄存器  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;7-寄存器相对寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#7-寄存器相对寻址方式&#34;&gt;#&lt;/a&gt; 7. &lt;strong&gt;寄存器相对寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg        ; 将msg的地址赋值给ecx
+add ecx, 4          ; 将ecx加上4
+mov eax, [ecx]      ; 将ecx所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器相对寻址方式&lt;/strong&gt;：寄存器中存储基地址，操作数的地址是基地址加上一个偏移量。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：将  &lt;code&gt;msg&lt;/code&gt;  的地址加载到寄存器  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;add ecx, 4&lt;/code&gt; ：将  &lt;code&gt;ecx&lt;/code&gt;  加上偏移量  &lt;code&gt;4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [ecx]&lt;/code&gt; ：从  &lt;code&gt;ecx&lt;/code&gt;  指向的地址读取数据到寄存器  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;计算内存地址： &lt;code&gt;ecx + 4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;访问该地址并读取数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;8-基址变址寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#8-基址变址寻址方式&#34;&gt;#&lt;/a&gt; 8. &lt;strong&gt;基址变址寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg        ; 将msg的地址赋值给ecx
+mov edx, 2          ; 将2赋值给edx
+mov eax, [ecx + edx*2]  ; 将ecx+edx*2所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;基址变址寻址方式&lt;/strong&gt;：地址是基地址加上索引值（ &lt;code&gt;edx&lt;/code&gt; ），并根据一个比例因子（如  &lt;code&gt;*2&lt;/code&gt; ）计算得到。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：加载基地址到寄存器  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, 2&lt;/code&gt; ：加载索引值  &lt;code&gt;2&lt;/code&gt;  到寄存器  &lt;code&gt;edx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [ecx + edx*2]&lt;/code&gt; ：计算地址为  &lt;code&gt;ecx + edx*2&lt;/code&gt; ，然后读取该地址的数据到  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;地址计算： &lt;code&gt;ecx + edx*2&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;访问该内存地址并读取数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;9-相对基址变址寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#9-相对基址变址寻址方式&#34;&gt;#&lt;/a&gt; 9. &lt;strong&gt;相对基址变址寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg        ; 将msg的地址赋值给ecx
+mov edx, 1          ; 将1赋值给edx
+add ecx, 8          ; 将ecx加上8
+mov eax, [ecx + edx*2 - 6]  ; 将ecx+edx*2-6所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;相对基址变址寻址方式&lt;/strong&gt;：地址是基地址加索引值乘比例因子再加偏移量。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：加载基地址到  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, 1&lt;/code&gt; ：加载索引值  &lt;code&gt;1&lt;/code&gt;  到  &lt;code&gt;edx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;add ecx, 8&lt;/code&gt; ：将偏移量  &lt;code&gt;8&lt;/code&gt;  加到  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [ecx + edx*2 - 6]&lt;/code&gt; ：计算地址为  &lt;code&gt;ecx + edx*2 - 6&lt;/code&gt; ，然后读取数据到  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;地址计算： &lt;code&gt;ecx + edx*2 - 6&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;访问该地址并读取数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;10-系统调用输出字符串&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#10-系统调用输出字符串&#34;&gt;#&lt;/a&gt; 10. &lt;strong&gt;系统调用（输出字符串）&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov eax, 4          ; 系统调用号4代表输出字符串
+mov ebx, 1          ; 文件描述符1代表标准输出
+mov ecx, msg        ; 要输出的字符串的地址
+mov edx, 22         ; 要输出的字符串的长度
+int 0x80            ; 调用系统调用
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov eax, 4&lt;/code&gt; ：设置系统调用号为  &lt;code&gt;4&lt;/code&gt; （ &lt;code&gt;sys_write&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov ebx, 1&lt;/code&gt; ：文件描述符为  &lt;code&gt;1&lt;/code&gt; （标准输出）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：输出字符串的地址。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, 22&lt;/code&gt; ：字符串的长度。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;int 0x80&lt;/code&gt; ：触发软中断，调用 Linux 内核的系统调用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将参数放入寄存器（ &lt;code&gt;eax&lt;/code&gt; ,  &lt;code&gt;ebx&lt;/code&gt; ,  &lt;code&gt;ecx&lt;/code&gt; ,  &lt;code&gt;edx&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;调用  &lt;code&gt;int 0x80&lt;/code&gt; ，切换到内核模式执行  &lt;code&gt;sys_write&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;11-退出程序&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#11-退出程序&#34;&gt;#&lt;/a&gt; 11. &lt;strong&gt;退出程序&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov eax, 1          ; 系统调用号1代表退出程序
+xor ebx, ebx        ; 返回值为0
+int 0x80            ; 调用系统调用
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov eax, 1&lt;/code&gt; ：设置系统调用号为  &lt;code&gt;1&lt;/code&gt; （ &lt;code&gt;sys_exit&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;xor ebx, ebx&lt;/code&gt; ：返回值为  &lt;code&gt;0&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;int 0x80&lt;/code&gt; ：触发软中断，调用内核终止程序。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寻址方式&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;立即寻址&lt;/strong&gt;：直接在指令中给出操作数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;寄存器寻址&lt;/strong&gt;：操作数在寄存器中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;直接寻址&lt;/strong&gt;：操作数的地址直接给出。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;间接寻址&lt;/strong&gt;：通过寄存器指向的地址访问数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;相对寻址&lt;/strong&gt;：基址 + 偏移量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;基址变址寻址&lt;/strong&gt;：基址 + 索引 * 比例因子。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;相对基址变址寻址&lt;/strong&gt;：基址 + 索引 * 比例因子 + 偏移量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;系统调用&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用  &lt;code&gt;int 0x80&lt;/code&gt;  切换到内核模式执行特定操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;这个 int 0x80 有点小关键的，有时候打 shellcode 会用&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
+        <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
+        <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
+        <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+        <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
+        <updated>2025-01-21T16:00:00.000Z</updated>
+    </entry>
     <entry>
         <id>https://0d0-1yp0.github.io/2025/01/07/some/%E6%89%98%E6%9B%B4qwq/</id>
         <title>为啥拖更qwq</title>
@@ -28,6 +373,98 @@
         <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
         <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
         <updated>2025-01-06T16:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/</id>
+        <title>安装一个‘小’工具有点想跟powershell爆了</title>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/"/>
+        <content type="html">&lt;p&gt;昨天戴✌分享了一个非常好玩的终端命令修补工具&lt;/p&gt;
+&lt;p&gt;安装的时候我真的是 fuck 了有点麻烦，尤其是最后用在 powershell 的时候&lt;/p&gt;
+&lt;p&gt;由此引入一下修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件和 PowerShell 中的配置吧&lt;/p&gt;
+&lt;h1 id=&#34;修改-profile-文件&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#修改-profile-文件&#34;&gt;#&lt;/a&gt; 修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件&lt;/h1&gt;
+&lt;p&gt;是 PowerShell 中的一种配置方法，用于在启动 PowerShell 会话时自动执行某些命令或定义函数。这个文件相当于一个 PowerShell 会话的启动脚本，可以用来设置环境变量、定义函数、别名、导入模块等。&lt;/p&gt;
+&lt;h3 id=&#34;profile-文件的原理&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#profile-文件的原理&#34;&gt;#&lt;/a&gt;  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的原理&lt;/h3&gt;
+&lt;p&gt;在 PowerShell 中， &lt;code&gt;$PROFILE&lt;/code&gt;  是一个特殊的自动变量，指向 PowerShell 配置文件的路径。该文件在每次启动 PowerShell 会话时被自动执行，通常用于配置用户偏好和初始化一些常用的设置。&lt;/p&gt;
+&lt;h3 id=&#34;具体解释&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#具体解释&#34;&gt;#&lt;/a&gt; 具体解释&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;路径&lt;/strong&gt;： &lt;code&gt;$PROFILE&lt;/code&gt;  变量指向的是当前用户的 PowerShell 配置文件路径。你可以通过以下命令查看  &lt;code&gt;$PROFILE&lt;/code&gt;  的内容：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;对于大多数用户，默认路径通常是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Users\&amp;lt;YourUsername&amp;gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;~/.config/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;功能&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中，PowerShell 会加载其中定义的命令和配置。例如，你可以在文件中加入以下内容：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;定义函数&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中，你可以定义你常用的 PowerShell 函数，这些函数会在每次启动 PowerShell 会话时自动可用。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; greet &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;Hello, &lt;span class=&#34;token variable&#34;&gt;$args&lt;/span&gt;&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;每次启动 PowerShell 后， &lt;code&gt;greet&lt;/code&gt;  函数就可以立即使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;设置别名&lt;/strong&gt;：你还可以在  &lt;code&gt;$PROFILE&lt;/code&gt;  中定义别名，使得长命令可以简化。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;Set-Alias&lt;/span&gt; ll &lt;span class=&#34;token function&#34;&gt;Get-ChildItem&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;这样，在 PowerShell 中使用  &lt;code&gt;ll&lt;/code&gt;  就等同于使用  &lt;code&gt;Get-ChildItem&lt;/code&gt;  命令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;自动加载模块&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  中定义常用模块的导入命令。比如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;Import-Module&lt;/span&gt; posh-git&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;配置环境变量&lt;/strong&gt;：可以在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中配置特定的环境变量或调整系统设置。例如：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$env&lt;/span&gt;:PATH &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;;C:\Program Files\MyTools&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;如何被加载&lt;/strong&gt;：每次启动一个新的 PowerShell 会话时，系统会自动加载  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中的所有内容，执行其中的命令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;profile-文件的种类&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#profile-文件的种类&#34;&gt;#&lt;/a&gt;  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的种类&lt;/h3&gt;
+&lt;p&gt;PowerShell 有多种类型的  &lt;code&gt;$PROFILE&lt;/code&gt;  文件，取决于你是在全局范围还是仅在当前用户会话中进行配置。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;当前用户的 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;这个文件只影响当前用户的 PowerShell 会话。通常路径是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Users\&amp;lt;YourUsername&amp;gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;~/.config/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你可以通过以下命令查看当前用户配置文件的路径：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;全局 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;如果你希望影响所有用户（管理员级别），可以编辑系统范围内的  &lt;code&gt;$PROFILE&lt;/code&gt;  文件。路径通常是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Program Files\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;/etc/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你可以通过以下命令查看系统范围内配置文件的路径：&lt;/p&gt;
+&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;AllUsersCurrentHost&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;特定主机的 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;除了全局和用户配置文件，还有针对特定主机的配置文件。例如，你可以为 &lt;strong&gt;PowerShell ISE&lt;/strong&gt; 定义一个单独的配置文件。不同主机的路径如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Windows PowerShell&lt;/strong&gt;： &lt;code&gt;$PROFILE.AllUsersCurrentHost&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PowerShell ISE&lt;/strong&gt;： &lt;code&gt;$PROFILE.AllUsersISEHost&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些配置文件允许你根据不同的使用场景配置 PowerShell 环境。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;修改-profile-文件的目的&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#修改-profile-文件的目的&#34;&gt;#&lt;/a&gt; 修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的目的&lt;/h3&gt;
+&lt;p&gt;此情况，修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的目的是让 PowerShell 会话在启动时自动定义  &lt;code&gt;fuck&lt;/code&gt;  函数。&lt;/p&gt;
+&lt;p&gt;因为 fuck 函数是 pip 安装的，得手动配&lt;/p&gt;
+&lt;p&gt;这样，就可以在 PowerShell 中通过输入  &lt;code&gt;fuck&lt;/code&gt;  来调用  &lt;code&gt;thefuck&lt;/code&gt; ，而不需要每次都手动配置。&lt;/p&gt;
+&lt;p&gt;当把  &lt;code&gt;Invoke-Expression (&amp;amp; thefuck --alias)&lt;/code&gt;  这样的命令添加到  &lt;code&gt;$PROFILE&lt;/code&gt;  中时，PowerShell 在启动时会自动执行该命令，创建  &lt;code&gt;fuck&lt;/code&gt;  函数，从而使你可以在会话中使用该命令。&lt;/p&gt;
+&lt;p&gt;但是，由于在我的环境下，直接在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中运行  &lt;code&gt;thefuck --alias&lt;/code&gt;  可能会导致问题（如  &lt;code&gt;Invoke-Expression&lt;/code&gt;  错误），所以我们通常建议手动将输出的函数定义复制到  &lt;code&gt;$PROFILE&lt;/code&gt;  中，而不是直接执行  &lt;code&gt;thefuck --alias&lt;/code&gt;  命令。这种方法更加稳定，避免了潜在的错误。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;$PROFILE 文件&lt;/strong&gt; 是一个 PowerShell 配置文件，用于在启动 PowerShell 会话时自动执行一些命令或配置，通常用于定义函数、别名、模块加载等。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件&lt;/strong&gt; 可以使一些常用功能在每次启动 PowerShell 时自动生效，避免每次手动配置。&lt;/li&gt;
+&lt;li&gt;敲一个 fuck 就能让你的 bash 或者 shell 麻溜改命令，好玩捏&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
+        <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
+        <updated>2024-12-23T16:00:00.000Z</updated>
     </entry>
     <entry>
         <id>https://0d0-1yp0.github.io/2024/12/24/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%B8%89)/</id>
@@ -564,96 +1001,104 @@
         <updated>2024-12-23T16:00:00.000Z</updated>
     </entry>
     <entry>
-        <id>https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/</id>
-        <title>安装一个‘小’工具有点想跟powershell爆了</title>
-        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/24/some/%E5%88%86%E4%BA%AB/"/>
-        <content type="html">&lt;p&gt;昨天戴✌分享了一个非常好玩的终端命令修补工具&lt;/p&gt;
-&lt;p&gt;安装的时候我真的是 fuck 了有点麻烦，尤其是最后用在 powershell 的时候&lt;/p&gt;
-&lt;p&gt;由此引入一下修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件和 PowerShell 中的配置吧&lt;/p&gt;
-&lt;h1 id=&#34;修改-profile-文件&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#修改-profile-文件&#34;&gt;#&lt;/a&gt; 修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件&lt;/h1&gt;
-&lt;p&gt;是 PowerShell 中的一种配置方法，用于在启动 PowerShell 会话时自动执行某些命令或定义函数。这个文件相当于一个 PowerShell 会话的启动脚本，可以用来设置环境变量、定义函数、别名、导入模块等。&lt;/p&gt;
-&lt;h3 id=&#34;profile-文件的原理&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#profile-文件的原理&#34;&gt;#&lt;/a&gt;  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的原理&lt;/h3&gt;
-&lt;p&gt;在 PowerShell 中， &lt;code&gt;$PROFILE&lt;/code&gt;  是一个特殊的自动变量，指向 PowerShell 配置文件的路径。该文件在每次启动 PowerShell 会话时被自动执行，通常用于配置用户偏好和初始化一些常用的设置。&lt;/p&gt;
-&lt;h3 id=&#34;具体解释&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#具体解释&#34;&gt;#&lt;/a&gt; 具体解释&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;路径&lt;/strong&gt;： &lt;code&gt;$PROFILE&lt;/code&gt;  变量指向的是当前用户的 PowerShell 配置文件路径。你可以通过以下命令查看  &lt;code&gt;$PROFILE&lt;/code&gt;  的内容：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;对于大多数用户，默认路径通常是：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Users\&amp;lt;YourUsername&amp;gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;~/.config/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;功能&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中，PowerShell 会加载其中定义的命令和配置。例如，你可以在文件中加入以下内容：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;定义函数&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中，你可以定义你常用的 PowerShell 函数，这些函数会在每次启动 PowerShell 会话时自动可用。例如：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; greet &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;Hello, &lt;span class=&#34;token variable&#34;&gt;$args&lt;/span&gt;&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;每次启动 PowerShell 后， &lt;code&gt;greet&lt;/code&gt;  函数就可以立即使用。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;设置别名&lt;/strong&gt;：你还可以在  &lt;code&gt;$PROFILE&lt;/code&gt;  中定义别名，使得长命令可以简化。例如：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;Set-Alias&lt;/span&gt; ll &lt;span class=&#34;token function&#34;&gt;Get-ChildItem&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;这样，在 PowerShell 中使用  &lt;code&gt;ll&lt;/code&gt;  就等同于使用  &lt;code&gt;Get-ChildItem&lt;/code&gt;  命令。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;自动加载模块&lt;/strong&gt;：在  &lt;code&gt;$PROFILE&lt;/code&gt;  中定义常用模块的导入命令。比如：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;Import-Module&lt;/span&gt; posh-git&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;配置环境变量&lt;/strong&gt;：可以在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中配置特定的环境变量或调整系统设置。例如：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$env&lt;/span&gt;:PATH &lt;span class=&#34;token operator&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;;C:\Program Files\MyTools&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+        <id>https://0d0-1yp0.github.io/2024/12/23/some/%E8%BF%98%E6%B2%A1%E5%A1%AB%E7%9A%84%E5%A4%A9%E5%9D%91/</id>
+        <title>挖了但是还没填的坑呜呜呜</title>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/23/some/%E8%BF%98%E6%B2%A1%E5%A1%AB%E7%9A%84%E5%A4%A9%E5%9D%91/"/>
+        <content type="html">&lt;ol&gt;
+&lt;li&gt;挖了 copilot 教学的坑&lt;/li&gt;
+&lt;li&gt;挖了 2020 网鼎逆向复盘的坑&lt;/li&gt;
+&lt;li&gt;挖了 sagemath 命令行教学的坑&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;如何被加载&lt;/strong&gt;：每次启动一个新的 PowerShell 会话时，系统会自动加载  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中的所有内容，执行其中的命令。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;profile-文件的种类&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#profile-文件的种类&#34;&gt;#&lt;/a&gt;  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的种类&lt;/h3&gt;
-&lt;p&gt;PowerShell 有多种类型的  &lt;code&gt;$PROFILE&lt;/code&gt;  文件，取决于你是在全局范围还是仅在当前用户会话中进行配置。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;当前用户的 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;这个文件只影响当前用户的 PowerShell 会话。通常路径是：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Users\&amp;lt;YourUsername&amp;gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;~/.config/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;你可以通过以下命令查看当前用户配置文件的路径：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;全局 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;如果你希望影响所有用户（管理员级别），可以编辑系统范围内的  &lt;code&gt;$PROFILE&lt;/code&gt;  文件。路径通常是：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;:  &lt;code&gt;C:\Program Files\WindowsPowerShell\Microsoft.PowerShell_profile.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Linux/macOS&lt;/strong&gt;:  &lt;code&gt;/etc/powershell/profile.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;你可以通过以下命令查看系统范围内配置文件的路径：&lt;/p&gt;
-&lt;figure class=&#34;highlight powershell&#34;&gt;&lt;figcaption data-lang=&#34;PowerShell&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token variable&#34;&gt;$PROFILE&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;AllUsersCurrentHost&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;特定主机的 PowerShell 配置文件&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;除了全局和用户配置文件，还有针对特定主机的配置文件。例如，你可以为 &lt;strong&gt;PowerShell ISE&lt;/strong&gt; 定义一个单独的配置文件。不同主机的路径如下：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Windows PowerShell&lt;/strong&gt;： &lt;code&gt;$PROFILE.AllUsersCurrentHost&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;PowerShell ISE&lt;/strong&gt;： &lt;code&gt;$PROFILE.AllUsersISEHost&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这些配置文件允许你根据不同的使用场景配置 PowerShell 环境。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;修改-profile-文件的目的&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#修改-profile-文件的目的&#34;&gt;#&lt;/a&gt; 修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的目的&lt;/h3&gt;
-&lt;p&gt;此情况，修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件的目的是让 PowerShell 会话在启动时自动定义  &lt;code&gt;fuck&lt;/code&gt;  函数。&lt;/p&gt;
-&lt;p&gt;因为 fuck 函数是 pip 安装的，得手动配&lt;/p&gt;
-&lt;p&gt;这样，就可以在 PowerShell 中通过输入  &lt;code&gt;fuck&lt;/code&gt;  来调用  &lt;code&gt;thefuck&lt;/code&gt; ，而不需要每次都手动配置。&lt;/p&gt;
-&lt;p&gt;当把  &lt;code&gt;Invoke-Expression (&amp;amp; thefuck --alias)&lt;/code&gt;  这样的命令添加到  &lt;code&gt;$PROFILE&lt;/code&gt;  中时，PowerShell 在启动时会自动执行该命令，创建  &lt;code&gt;fuck&lt;/code&gt;  函数，从而使你可以在会话中使用该命令。&lt;/p&gt;
-&lt;p&gt;但是，由于在我的环境下，直接在  &lt;code&gt;$PROFILE&lt;/code&gt;  文件中运行  &lt;code&gt;thefuck --alias&lt;/code&gt;  可能会导致问题（如  &lt;code&gt;Invoke-Expression&lt;/code&gt;  错误），所以我们通常建议手动将输出的函数定义复制到  &lt;code&gt;$PROFILE&lt;/code&gt;  中，而不是直接执行  &lt;code&gt;thefuck --alias&lt;/code&gt;  命令。这种方法更加稳定，避免了潜在的错误。&lt;/p&gt;
-&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;$PROFILE 文件&lt;/strong&gt; 是一个 PowerShell 配置文件，用于在启动 PowerShell 会话时自动执行一些命令或配置，通常用于定义函数、别名、模块加载等。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;修改  &lt;code&gt;$PROFILE&lt;/code&gt;  文件&lt;/strong&gt; 可以使一些常用功能在每次启动 PowerShell 时自动生效，避免每次手动配置。&lt;/li&gt;
-&lt;li&gt;敲一个 fuck 就能让你的 bash 或者 shell 麻溜改命令，好玩捏&lt;/li&gt;
-&lt;/ul&gt;
+&lt;h3 id=&#34;哈哈哈哈哈哈哈自己挖坑自己跳了说是&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#哈哈哈哈哈哈哈自己挖坑自己跳了说是&#34;&gt;#&lt;/a&gt; 哈哈哈哈哈哈哈，自己挖坑自己跳了说是&lt;/h3&gt;
 </content>
         <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
         <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
-        <updated>2024-12-23T16:00:00.000Z</updated>
+        <updated>2024-12-22T16:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/</id>
+        <title>公告栏</title>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/"/>
+        <content type="html">&lt;h1 id=&#34;welcome-to-my-cyber-world&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-cyber-world&#34;&gt;#&lt;/a&gt; welcome to my cyber world！&lt;/h1&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h1 id=&#34;公告栏&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#公告栏&#34;&gt;#&lt;/a&gt; 公告栏&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;当前版本：v1.12&lt;/strong&gt;    &lt;em&gt;2024-12-24&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2024-12-24 v1.12 热补丁修复&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;现已修复长文章出现图片丢失无法显示的情况（改动了一处 js 文件，可能造成性能略微损失，以后过长的文章会分 P）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;已知问题:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新，同时，正常来讲文章封面是随机可刷新的，但由于网页缓存一般在体验上是固定的，正在想办法&lt;/li&gt;
+&lt;li&gt;网页偶现不显示中文而是英文&lt;/li&gt;
+&lt;li&gt;支付宝的魂灵经常飘荡在微信赞赏上方，我服了马跌&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;版本预告：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;即将加入音乐播放器。&lt;/li&gt;
+&lt;li&gt;暂时不会开放评论区，某师傅说要给我打 xss 我害怕&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;往期版本，问题修复见公告最下方，有需要建站的可以参考可能出现的问题然后修一修&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;欢迎各位，以及实验班来逛街的师弟师妹们。开源精神万岁！&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本 blog 仅用于技术分享，暂不开放评论区。转载请遵守相关法律法规 ==&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;！！！任何文章涉及侵权请联系本人，本人将在 24 小时内立刻删除！！！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本人联系方式： &lt;a href=&#34;mailto:2541520193@qq.com&#34;&gt;2541520193@qq.com&lt;/a&gt;  可以反馈体验 bug 或聊聊天，本人单身（？&lt;/p&gt;
+&lt;p&gt;转载请标出处，目前只在 CSDN 搬自己的文章&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/2201_75506722?type=blog&#34;&gt;https://blog.csdn.net/2201_75506722?type=blog&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;其他地方见到均为盗版，帮点举报，感谢您的帮助&lt;/p&gt;
+&lt;p&gt;欢迎分享与收藏&lt;/p&gt;
+&lt;p&gt;另，冬至日快乐，两年没在今天吃饺子啦，希望明年大任务完成能更好点吧&lt;/p&gt;
+&lt;p&gt;建这个站很累但是真的很值得&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;​																		&lt;em&gt;&lt;strong&gt;D&#39;s   odyssey			 															   24/12/22&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2 id=&#34;往期问题修复版本优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期问题修复版本优化&#34;&gt;#&lt;/a&gt; 往期问题修复 &amp;amp; 版本优化&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2024-12-23 v1.11 热补丁修改&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;修复了公告里的一处错别字（？）&lt;/li&gt;
+&lt;li&gt;由于支付宝实名显示规则暂仅开放微信充电，感谢您的一片热心，心意领了～顺便相当于修复了支付宝赞赏码过丑的问题和手机端赞赏偶现 bug 的问题（？）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2024-12-22 v1.01 热补丁修改&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;修复了腾讯云 COS 存储桶因为我欠了三分钱当场给我图片毙了 35 小时还没给我发短信的严重 BUG（？）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;往期大版本更新&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期大版本更新&#34;&gt;#&lt;/a&gt; 往期大版本更新&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;大版本更新：v1.10&lt;/strong&gt;    &lt;em&gt;2024-12-22&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;现在文章封面除了我的随机图库，还可以自定义了&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新增打赏充电功能&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;标签，分类功能上线，便于各位审计自己需要的东西&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;大版本更新：v1.00&lt;/strong&gt;    &lt;em&gt;2024-12-20&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;打造了五天五夜的站闪耀登场！&lt;/li&gt;
+&lt;li&gt;可以拉到最下方查看本站存活时间以及访问量哦～&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+        <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
+        <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
+        <updated>2024-12-22T16:00:00.000Z</updated>
     </entry>
     <entry>
         <id>https://0d0-1yp0.github.io/2024/12/23/basic-C/C%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%E5%9B%9E%E5%BD%92(%E4%BA%8C)/</id>
@@ -756,106 +1201,6 @@ source=qeihua&lt;/p&gt;
         <category term="C语言" scheme="https://0d0-1yp0.github.io/tags/C%E8%AF%AD%E8%A8%80/" />
         <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
         <category term="算法" scheme="https://0d0-1yp0.github.io/tags/%E7%AE%97%E6%B3%95/" />
-        <updated>2024-12-22T16:00:00.000Z</updated>
-    </entry>
-    <entry>
-        <id>https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/</id>
-        <title>公告栏</title>
-        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/23/some/%E5%85%AC%E5%91%8A/"/>
-        <content type="html">&lt;h1 id=&#34;welcome-to-my-cyber-world&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-cyber-world&#34;&gt;#&lt;/a&gt; welcome to my cyber world！&lt;/h1&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://blog-store-1325083740.cos.ap-beijing.myqcloud.com/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-&lt;h1 id=&#34;公告栏&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#公告栏&#34;&gt;#&lt;/a&gt; 公告栏&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;当前版本：v1.12&lt;/strong&gt;    &lt;em&gt;2024-12-24&lt;/em&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;2024-12-24 v1.12 热补丁修复&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;现已修复长文章出现图片丢失无法显示的情况（改动了一处 js 文件，可能造成性能略微损失，以后过长的文章会分 P）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;已知问题:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;网页更新在推送后，有缓存的用户不刷新无法获取最新网页，或者需要多次刷新，同时，正常来讲文章封面是随机可刷新的，但由于网页缓存一般在体验上是固定的，正在想办法&lt;/li&gt;
-&lt;li&gt;网页偶现不显示中文而是英文&lt;/li&gt;
-&lt;li&gt;支付宝的魂灵经常飘荡在微信赞赏上方，我服了马跌&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;版本预告：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;即将加入音乐播放器。&lt;/li&gt;
-&lt;li&gt;暂时不会开放评论区，某师傅说要给我打 xss 我害怕&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;往期版本，问题修复见公告最下方，有需要建站的可以参考可能出现的问题然后修一修&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;欢迎各位，以及实验班来逛街的师弟师妹们。开源精神万岁！&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;本 blog 仅用于技术分享，暂不开放评论区。转载请遵守相关法律法规 ==&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;！！！任何文章涉及侵权请联系本人，本人将在 24 小时内立刻删除！！！&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;本人联系方式： &lt;a href=&#34;mailto:2541520193@qq.com&#34;&gt;2541520193@qq.com&lt;/a&gt;  可以反馈体验 bug 或聊聊天，本人单身（？&lt;/p&gt;
-&lt;p&gt;转载请标出处，目前只在 CSDN 搬自己的文章&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/2201_75506722?type=blog&#34;&gt;https://blog.csdn.net/2201_75506722?type=blog&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;其他地方见到均为盗版，帮点举报，感谢您的帮助&lt;/p&gt;
-&lt;p&gt;欢迎分享与收藏&lt;/p&gt;
-&lt;p&gt;另，冬至日快乐，两年没在今天吃饺子啦，希望明年大任务完成能更好点吧&lt;/p&gt;
-&lt;p&gt;建这个站很累但是真的很值得&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;​																		&lt;em&gt;&lt;strong&gt;D&#39;s   odyssey			 															   24/12/22&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr /&gt;
-&lt;h2 id=&#34;往期问题修复版本优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期问题修复版本优化&#34;&gt;#&lt;/a&gt; 往期问题修复 &amp;amp; 版本优化&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;2024-12-23 v1.11 热补丁修改&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;修复了公告里的一处错别字（？）&lt;/li&gt;
-&lt;li&gt;由于支付宝实名显示规则暂仅开放微信充电，感谢您的一片热心，心意领了～顺便相当于修复了支付宝赞赏码过丑的问题和手机端赞赏偶现 bug 的问题（？）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;2024-12-22 v1.01 热补丁修改&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;修复了腾讯云 COS 存储桶因为我欠了三分钱当场给我图片毙了 35 小时还没给我发短信的严重 BUG（？）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;往期大版本更新&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#往期大版本更新&#34;&gt;#&lt;/a&gt; 往期大版本更新&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;大版本更新：v1.10&lt;/strong&gt;    &lt;em&gt;2024-12-22&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;现在文章封面除了我的随机图库，还可以自定义了&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;新增打赏充电功能&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;标签，分类功能上线，便于各位审计自己需要的东西&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;大版本更新：v1.00&lt;/strong&gt;    &lt;em&gt;2024-12-20&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;打造了五天五夜的站闪耀登场！&lt;/li&gt;
-&lt;li&gt;可以拉到最下方查看本站存活时间以及访问量哦～&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-        <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
-        <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
-        <updated>2024-12-22T16:00:00.000Z</updated>
-    </entry>
-    <entry>
-        <id>https://0d0-1yp0.github.io/2024/12/23/some/%E8%BF%98%E6%B2%A1%E5%A1%AB%E7%9A%84%E5%A4%A9%E5%9D%91/</id>
-        <title>挖了但是还没填的坑呜呜呜</title>
-        <link rel="alternate" href="https://0d0-1yp0.github.io/2024/12/23/some/%E8%BF%98%E6%B2%A1%E5%A1%AB%E7%9A%84%E5%A4%A9%E5%9D%91/"/>
-        <content type="html">&lt;ol&gt;
-&lt;li&gt;挖了 copilot 教学的坑&lt;/li&gt;
-&lt;li&gt;挖了 2020 网鼎逆向复盘的坑&lt;/li&gt;
-&lt;li&gt;挖了 sagemath 命令行教学的坑&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;哈哈哈哈哈哈哈自己挖坑自己跳了说是&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#哈哈哈哈哈哈哈自己挖坑自己跳了说是&#34;&gt;#&lt;/a&gt; 哈哈哈哈哈哈哈，自己挖坑自己跳了说是&lt;/h3&gt;
-</content>
-        <category term="日常" scheme="https://0d0-1yp0.github.io/categories/some/" />
-        <category term="日常" scheme="https://0d0-1yp0.github.io/tags/%E6%97%A5%E5%B8%B8/" />
         <updated>2024-12-22T16:00:00.000Z</updated>
     </entry>
     <entry>

@@ -2,16 +2,361 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://0d0-1yp0.github.io</id>
     <title>we1c0me_t0 my odyssey domain</title>
-    <subtitle>&#34; 一切选择，都有其意义 &#34; —— 《VALORANT》 ISO</subtitle>
+    <subtitle>Ordinary persons fill the void with excitement, yet these excellent ones accomplish themselves by solitude</subtitle>
     <icon>https://0d0-1yp0.github.io/assets/favicon.ico</icon>
     <link href="https://0d0-1yp0.github.io" />
     <author>
       <name>0d0_1yp0</name>
     </author>
-    <updated>2024-12-19T16:00:00.000Z</updated>
+    <updated>2025-01-21T16:00:00.000Z</updated>
     <category term="D1yp" />
     <category term="D_1yp" />
     <category term="0d0-1yp0" />
+    <entry>
+        <id>https://0d0-1yp0.github.io/2025/01/22/CTF/binary/%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</id>
+        <title>寄存器部分寻址方式</title>
+        <link rel="alternate" href="https://0d0-1yp0.github.io/2025/01/22/CTF/binary/%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
+        <content type="html">&lt;p&gt;到底日更变成拖更变成月更了，水一篇吧，实在太忙了，&lt;s&gt;或者你们想看的话我更新高等数学也行&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;借鉴来源：&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h1 id=&#34;asm源码&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#asm源码&#34;&gt;#&lt;/a&gt; ASM 源码：&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-assembly&#34;&gt;section .data
+    msg db &amp;quot;Welcome_to_CTFshow_PWN&amp;quot;, 0
+
+section .text
+    global _start
+
+_start:
+
+; 立即寻址方式
+    mov eax, 11         ; 将11赋值给eax
+    add eax, 114504     ; eax加上114504
+    sub eax, 1          ; eax减去1
+
+; 寄存器寻址方式
+    mov ebx, 0x36d      ; 将0x36d赋值给ebx
+    mov edx, ebx        ; 将ebx的值赋值给edx
+
+; 直接寻址方式
+    mov ecx, msg      ; 将msg的地址赋值给ecx
+
+; 寄存器间接寻址方式
+    mov esi, msg        ; 将msg的地址赋值给esi
+    mov eax, [esi]      ; 将esi所指向的地址的值赋值给eax
+
+; 寄存器相对寻址方式
+    mov ecx, msg        ; 将msg的地址赋值给ecx
+    add ecx, 4          ; 将ecx加上4
+    mov eax, [ecx]      ; 将ecx所指向的地址的值赋值给eax
+
+; 基址变址寻址方式
+    mov ecx, msg        ; 将msg的地址赋值给ecx
+    mov edx, 2          ; 将2赋值给edx
+    mov eax, [ecx + edx*2]  ; 将ecx+edx*2所指向的地址的值赋值给eax
+
+; 相对基址变址寻址方式
+    mov ecx, msg        ; 将msg的地址赋值给ecx
+    mov edx, 1          ; 将1赋值给edx
+    add ecx, 8          ; 将ecx加上8
+    mov eax, [ecx + edx*2 - 6]  ; 将ecx+edx*2-6所指向的地址的值赋值给eax
+
+; 输出字符串
+    mov eax, 4          ; 系统调用号4代表输出字符串
+    mov ebx, 1          ; 文件描述符1代表标准输出
+    mov ecx, msg        ; 要输出的字符串的地址
+    mov edx, 22         ; 要输出的字符串的长度
+    int 0x80            ; 调用系统调用
+
+; 退出程序
+    mov eax, 1          ; 系统调用号1代表退出程序
+    xor ebx, ebx        ; 返回值为0
+    int 0x80            ; 调用系统调用
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;详解&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#详解&#34;&gt;#&lt;/a&gt; 详解：&lt;/h1&gt;
+&lt;h3 id=&#34;1-data-段&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-data-段&#34;&gt;#&lt;/a&gt; 1. &lt;strong&gt;.data 段&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;section .data
+    msg db &amp;quot;Welcome_to_CTFshow_PWN&amp;quot;, 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;.data&lt;/code&gt;  段&lt;/strong&gt;：用来存放程序中的&lt;strong&gt;已初始化数据&lt;/strong&gt;，这些数据在程序运行时会被加载到内存中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;msg db&lt;/code&gt; &lt;/strong&gt;：声明一个字符串  &lt;code&gt;&amp;quot;Welcome_to_CTFshow_PWN&amp;quot;&lt;/code&gt; ，以字节（ &lt;code&gt;db&lt;/code&gt;  = Define Byte）存储，并以  &lt;code&gt;0&lt;/code&gt;  结尾，表示字符串结束符（类似 C 语言的 &lt;code&gt;\0&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;地址&lt;/strong&gt;： &lt;code&gt;msg&lt;/code&gt;  是一个&lt;strong&gt;标签&lt;/strong&gt;，代表该字符串的内存地址，供后续使用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;2-text-段&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-text-段&#34;&gt;#&lt;/a&gt; 2. &lt;strong&gt;.text 段&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;section .text
+global _start
+
+_start:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;.text&lt;/code&gt;  段&lt;/strong&gt;：存放程序的代码（指令）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt; &lt;code&gt;_start&lt;/code&gt; &lt;/strong&gt;：程序的入口，系统从这里开始执行程序（对应 Linux 的 ELF 文件格式的起点）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;3-立即寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-立即寻址方式&#34;&gt;#&lt;/a&gt; 3. &lt;strong&gt;立即寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov eax, 11         ; 将11赋值给eax
+add eax, 114504     ; eax加上114504
+sub eax, 1          ; eax减去1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;立即寻址方式&lt;/strong&gt;：操作数是一个&lt;strong&gt;立即数&lt;/strong&gt;，直接嵌入在指令中。例如  &lt;code&gt;11&lt;/code&gt;  和  &lt;code&gt;114504&lt;/code&gt; 。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov eax, 11&lt;/code&gt; ：将立即数  &lt;code&gt;11&lt;/code&gt;  加载到寄存器  &lt;code&gt;eax&lt;/code&gt;  中。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;add eax, 114504&lt;/code&gt; ：将立即数  &lt;code&gt;114504&lt;/code&gt;  加到  &lt;code&gt;eax&lt;/code&gt;  的当前值上。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sub eax, 1&lt;/code&gt; ：将  &lt;code&gt;eax&lt;/code&gt;  的值减去立即数  &lt;code&gt;1&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;硬件实现&lt;/strong&gt;：立即数直接写入指令的操作数字段，CPU 解码指令后直接将值加载到指定寄存器中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;4-寄存器寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4-寄存器寻址方式&#34;&gt;#&lt;/a&gt; 4. &lt;strong&gt;寄存器寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ebx, 0x36d      ; 将0x36d赋值给ebx
+mov edx, ebx        ; 将ebx的值赋值给edx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器寻址方式&lt;/strong&gt;：操作数在寄存器中，CPU 直接对寄存器进行操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ebx, 0x36d&lt;/code&gt; ：将立即数  &lt;code&gt;0x36d&lt;/code&gt;  加载到寄存器  &lt;code&gt;ebx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, ebx&lt;/code&gt; ：将寄存器  &lt;code&gt;ebx&lt;/code&gt;  的值复制到寄存器  &lt;code&gt;edx&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;硬件实现&lt;/strong&gt;：寄存器之间的数据传递不需要访问内存，速度非常快。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;5-直接寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#5-直接寻址方式&#34;&gt;#&lt;/a&gt; 5. &lt;strong&gt;直接寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg      ; 将msg的地址赋值给ecx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;直接寻址方式&lt;/strong&gt;：操作数的地址直接给出，即指令中明确指出操作数所在的内存地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：将标签  &lt;code&gt;msg&lt;/code&gt;  所指向的内存地址加载到寄存器  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;硬件实现&lt;/strong&gt;：CPU 将指令中的地址字段直接解析为内存地址，然后取出对应地址的内容。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;6-寄存器间接寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#6-寄存器间接寻址方式&#34;&gt;#&lt;/a&gt; 6. &lt;strong&gt;寄存器间接寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov esi, msg        ; 将msg的地址赋值给esi
+mov eax, [esi]      ; 将esi所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器间接寻址方式&lt;/strong&gt;：寄存器中存储的是操作数的内存地址，操作数存储在该地址中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov esi, msg&lt;/code&gt; ：将  &lt;code&gt;msg&lt;/code&gt;  的地址加载到寄存器  &lt;code&gt;esi&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [esi]&lt;/code&gt; ：从  &lt;code&gt;esi&lt;/code&gt;  指向的内存地址中读取数据，并存储到寄存器  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU 读取寄存器  &lt;code&gt;esi&lt;/code&gt;  的值（作为内存地址）。&lt;/li&gt;
+&lt;li&gt;然后去内存中访问该地址，取出存储的值加载到寄存器  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;7-寄存器相对寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#7-寄存器相对寻址方式&#34;&gt;#&lt;/a&gt; 7. &lt;strong&gt;寄存器相对寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg        ; 将msg的地址赋值给ecx
+add ecx, 4          ; 将ecx加上4
+mov eax, [ecx]      ; 将ecx所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器相对寻址方式&lt;/strong&gt;：寄存器中存储基地址，操作数的地址是基地址加上一个偏移量。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：将  &lt;code&gt;msg&lt;/code&gt;  的地址加载到寄存器  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;add ecx, 4&lt;/code&gt; ：将  &lt;code&gt;ecx&lt;/code&gt;  加上偏移量  &lt;code&gt;4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [ecx]&lt;/code&gt; ：从  &lt;code&gt;ecx&lt;/code&gt;  指向的地址读取数据到寄存器  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;计算内存地址： &lt;code&gt;ecx + 4&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;访问该地址并读取数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;8-基址变址寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#8-基址变址寻址方式&#34;&gt;#&lt;/a&gt; 8. &lt;strong&gt;基址变址寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg        ; 将msg的地址赋值给ecx
+mov edx, 2          ; 将2赋值给edx
+mov eax, [ecx + edx*2]  ; 将ecx+edx*2所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;基址变址寻址方式&lt;/strong&gt;：地址是基地址加上索引值（ &lt;code&gt;edx&lt;/code&gt; ），并根据一个比例因子（如  &lt;code&gt;*2&lt;/code&gt; ）计算得到。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：加载基地址到寄存器  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, 2&lt;/code&gt; ：加载索引值  &lt;code&gt;2&lt;/code&gt;  到寄存器  &lt;code&gt;edx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [ecx + edx*2]&lt;/code&gt; ：计算地址为  &lt;code&gt;ecx + edx*2&lt;/code&gt; ，然后读取该地址的数据到  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;地址计算： &lt;code&gt;ecx + edx*2&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;访问该内存地址并读取数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;9-相对基址变址寻址方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#9-相对基址变址寻址方式&#34;&gt;#&lt;/a&gt; 9. &lt;strong&gt;相对基址变址寻址方式&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov ecx, msg        ; 将msg的地址赋值给ecx
+mov edx, 1          ; 将1赋值给edx
+add ecx, 8          ; 将ecx加上8
+mov eax, [ecx + edx*2 - 6]  ; 将ecx+edx*2-6所指向的地址的值赋值给eax
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;相对基址变址寻址方式&lt;/strong&gt;：地址是基地址加索引值乘比例因子再加偏移量。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：加载基地址到  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, 1&lt;/code&gt; ：加载索引值  &lt;code&gt;1&lt;/code&gt;  到  &lt;code&gt;edx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;add ecx, 8&lt;/code&gt; ：将偏移量  &lt;code&gt;8&lt;/code&gt;  加到  &lt;code&gt;ecx&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov eax, [ecx + edx*2 - 6]&lt;/code&gt; ：计算地址为  &lt;code&gt;ecx + edx*2 - 6&lt;/code&gt; ，然后读取数据到  &lt;code&gt;eax&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;地址计算： &lt;code&gt;ecx + edx*2 - 6&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;访问该地址并读取数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;10-系统调用输出字符串&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#10-系统调用输出字符串&#34;&gt;#&lt;/a&gt; 10. &lt;strong&gt;系统调用（输出字符串）&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov eax, 4          ; 系统调用号4代表输出字符串
+mov ebx, 1          ; 文件描述符1代表标准输出
+mov ecx, msg        ; 要输出的字符串的地址
+mov edx, 22         ; 要输出的字符串的长度
+int 0x80            ; 调用系统调用
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov eax, 4&lt;/code&gt; ：设置系统调用号为  &lt;code&gt;4&lt;/code&gt; （ &lt;code&gt;sys_write&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov ebx, 1&lt;/code&gt; ：文件描述符为  &lt;code&gt;1&lt;/code&gt; （标准输出）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov ecx, msg&lt;/code&gt; ：输出字符串的地址。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mov edx, 22&lt;/code&gt; ：字符串的长度。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;int 0x80&lt;/code&gt; ：触发软中断，调用 Linux 内核的系统调用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;硬件实现&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将参数放入寄存器（ &lt;code&gt;eax&lt;/code&gt; ,  &lt;code&gt;ebx&lt;/code&gt; ,  &lt;code&gt;ecx&lt;/code&gt; ,  &lt;code&gt;edx&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;调用  &lt;code&gt;int 0x80&lt;/code&gt; ，切换到内核模式执行  &lt;code&gt;sys_write&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;11-退出程序&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#11-退出程序&#34;&gt;#&lt;/a&gt; 11. &lt;strong&gt;退出程序&lt;/strong&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-asm&#34;&gt;mov eax, 1          ; 系统调用号1代表退出程序
+xor ebx, ebx        ; 返回值为0
+int 0x80            ; 调用系统调用
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;过程&lt;/p&gt;
+&lt;p&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mov eax, 1&lt;/code&gt; ：设置系统调用号为  &lt;code&gt;1&lt;/code&gt; （ &lt;code&gt;sys_exit&lt;/code&gt; ）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;xor ebx, ebx&lt;/code&gt; ：返回值为  &lt;code&gt;0&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;int 0x80&lt;/code&gt; ：触发软中断，调用内核终止程序。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寻址方式&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;立即寻址&lt;/strong&gt;：直接在指令中给出操作数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;寄存器寻址&lt;/strong&gt;：操作数在寄存器中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;直接寻址&lt;/strong&gt;：操作数的地址直接给出。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;间接寻址&lt;/strong&gt;：通过寄存器指向的地址访问数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;相对寻址&lt;/strong&gt;：基址 + 偏移量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;基址变址寻址&lt;/strong&gt;：基址 + 索引 * 比例因子。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;相对基址变址寻址&lt;/strong&gt;：基址 + 索引 * 比例因子 + 偏移量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;系统调用&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用  &lt;code&gt;int 0x80&lt;/code&gt;  切换到内核模式执行特定操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;这个 int 0x80 有点小关键的，有时候打 shellcode 会用&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="CTF" scheme="https://0d0-1yp0.github.io/categories/CTF/" />
+        <category term="二进制安全" scheme="https://0d0-1yp0.github.io/categories/CTF/binary/" />
+        <category term="基础" scheme="https://0d0-1yp0.github.io/tags/%E5%9F%BA%E7%A1%80/" />
+        <category term="二进制" scheme="https://0d0-1yp0.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" />
+        <category term="CTF" scheme="https://0d0-1yp0.github.io/tags/CTF/" />
+        <updated>2025-01-21T16:00:00.000Z</updated>
+    </entry>
     <entry>
         <id>https://0d0-1yp0.github.io/2024/12/20/CTF/binary/PWN/pwndbg%E7%94%A8%E6%B3%95%E5%9F%BA%E7%A1%80/</id>
         <title>pwndbg操作方式个人总结（一）</title>
